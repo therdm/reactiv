@@ -1,39 +1,81 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+A new Reactive state management approach and dependency injection  inspired by GetX
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+This package provides powerful state management capabilities through a reactive approach. 
+Users can define reactive variables by utilizing the Reactive<T> class, 
+allowing them to create instances of variables with automatic change tracking. 
+For example, a user can define a reactive variable like Reactive<int> myVar;, 
+where myVar represents a reactive variable of type int.
+
+To consume and react to changes in the reactive variable within the user interface, 
+this package offers the Reaction widget. 
+By wrapping the desired widget or UI component with the Reaction widget and specifying controller.myVar as the cause, 
+the widget will be rebuilt whenever changes occur in myVar. This ensures that the UI stays in sync with the state changes, 
+providing a reactive and responsive user experience.
+
+In addition to state management, this package also provides a comprehensive dependency injection system. 
+Users can easily inject singleton instances of classes into their application using the provided dependency injection mechanisms. 
+This enables the seamless integration of shared instances throughout the application, promoting code re-usability and modular design.
+
+This package includes functionality to find and retrieve instances of singleton classes from the dependency registry. 
+This allows users to access the desired dependencies whenever needed within their application. 
+Furthermore, the package provides the capability to remove singleton instances from the dependency registry, 
+allowing for dynamic management and disposal of dependencies when they are no longer required.
+
+Overall, this package offers a cohesive and efficient solution for reactive state management along with dependency injection support, 
+empowering developers to build robust and highly modular applications.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
 
+Controller
 ```dart
-const like = 'sample';
+class TestPageController extends ReactiveController {
+  final count = ReactiveInt(0);
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  increment() {
+    count.value = (count.value ?? 0) + 1;
+  }
+}
+
+```
+
+View
+```dart
+class TestPageScreen extends StatelessWidget {
+  const TestPageScreen({Key? key}) : super(key: key);
+
+  TestPageController get controller => Dependency.find<TestPageController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Reaction(
+          cause: controller.count,
+          effect: (count) {
+            return Center(child: Text('Count: $count'));
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => controller.increment(),
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Stay tuned more to come
