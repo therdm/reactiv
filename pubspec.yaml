@@ -1,7 +1,7 @@
 name: reactiv
 description: A new Reactive state management approach and dependency injection  inspired by GetX
 version: 0.0.1
-homepage:
+homepage: https://github.com/therdm/reactiv
 
 environment:
   sdk: '>=2.19.6 <3.0.0'
