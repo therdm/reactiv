@@ -3,16 +3,24 @@ import 'package:reactiv/state_management/reactive_types.dart';
 
 part 'observer_n.dart';
 
+/// A widget that observes changes in a reactive variable and triggers a rebuild when the variable changes.
 class Observer<T> extends StatelessWidget {
+  /// Constructs an [Observer] widget.
+  ///
+  /// The [listen] parameter is the reactive variable to listen to.
+  ///
+  /// The [update] parameter is a callback function that defines the widget to rebuild whenever the [listen] variable changes.
   const Observer({
     Key? key,
     required this.listen,
     required this.update,
   }) : super(key: key);
 
+  /// The reactive variable to listen to for changes.
   final Reactive<T> listen;
-  final Widget Function(T data) update;
 
+  /// A callback function that defines the widget to rebuild whenever the [listen] variable changes.
+  final Widget Function(T data) update;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +28,11 @@ class Observer<T> extends StatelessWidget {
       stream: listen.notifier.stream,
       builder: (context, snapshot) {
         return update(snapshot.data ?? listen.value);
-      }
+      },
     );
   }
 }
+
 
 // class Reaction<T> extends StatefulWidget {
 //   const Reaction({
