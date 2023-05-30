@@ -1,4 +1,4 @@
-## Features
+## About reactiv [Reactive (reactive/rx)] 
 
 Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 

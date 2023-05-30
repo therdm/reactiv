@@ -1,5 +1,5 @@
 name: reactiv
-description: A new Reactive state management approach and dependency injection  inspired by GetX
+description: Reactive state management approach and dependency injection  inspired by GetX
 version: 0.0.2
 homepage: https://github.com/therdm/reactiv
 
