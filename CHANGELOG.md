@@ -1,3 +1,6 @@
+## 0.1.0
+update documentation
+
 ## 0.0.3
 update example and readme
 

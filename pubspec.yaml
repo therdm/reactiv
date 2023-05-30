@@ -1,6 +1,6 @@
 name: reactiv
 description: Reactive state management approach and dependency injection  inspired by GetX
-version: 0.0.3
+version: 0.1.0
 homepage: https://github.com/therdm/reactiv
 
 environment:
