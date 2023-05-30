@@ -1,6 +1,6 @@
 ## Features
 
-A new Reactive state management approach and dependency injection  inspired by GetX
+Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 
 ## Getting started
 
@@ -59,9 +59,9 @@ class TestPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Reaction(
-          cause: controller.count,
-          effect: (count) {
+        child: Observer(
+          listen: controller.count,
+          update: (count) {
             return Center(child: Text('Count: $count'));
           },
         ),

@@ -1,7 +1,7 @@
 import 'package:example/test_page/test_page.controller.dart';
 import 'package:example/test_page/test_page.screen.dart';
 import 'package:flutter/material.dart';
-import 'package:reactiv/dependency_injection/dependency.dart';
+import 'package:reactiv/dependency_management/dependency.dart';
 
 
 void main() {

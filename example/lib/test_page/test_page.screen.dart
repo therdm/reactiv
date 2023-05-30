@@ -1,6 +1,6 @@
 import 'package:example/test_page/test_page.controller.dart';
 import 'package:flutter/material.dart';
-import 'package:reactiv/dependency_injection/dependency.dart';
+import 'package:reactiv/dependency_management/dependency.dart';
 import 'package:reactiv/state_management/widgets/observer.dart';
 
 class TestPageScreen extends StatelessWidget {

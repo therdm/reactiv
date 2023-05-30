@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data_types/base/reactive.dart';
+import 'package:reactiv/state_management/reactive_types.dart';
 
 part 'observer_n.dart';
 

@@ -1,4 +1,4 @@
-import '../base/reactive.dart';
+part of '../../reactive_types.dart';
 
 class ReactiveDouble extends Reactive<double> {
   ReactiveDouble(super.value);

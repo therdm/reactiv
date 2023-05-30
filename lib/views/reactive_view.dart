@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../dependency_injection/dependency.dart';
+import '../dependency_management/dependency.dart';
 
 abstract class ReactiveView<T> extends StatelessWidget {
   const ReactiveView({Key? key}) : super(key: key);

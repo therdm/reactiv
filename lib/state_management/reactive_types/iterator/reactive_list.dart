@@ -1,4 +1,4 @@
-import '../base/reactive.dart';
+part of '../../reactive_types.dart';
 
 class ReactiveList<T> extends Reactive<List<T>> {
   ReactiveList(super.value);

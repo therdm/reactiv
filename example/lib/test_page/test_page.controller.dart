@@ -1,5 +1,5 @@
 import 'package:reactiv/controllers/reactive_controller.dart';
-import 'package:reactiv/state_management/data_types/num/reactive_int.dart';
+import 'package:reactiv/state_management/reactive_types.dart';
 
 class TestPageController extends ReactiveController {
   final count = ReactiveInt(0);

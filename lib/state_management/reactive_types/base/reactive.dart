@@ -1,6 +1,4 @@
-import 'dart:async';
-
-import '../../core/reactive_notifier.dart';
+part of '../../reactive_types.dart';
 
 class Reactive<T> {
   late T _value;
