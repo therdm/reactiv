@@ -4,7 +4,33 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 
 [![picture1.png](https://i.postimg.cc/zf6xrgHv/picture1.png)](https://postimg.cc/XZKfKX86)
 
+## Features
+
+- State management through a reactive approach using reactive variables.
+- Dependency injection system for managing singleton instances.
+- Lightweight and optimized API, with fewer than 100 exposed methods.
+- Compile-time checks for proper usage and prevention of runtime exceptions.
+- Compatible with the Flutter framework.
+
+
 ## Getting started
+
+start using Reactiv in your Flutter project, follow these steps:
+
+1. Add the Reactiv package to your `pubspec.yaml` file:
+   ```yaml
+   dependencies:
+     reactiv: ^0.1.0
+   ```
+2. Import the package in your Dart file:
+    ```dart
+    import 'package:reactiv/reactiv.dart';
+    ```
+3. Define your controllers and reactive variables using the provided classes and functions.
+4. Use the Observer widget to listen to reactive variables and update the UI accordingly.
+5. Leverage the Dependency class for dependency injection and managing singleton instances.
+
+## Description
 
 This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`.
 
