@@ -1,4 +1,4 @@
-## About Reactiv [A Reactive approach (reactive/rx)] 
+## About Reactiv [A Reactive approach (reactive/rx)]
 
 Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 
@@ -57,7 +57,7 @@ class TestPageScreen extends StatelessWidget {
 }
 ```
 
-### Same functionality With GetX
+### Same functionality With GetX (Rx/Obx)
 
 #### Controller
 ```dart
@@ -75,7 +75,7 @@ class TestPageController extends GetxController {
 class TestPageScreen extends StatelessWidget {
   const TestPageScreen({Key? key}) : super(key: key);
 
-  TestPageController get controller => Dependency.find<TestPageController>();
+  TestPageController get controller => Get.find<TestPageController>();
 
   @override
   Widget build(BuildContext context) {
@@ -96,13 +96,15 @@ class TestPageScreen extends StatelessWidget {
 }
 ```
 
-## Advantages of reactiv from GetX
+## Advantages of reactiv over GetX
 
 Working with reactiv package is as simple as working with GetX, yet having many advantages over GetX
 
 ✅ reactiv (Reactive/Observer):
 The Observer in reactiv is aware of the specific cause for its refresh. It listens to a reactive variable, and whenever changes occur in that variable, it updates or refreshes accordingly.
 In contrast, GetX(Rx/Obx)'s Obx automatically detects any reactive variable within it and refreshes whenever any of those variables change. However, it doesn't explicitly identify the cause, which can sometimes lead to confusion.
+
+✅ reactiv (Reactive/Observer): It will give you compile time red lines if you do not provide what to listen in a Observer, So, No more relying on run time exception : Improper use of Obx like in GetX
 
 ✅ reactiv (Reactive/Observer):
 With reactiv, developers tend to write more optimized code as they have explicit control over what to listen to and what to update.
