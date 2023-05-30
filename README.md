@@ -2,6 +2,8 @@
 
 Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 
+![](https://i.postimg.cc/zf6xrgHv/picture1.png)
+
 ## Getting started
 
 This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`.
