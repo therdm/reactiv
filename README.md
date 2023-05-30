@@ -2,7 +2,7 @@
 
 Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 
-[![](https://i.postimg.cc/zf6xrgHv/picture1.png)](https://i.postimg.cc/zf6xrgHv/picture1.png)
+<img src="https://i.postimg.cc/zf6xrgHv/picture1.png" alt="picture1"/>
 
 ## Getting started
 
