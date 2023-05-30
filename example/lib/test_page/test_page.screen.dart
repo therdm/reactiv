@@ -1,8 +1,7 @@
-import 'package:example/test_page/second_page.dart';
 import 'package:example/test_page/test_page.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:reactiv/dependency_injection/dependency.dart';
-import 'package:reactiv/state_management/widgets/reaction.dart';
+import 'package:reactiv/state_management/widgets/observer.dart';
 
 class TestPageScreen extends StatelessWidget {
   const TestPageScreen({Key? key}) : super(key: key);
@@ -13,9 +12,9 @@ class TestPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Reaction(
-          cause: controller.count,
-          effect: (count) {
+        child: Observer(
+          listen: controller.count,
+          update: (count) {
             return Center(child: Text('Count: $count'));
           },
         ),

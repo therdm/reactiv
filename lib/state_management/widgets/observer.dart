@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import '../data_types/base/reactive.dart';
 
-part 'reaction_n.dart';
+part 'observer_n.dart';
 
-class Reaction<T> extends StatelessWidget {
-  const Reaction({
+class Observer<T> extends StatelessWidget {
+  const Observer({
     Key? key,
-    required this.cause,
-    required this.effect,
+    required this.listen,
+    required this.update,
   }) : super(key: key);
 
-  final Reactive<T> cause;
-  final Widget Function(T data) effect;
+  final Reactive<T> listen;
+  final Widget Function(T data) update;
 
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<T>(
-      stream: cause.notifier.stream,
+      stream: listen.notifier.stream,
       builder: (context, snapshot) {
-        return effect(snapshot.data ?? cause.value);
+        return update(snapshot.data ?? listen.value);
       }
     );
   }
