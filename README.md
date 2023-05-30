@@ -4,29 +4,17 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 
 ## Getting started
 
-This package provides powerful state management capabilities through a reactive approach. 
-Users can define reactive variables by utilizing the Reactive<T> class, 
-allowing them to create instances of variables with automatic change tracking. 
-For example, a user can define a reactive variable like Reactive<int> myVar;, 
-where myVar represents a reactive variable of type int.
+This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`.
 
-To consume and react to changes in the reactive variable within the user interface, 
-this package offers the Reaction widget. 
-By wrapping the desired widget or UI component with the Reaction widget and specifying controller.myVar as the cause, 
-the widget will be rebuilt whenever changes occur in myVar. This ensures that the UI stays in sync with the state changes, 
-providing a reactive and responsive user experience.
+Within the user interface, developers can leverage the `Observer` widget provided by the package. By using the `listen` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `update` functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience.
 
-In addition to state management, this package also provides a comprehensive dependency injection system. 
-Users can easily inject singleton instances of classes into their application using the provided dependency injection mechanisms. 
-This enables the seamless integration of shared instances throughout the application, promoting code re-usability and modular design.
+Alongside state management, this package includes a powerful dependency injection system facilitated by the `Dependency` class. Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. This method allows developers to register and associate a singleton instance of class `T` with the dependency injection system.
 
-This package includes functionality to find and retrieve instances of singleton classes from the dependency registry. 
-This allows users to access the desired dependencies whenever needed within their application. 
-Furthermore, the package provides the capability to remove singleton instances from the dependency registry, 
-allowing for dynamic management and disposal of dependencies when they are no longer required.
+To retrieve the registered singleton instance, users can simply use the `Dependency.find<T>()` method. This enables convenient access to the desired dependencies within the application, allowing for efficient and modular code design.
 
-Overall, this package offers a cohesive and efficient solution for reactive state management along with dependency injection support, 
-empowering developers to build robust and highly modular applications.
+Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry.
+
+By combining state management through reactive variables with seamless dependency injection management, this package empowers developers to build highly reactive, modular, and maintainable applications.
 
 ## Usage
 
