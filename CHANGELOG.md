@@ -1,3 +1,3 @@
 ## 0.0.1
-
-* TODO: Describe initial release.
+Initial release.
+A new Reactive state management approach and dependency injection  inspired by GetX
