@@ -27,8 +27,52 @@ start using Reactiv in your Flutter project, follow these steps:
     import 'package:reactiv/reactiv.dart';
     ```
 3. Define your controllers and reactive variables using the provided classes and functions.
+   ```dart
+   class CounterController extends ReactiveController {
+      final count = ReactiveInt(0);
+
+      void increment() {
+         count.value++;
+      }
+   }
+   ```
 4. Use the Observer widget to listen to reactive variables and update the UI accordingly.
+   ```dart
+   class CounterScreen extends StatelessWidget {
+        const CounterScreen({Key? key}) : super(key: key);
+
+        @override
+        Widget build(BuildContext context) {
+             final controller = Dependency.find<CounterController>();
+             return Scaffold(
+                 appBar: AppBar(
+                    title: const Text('Reactiv Counter'),
+                 ),
+                 body: Center(
+                     child: Observer(
+                       listen: controller.count, // Listen to the reactive variable
+                       update: (count) {
+                         return Text(
+                           'Count: $count',
+                           style: const TextStyle(fontSize: 24),
+                         );
+                       },
+                     ),
+                 ),
+                 floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                        controller.increment();
+                    },
+                    child: const Icon(Icons.add),
+                 ),
+             );
+        }
+   }
+   ```
 5. Leverage the Dependency class for dependency injection and managing singleton instances.
+   ```dart
+     Dependency.put<CounterController>(CounterController());
+   ```
 
 ## Description
 
