@@ -1,3 +1,6 @@
+## 0.0.3
+update example and readme
+
 ## 0.0.2
 Name change
 1. Reaction => Observer

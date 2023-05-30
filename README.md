@@ -1,4 +1,4 @@
-## About reactiv [Reactive (reactive/rx)] 
+## About Reactiv [A Reactive approach (reactive/rx)] 
 
 Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
 
@@ -18,25 +18,20 @@ By combining state management through reactive variables with seamless dependenc
 
 ## Usage
 
+### With reactiv
 
-Controller
+#### Controller
 ```dart
 class TestPageController extends ReactiveController {
   final count = ReactiveInt(0);
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   increment() {
-    count.value = (count.value ?? 0) + 1;
+    count.value++;
   }
 }
-
 ```
 
-View
+#### View
 ```dart
 class TestPageScreen extends StatelessWidget {
   const TestPageScreen({Key? key}) : super(key: key);
@@ -46,13 +41,11 @@ class TestPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Observer(
-          listen: controller.count,
-          update: (count) {
-            return Center(child: Text('Count: $count'));
-          },
-        ),
+      body: Observer(
+        listen: controller.count,
+        update: (count) {
+          return Center(child: Text('Count: $count'));
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => controller.increment(),
@@ -64,6 +57,58 @@ class TestPageScreen extends StatelessWidget {
 }
 ```
 
-## Additional information
+### Same functionality With GetX
 
-Stay tuned more to come
+#### Controller
+```dart
+class TestPageController extends GetxController {
+  final count = RxInt(0);
+
+  increment() {
+    count.value++;
+  }
+}
+```
+
+#### View
+```dart
+class TestPageScreen extends StatelessWidget {
+  const TestPageScreen({Key? key}) : super(key: key);
+
+  TestPageController get controller => Dependency.find<TestPageController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Obx(
+        () {
+          final count = controller.count.value;
+          return Center(child: Text('Count: $count'));
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => controller.increment(),
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+## Advantages of reactiv from GetX
+
+Working with reactiv package is as simple as working with GetX, yet having many advantages over GetX
+
+✅ reactiv (Reactive/Observer):
+The Observer in reactiv is aware of the specific cause for its refresh. It listens to a reactive variable, and whenever changes occur in that variable, it updates or refreshes accordingly.
+In contrast, GetX(Rx/Obx)'s Obx automatically detects any reactive variable within it and refreshes whenever any of those variables change. However, it doesn't explicitly identify the cause, which can sometimes lead to confusion.
+
+✅ reactiv (Reactive/Observer):
+With reactiv, developers tend to write more optimized code as they have explicit control over what to listen to and what to update.
+In GetX(Rx/Obx), developers often place the Obx variable at the top of the widget tree of a page, which refreshes the entire page. This approach may result in less optimized code, as it provides more room for writing unoptimized code.
+
+✅ reactiv:
+If you are seeking a state management tool with dependency injection capabilities, reactiv focuses solely on those features. It provides a concise API, with fewer than 100 exposed methods, which is standard compared to other state management tools like provider, riverpod, bloc, mobx, etc.
+On the other hand, GetX exposes over 2000 APIs which includes various other features like context free route management(I like GoRouter for route management), several widgets, internationalization, GetConnect for network api calls etc, even if you only require state management with dependency injection. Importing such a heavy package might lead to considerations regarding the necessity and impact on your project.
+
