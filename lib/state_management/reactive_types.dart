@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:collection';
+import 'package:flutter/foundation.dart';
+
 import 'core/reactive_notifier.dart';
 
 part 'reactive_types/base/reactive.dart';

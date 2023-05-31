@@ -22,3 +22,9 @@ class ReactiveDoubleN extends ReactiveN<double> {
   /// The initial [value] is set for the reactive double variable.
   ReactiveDoubleN([double? value]) : super(value);
 }
+
+extension DoubleExtension on double {
+  ReactiveDouble get reactiv => ReactiveDouble(this);
+}
+
+

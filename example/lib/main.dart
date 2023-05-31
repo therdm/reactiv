@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reactiv/controllers/reactive_controller.dart';
 import 'package:reactiv/dependency_management/dependency.dart';
 import 'package:reactiv/state_management/reactive_types.dart';
+
 import 'package:reactiv/state_management/widgets/observer.dart';
 
 
@@ -56,10 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class TestPageController extends ReactiveController {
-  final count = ReactiveInt(0);
+  final count = 0.reactiv;
+  final ReactiveList<String> data = <String>[].reactiv;
 
   @override
   void onInit() {
+    data[2] = '';
     super.onInit();
   }
 

@@ -13,4 +13,8 @@ class ReactiveIntN extends ReactiveN<int> {
 }
 
 
+extension IntExtension on int {
+  ReactiveInt get reactiv => ReactiveInt(this);
+}
+
 

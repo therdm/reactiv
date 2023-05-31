@@ -10,6 +10,10 @@ class Reactive<T> {
   Reactive(T value) {
     this._value = value;
     _streamController = StreamController<T>();
+    refresh();
+  }
+
+  refresh(){
     _streamController.sink.add(value);
   }
 
@@ -19,7 +23,7 @@ class Reactive<T> {
   /// Updates the value of the reactive variable to [value].
   set value(T value) {
     this._value = value;
-    _streamController.sink.add(this._value);
+    refresh();
   }
 
   /// Returns a [ReactiveNotifier] object associated with this [Reactive] instance.

@@ -8,3 +8,10 @@ class ReactiveString extends Reactive<String> {
 class ReactiveStringN extends ReactiveN<String> {
   ReactiveStringN([super.value]);
 }
+
+
+extension StringExtension on String {
+  ReactiveString get reactiv => ReactiveString(this);
+}
+
+
