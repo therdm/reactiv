@@ -1,3 +1,7 @@
+## 0.1.2
+1. [dot]reactiv extension added
+2. ReactiveList all the methods added for add new element and remove element from the list
+
 ## 0.1.1
 update documentation
 

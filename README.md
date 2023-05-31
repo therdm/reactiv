@@ -8,9 +8,9 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 
 - State management through a reactive approach using reactive variables.
 - Dependency injection system for managing singleton instances.
-- Lightweight and optimized API, with fewer than 100 exposed methods.
+- Lightweight and optimized API, with around 100 exposed methods.
 - Compile-time checks for proper usage and prevention of runtime exceptions.
-- Compatible with the Flutter framework.
+- Compatible with the all platforms.
 
 
 ## Getting started
@@ -183,6 +183,6 @@ With reactiv, developers tend to write more optimized code as they have explicit
 In GetX(Rx/Obx), developers often place the Obx variable at the top of the widget tree of a page, which refreshes the entire page. This approach may result in less optimized code, as it provides more room for writing unoptimized code.
 
 ✅ reactiv:
-If you are seeking a state management tool with dependency injection capabilities, reactiv focuses solely on those features. It provides a concise API, with fewer than 100 exposed methods, which is standard compared to other state management tools like provider, riverpod, bloc, mobx, etc.
-On the other hand, GetX exposes over 2000 APIs which includes various other features like context free route management(I like GoRouter for route management), several widgets, internationalization, GetConnect for network api calls etc, even if you only require state management with dependency injection. Importing such a heavy package might lead to considerations regarding the necessity and impact on your project.
+If you are seeking a state management tool with dependency injection capabilities, reactiv focuses solely on those features. It provides a concise API, with around 100 exposed methods, which is standard compared to other state management tools like provider, riverpod, bloc, mobx, etc.
+On the other hand, GetX exposes over 2400 APIs which includes various other features like context free route management(I like GoRouter for route management), several widgets, internationalization, GetConnect for network api calls etc, even if you only require state management with dependency injection. Importing such a heavy package might lead to considerations regarding the necessity and impact on your project.
 
