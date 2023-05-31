@@ -12,10 +12,10 @@ class ReactiveDouble extends Reactive<double> {
 }
 
 
-/// A specialized implementation of [ReactiveN] for nullable double values.
+/// A specialized implementation of [ReactiveN] for nullable [double] values.
 ///
-/// It extends the [ReactiveN] class and provides specific functionality for nullable double values.
-/// Use this class when you need a reactive double variable that supports null values and can be observed for changes.
+/// It extends the [ReactiveN] class and provides specific functionality for nullable [double] values.
+/// Use this class when you need a reactive [double] variable that supports null values and can be observed for changes.
 class ReactiveDoubleN extends ReactiveN<double> {
   /// Creates a new instance of [ReactiveDoubleN] with the initial value.
   ///
@@ -23,7 +23,10 @@ class ReactiveDoubleN extends ReactiveN<double> {
   ReactiveDoubleN([double? value]) : super(value);
 }
 
+/// Extension methods for the [double] class to enable reactive capabilities.
 extension DoubleExtension on double {
+
+  /// Converts a standard [double] into a [ReactiveDouble] with reactive capabilities.
   ReactiveDouble get reactiv => ReactiveDouble(this);
 }
 

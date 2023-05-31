@@ -1,9 +1,17 @@
 part of '../../reactive_types.dart';
 
-/// A specialized implementation of [Reactive] for List<T> values.
+/// A reactive implementation of a list.
 ///
-/// It extends the [Reactive] class and provides specific functionality for List<T> values.
-/// Use this class when you need a reactive list variable that can be observed for changes.
+/// The [ReactiveList] class extends [Reactive] and implements [ListMixin].
+/// It provides reactive capabilities to a standard list by tracking changes
+/// and automatically updating the UI when the list is modified.
+///
+/// Example usage:
+/// ```dart
+/// final list = ReactiveList<int>([1, 2, 3]);
+/// list.add(4);
+/// print(list.value); // Output: [1, 2, 3, 4]
+/// ```
 class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   /// Creates a new instance of [ReactiveList] with the initial value.
   ///
@@ -128,8 +136,9 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
 
 }
 
-
+/// Extension methods for the [List] class to enable reactive capabilities.
 extension ListExtension<E> on List<E> {
+  /// Converts a standard [List] into a [ReactiveList] with reactive capabilities.
   ReactiveList<E> get reactiv => ReactiveList<E>(this);
 }
 

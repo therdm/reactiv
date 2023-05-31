@@ -13,7 +13,10 @@ class ReactiveIntN extends ReactiveN<int> {
 }
 
 
+/// Extension methods for the [int] class to enable reactive capabilities.
 extension IntExtension on int {
+
+  /// Converts a standard [int] into a [ReactiveInt] with reactive capabilities.
   ReactiveInt get reactiv => ReactiveInt(this);
 }
 
