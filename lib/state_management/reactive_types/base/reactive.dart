@@ -13,7 +13,8 @@ class Reactive<T> {
     refresh();
   }
 
-  refresh(){
+  /// Triggers an update by emitting the current value and help update Observer widget.
+  void refresh() {
     _streamController.sink.add(value);
   }
 
@@ -40,5 +41,6 @@ class Reactive<T> {
 
 /// A specialized version of [Reactive] that supports nullable values.
 class ReactiveN<T> extends Reactive<T?> {
+  /// Constructs a [ReactiveN] object with an optional initial [value].
   ReactiveN([T? value]) : super(value);
 }
