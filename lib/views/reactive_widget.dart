@@ -54,10 +54,10 @@ abstract class ReactiveWidget<T> extends StatefulWidget {
   /// Override this method to perform any cleanup logic for the widget.
   void dispose() {}
 
-  /// Called after the widget is built.
-  ///
-  /// Override this method to perform any post-build logic for the widget.
-  void onBuildCompleted(BuildContext context) {}
+  // /// Called after the widget is built.
+  // ///
+  // /// Override this method to perform any post-build logic for the widget.
+  // void onBuildCompleted(BuildContext context) {}
 
   /// Builds the widget's user interface.
   ///
@@ -93,9 +93,12 @@ class _ReactiveWidgetState<T> extends State<ReactiveWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      widget.onBuildCompleted(context);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   widget.onBuildCompleted(context);
+    // });
+    // Future.delayed(const Duration(milliseconds: 100)).then((value) {
+    //   widget.onBuildCompleted(context);
+    // });
     return widget.build(context);
   }
 }

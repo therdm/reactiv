@@ -52,8 +52,8 @@ start using Reactiv in your Flutter project, follow these steps:
                  ),
                  body: Center(
                      child: Observer(
-                       listen: controller.count, // Listen to the reactive variable
-                       update: (count) {
+                       listenable: controller.count, // Listen to the reactive variable
+                       listener: (count) {
                          return Text(
                            'Count: $count',
                            style: const TextStyle(fontSize: 24),
@@ -113,10 +113,10 @@ class TestPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Observer(
-        listen: controller.count,
-        update: (count) {
-          return Center(child: Text('Count: $count'));
-        },
+         listenable: controller.count,
+         listener: (count) {
+           return Center(child: Text('Count: $count'));
+         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => controller.increment(),
