@@ -20,7 +20,7 @@ start using Reactiv in your Flutter project, follow these steps:
 1. Add the Reactiv package to your `pubspec.yaml` file:
    ```yaml
    dependencies:
-     reactiv: ^0.1.3
+     reactiv: ^0.2.1
    ```
 2. Import the package in your Dart file:
     ```dart

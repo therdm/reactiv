@@ -1,3 +1,6 @@
+##0.2.1
+1. update readme
+
 ##0.2.0
 1. Breaking Change: params change
    1. listen => listenable
