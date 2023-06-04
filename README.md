@@ -20,7 +20,7 @@ start using Reactiv in your Flutter project, follow these steps:
 1. Add the Reactiv package to your `pubspec.yaml` file:
    ```yaml
    dependencies:
-     reactiv: ^0.1.0
+     reactiv: ^0.1.3
    ```
 2. Import the package in your Dart file:
     ```dart
@@ -38,9 +38,12 @@ start using Reactiv in your Flutter project, follow these steps:
    ```
 4. Use the Observer widget to listen to reactive variables and update the UI accordingly.
    ```dart
-   class CounterScreen extends StatelessWidget {
+   class CounterScreen extends ReactiveWidget<CounterController> {
         const CounterScreen({Key? key}) : super(key: key);
-
+   
+        @override
+        CounterController bindController() => CounterController();
+   
         @override
         Widget build(BuildContext context) {
              final controller = Dependency.find<CounterController>();
@@ -69,10 +72,7 @@ start using Reactiv in your Flutter project, follow these steps:
         }
    }
    ```
-5. Leverage the Dependency class for dependency injection and managing singleton instances.
-   ```dart
-     Dependency.put<CounterController>(CounterController());
-   ```
+
 
 ## Description
 

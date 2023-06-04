@@ -1,11 +1,5 @@
-import 'package:example/test_page/second_page.dart';
 import 'package:flutter/material.dart';
-import 'package:reactiv/controllers/reactive_controller.dart';
-import 'package:reactiv/dependency_management/dependency.dart';
 import 'package:reactiv/reactiv.dart';
-import 'package:reactiv/state_management/reactive_types.dart';
-
-import 'package:reactiv/state_management/widgets/observer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: LaunchPage(),
+      body: const LaunchPage(),
     );
   }
 }
@@ -62,7 +56,7 @@ class LaunchPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return TestPageScreen();
+            return const TestPageScreen();
           }));
         },
         child: const Text('Next Page'),
@@ -72,25 +66,32 @@ class LaunchPage extends StatelessWidget {
 }
 
 class TestPageController extends ReactiveController {
-  final count = 0.reactiv;
   final outerCount = 0.reactiv;
-  String counterTitle = 'The value of counter : ';
+  final innerCount = 0.reactiv;
 
-  // final  data = <String>[].reactiv;
 
   @override
   void onInit() {
-    // data[2] = '';
     super.onInit();
   }
 
-  increment() {
-    count.value++;
+  incrementOuterCount() {
+    outerCount.value++;
+  }
+
+  incrementInnerCount() {
+    innerCount.value++;
   }
 }
 
-class TestPageScreen extends ReactiveView<TestPageController> {
-  TestPageScreen({Key? key}) : super(key: key, put: () => TestPageController());
+class TestPageScreen extends ReactiveWidget<TestPageController> {
+  const TestPageScreen({Key? key}) : super(key: key, autoDispose: true);
+
+  @override
+  TestPageController bindController() {
+    return TestPageController();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,50 +104,42 @@ class TestPageScreen extends ReactiveView<TestPageController> {
                 children: [
                   Center(child: Text('outer count : $outerCount')),
                   Observer(
-                    listenable: controller.count,
-                    listener: (value) {
-                      return Center(child: Text('1. ${controller.counterTitle} : ${controller.count.value}'));
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  Observer(
-                    listenable: controller.count,
-                    listener: (value) {
-                      return Center(child: Text('2. ${controller.counterTitle} : ${controller.count.value}'));
+                    listenable: controller.innerCount,
+                    listener: (count) {
+                      return Center(child: Text('Inner Count : $count'));
                     },
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      controller.outerCount.value++;
-                      controller.counterTitle = 'outer count clicked';
+                      controller.incrementOuterCount();
                     },
-                    child: const Text('Increment'),
+                    child: const Text('+ outer count'),
                   ),
-
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      showDialog(context: context, builder: (context) {
-                        return AlertDialog(
-                          content: Text('hello world'),
-                        );
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('hello world'),
+                            );
+                          });
                     },
                     child: const Text('Dialogue'),
                   ),
-                  SizedBox(height: 20),
-
+                  const SizedBox(height: 20),
                 ],
               );
             }),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          controller.increment();
-
+          controller.incrementInnerCount();
         },
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        label: const Text('Inner Count'),
+        icon: const Icon(Icons.add),
       ),
     );
   }
