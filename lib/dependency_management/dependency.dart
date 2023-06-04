@@ -51,7 +51,7 @@ class Dependency {
       return false;
     } else {
       if (_dependencyStore[key] is ReactiveController) {
-        Logger.info('$key onClose() method called');
+        Logger.info('$T onClose() method called');
         (_dependencyStore[key] as ReactiveController).onClose();
       }
       _dependencyStore[key] = null;

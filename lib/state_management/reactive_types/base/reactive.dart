@@ -9,7 +9,7 @@ class Reactive<T> {
   /// Constructs a [Reactive] object with the initial [value].
   Reactive(T value) {
     this._value = value;
-    _streamController = StreamController<T>();
+    _streamController = StreamController<T>.broadcast();
     refresh();
   }
 

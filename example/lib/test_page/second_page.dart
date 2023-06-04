@@ -1,3 +1,4 @@
+import 'package:example/main.dart';
 import 'package:flutter/material.dart';
 
 class SecondPage extends StatelessWidget {
@@ -5,10 +6,13 @@ class SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(),
-
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: const Text('Second Page'),
+      ),
     );
   }
 }

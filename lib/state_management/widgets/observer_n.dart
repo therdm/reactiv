@@ -4,36 +4,36 @@ part of 'observer.dart';
 class Observer2<A, B> extends StatelessWidget {
   /// Constructs an [Observer2] widget.
   ///
-  /// The [listen] parameter is the first reactive variable to listen to.
+  /// The [listenable] parameter is the first reactive variable to listen to.
   ///
-  /// The [listen2] parameter is the second reactive variable to listen to.
+  /// The [listenable2] parameter is the second reactive variable to listen to.
   ///
-  /// The [update] parameter is a callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  /// The [listener] parameter is a callback function that defines the widget to rebuild whenever either of the reactive variables changes.
   const Observer2({
     Key? key,
-    required this.listen,
-    required this.listen2,
-    required this.update,
+    required this.listenable,
+    required this.listenable2,
+    required this.listener,
   }) : super(key: key);
 
   /// The first reactive variable to listen to for changes.
-  final Reactive<A> listen;
+  final Reactive<A> listenable;
 
   /// The second reactive variable to listen to for changes.
-  final Reactive<B> listen2;
+  final Reactive<B> listenable2;
 
   /// A callback function that defines the widget to rebuild whenever either of the reactive variables changes.
-  final Widget Function(A data1, B data2) update;
+  final Widget Function(A data1, B data2) listener;
 
   @override
   Widget build(BuildContext context) {
     return Observer(
-      listen: listen,
-      update: (data1) {
+      listenable: listenable,
+      listener: (data1) {
         return Observer(
-          listen: listen2,
-          update: (data2) {
-            return update(data1, data2);
+          listenable: listenable2,
+          listener: (data2) {
+            return listener(data1, data2);
           },
         );
       },
@@ -45,45 +45,45 @@ class Observer2<A, B> extends StatelessWidget {
 class Observer3<A, B, C> extends StatelessWidget {
   /// Constructs an [Observer3] widget.
   ///
-  /// The [listen] parameter is the first reactive variable to listen to.
+  /// The [listenable] parameter is the first reactive variable to listen to.
   ///
-  /// The [listen2] parameter is the second reactive variable to listen to.
+  /// The [listenable2] parameter is the second reactive variable to listen to.
   ///
-  /// The [listen3] parameter is the third reactive variable to listen to.
+  /// The [listenable3] parameter is the third reactive variable to listen to.
   ///
-  /// The [update] parameter is a callback function that defines the widget to rebuild whenever any of the reactive variables changes.
+  /// The [listener] parameter is a callback function that defines the widget to rebuild whenever any of the reactive variables changes.
   const Observer3({
     Key? key,
-    required this.listen,
-    required this.listen2,
-    required this.listen3,
-    required this.update,
+    required this.listenable,
+    required this.listenable2,
+    required this.listenable3,
+    required this.listener,
   }) : super(key: key);
 
   /// The first reactive variable to listen to for changes.
-  final Reactive<A> listen;
+  final Reactive<A> listenable;
 
   /// The second reactive variable to listen to for changes.
-  final Reactive<B> listen2;
+  final Reactive<B> listenable2;
 
   /// The third reactive variable to listen to for changes.
-  final Reactive<C> listen3;
+  final Reactive<C> listenable3;
 
   /// A callback function that defines the widget to rebuild whenever any of the reactive variables changes.
-  final Widget Function(A data1, B data2, C data3) update;
+  final Widget Function(A data1, B data2, C data3) listener;
 
   @override
   Widget build(BuildContext context) {
     return Observer(
-      listen: listen,
-      update: (data1) {
+      listenable: listenable,
+      listener: (data1) {
         return Observer(
-          listen: listen2,
-          update: (data2) {
+          listenable: listenable2,
+          listener: (data2) {
             return Observer(
-              listen: listen3,
-              update: (data3) {
-                return update(data1, data2, data3);
+              listenable: listenable3,
+              listener: (data3) {
+                return listener(data1, data2, data3);
               },
             );
           },
