@@ -46,7 +46,6 @@ start using Reactiv in your Flutter project, follow these steps:
    
         @override
         Widget build(BuildContext context) {
-             final controller = Dependency.find<CounterController>();
              return Scaffold(
                  appBar: AppBar(
                     title: const Text('Reactiv Counter'),
