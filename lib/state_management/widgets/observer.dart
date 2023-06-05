@@ -55,25 +55,6 @@ class _ObserverState<T> extends State<Observer<T>> {
   void initState() {
     super.initState();
     subs = widget.listenable.notifier.stream.listen((event) {
-      Logger.info('initState $mounted');
-      _refresh();
-    });
-  }
-
-  @override
-  void didUpdateWidget(covariant Observer<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    subs.onData((data) {
-      Logger.info('didUpdateWidget $mounted');
-      _refresh();
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    subs.onData((data) {
-      Logger.info('didChangeDependencies $mounted');
       _refresh();
     });
   }
@@ -87,7 +68,7 @@ class _ObserverState<T> extends State<Observer<T>> {
   @override
   void dispose() {
     super.dispose();
-    Logger.info('dispose $mounted', tag: 'ObserverLifeCycle');
+    Logger.info('dispose => ${widget.listenable.value}', tag: 'ObserverLifeCycle');
     subs.cancel();
   }
 

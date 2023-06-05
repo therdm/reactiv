@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
+import 'package:reactiv/views/raeactive_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Dependency.put<TestPageController>(TestPageController());
   }
 
   @override
@@ -86,14 +86,11 @@ class TestPageController extends ReactiveController {
   }
 }
 
-class TestPageScreen extends ReactiveWidget<TestPageController> {
-  const TestPageScreen({Key? key}) : super(key: key, autoDispose: true);
+class TestPageScreen extends ReactiveStateWidget<TestPageController> {
+  const TestPageScreen({Key? key}) : super(key: key, autoDispose: false);
 
   @override
-  TestPageController bindController() {
-    return TestPageController();
-  }
-
+  TestPageController bindController() => TestPageController();
 
   @override
   Widget build(BuildContext context) {

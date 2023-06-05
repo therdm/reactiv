@@ -4,13 +4,13 @@ import '../dependency_management/dependency.dart';
 
 /// An abstract class for creating reactive views.
 ///
-/// Extend the `ReactiveView` class to create a reactive view that depends on a specific controller type.
+/// Extend the `ReactiveWidget` class to create a reactive view that depends on a specific controller type.
 /// The controller instance can be accessed using the `controller` getter.
-abstract class ReactiveWidget<T> extends StatefulWidget {
+abstract class ReactiveStateWidget<T> extends StatefulWidget {
   /// Creates a reactive view.
   ///
   /// The [key] parameter is an optional identifier for this widget.
-  const ReactiveWidget({Key? key, this.autoDispose = false, this.tag}) : super(key: key);
+  const ReactiveStateWidget({Key? key, this.autoDispose = false, this.tag}) : super(key: key);
 
   /// Specifies whether the widget should automatically dispose of its resources when unmounted.
   final bool autoDispose;
@@ -18,7 +18,7 @@ abstract class ReactiveWidget<T> extends StatefulWidget {
   /// A tag that can be used to differentiate between multiple instances of the same controller type.
   final String? tag;
 
-  /// Retrieves the controller instance associated with this widget.
+  /// Retrieves the controller instance associa ted with this widget.
   ///
   /// Returns the instance of the controller that corresponds to the specified type [T].
   /// If the controller is not found, an exception is thrown.
@@ -29,9 +29,7 @@ abstract class ReactiveWidget<T> extends StatefulWidget {
       throw 'Exception : Can\'t find $T\n'
           'Please add the following code inside $runtimeType:\n\n'
           '@override\n'
-          '$T bindController() {\n'
-          '    return $T();\n'
-          '}\n'
+          '$T bindController() => $T();\n'
           '\nException: class $T is not present in the Dependency store\n';
     }
   }
@@ -40,9 +38,7 @@ abstract class ReactiveWidget<T> extends StatefulWidget {
   ///
   /// Override this method in the subclass to provide an instance of the controller associated with this widget.
   /// Return the instance of the controller that corresponds to the specified type [T].
-  T? bindController() {
-    return null;
-  }
+  T? bindController() => null;
 
   /// Called when the widget is first created.
   ///
@@ -66,11 +62,11 @@ abstract class ReactiveWidget<T> extends StatefulWidget {
   Widget build(BuildContext context);
 
   @override
-  State<ReactiveWidget<T>> createState() => _ReactiveWidgetState<T>();
+  State<ReactiveStateWidget<T>> createState() => _ReactiveStateWidgetState<T>();
 }
 
 
-class _ReactiveWidgetState<T> extends State<ReactiveWidget<T>> {
+class _ReactiveStateWidgetState<T> extends State<ReactiveStateWidget<T>> {
 
   @override
   void initState() {

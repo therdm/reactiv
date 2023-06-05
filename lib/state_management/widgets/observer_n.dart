@@ -92,3 +92,55 @@ class Observer3<A, B, C> extends StatelessWidget {
     );
   }
 }
+
+
+/// A widget that observes changes in two reactive variables and triggers a rebuild when either variable changes.
+class Observer4<A, B, C, D> extends StatelessWidget {
+  /// Constructs an [Observer2] widget.
+  ///
+  /// The [listenable] parameter is the first reactive variable to listen to.
+  ///
+  /// The [listenable2] parameter is the second reactive variable to listen to.
+  ///
+  /// The [listener] parameter is a callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  const Observer4({
+    Key? key,
+    required this.listenable,
+    required this.listenable2,
+    required this.listenable3,
+    required this.listenable4,
+    required this.listener,
+  }) : super(key: key);
+
+  /// The first reactive variable to listen to for changes.
+  final Reactive<A> listenable;
+
+  /// The second reactive variable to listen to for changes.
+  final Reactive<B> listenable2;
+
+  /// The third reactive variable to listen to for changes.
+  final Reactive<C> listenable3;
+
+  /// The fourth reactive variable to listen to for changes.
+  final Reactive<D> listenable4;
+
+  /// A callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  final Widget Function(A data1, B data2, C data3, D data4) listener;
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer2(
+      listenable: listenable,
+      listenable2: listenable2,
+      listener: (data1, data2) {
+        return Observer2(
+          listenable: listenable3,
+          listenable2: listenable4,
+          listener: (data3, data4) {
+            return listener(data1, data2, data3, data4);
+          },
+        );
+      },
+    );
+  }
+}
