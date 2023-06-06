@@ -21,6 +21,13 @@ class Reactive<T> {
   /// Retrieves the current value of the reactive variable.
   T get value => this._value;
 
+  /// `destination.bindStream(sourceStream)`
+  /// here, the [value] of [Reactive] variable [destination] will be updated and refresh the dependent Observers,
+  /// whenever a new value is emitted from [sourceStream].
+  bindStream(Stream<T> stream) {
+    stream.listen((value) => this.value = value);
+  }
+
   /// Updates the value of the reactive variable to [value].
   set value(T value) {
     this._value = value;

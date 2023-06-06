@@ -1,7 +1,11 @@
-##0.2.1
+## 0.2.2
+1. new method in Reactive types, bindStream to deal with streams
+2. ReactiveState for StatefulWidgets and ReactiveStateWidget
+
+## 0.2.1
 1. update readme
 
-##0.2.0
+## 0.2.0
 1. Breaking Change: params change
    1. listen => listenable
    2. update => listener

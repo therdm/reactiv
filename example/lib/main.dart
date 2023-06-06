@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
-import 'package:reactiv/views/raeactive_state.dart';
 
 void main() {
   runApp(const MyApp());
@@ -75,6 +74,7 @@ class TestPageController extends ReactiveController {
   @override
   void onInit() {
     super.onInit();
+    innerCount.bindStream(outerCount.notifier.stream);
   }
 
   incrementOuterCount() {

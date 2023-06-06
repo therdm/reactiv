@@ -68,7 +68,6 @@ class _ObserverState<T> extends State<Observer<T>> {
   @override
   void dispose() {
     super.dispose();
-    Logger.info('dispose => ${widget.listenable.value}', tag: 'ObserverLifeCycle');
     subs.cancel();
   }
 
