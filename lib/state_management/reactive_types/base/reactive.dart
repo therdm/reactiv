@@ -11,6 +11,9 @@ class Reactive<T> {
     this._value = value;
     _streamController = StreamController<T>.broadcast();
     refresh();
+    listOfListeners.forEach((element) {
+      element.call(value);
+    });
   }
 
   /// Triggers an update by emitting the current value and help update Observer widget.
@@ -26,6 +29,12 @@ class Reactive<T> {
   /// whenever a new value is emitted from [sourceStream].
   bindStream(Stream<T> stream) {
     stream.listen((value) => this.value = value);
+  }
+
+  List <Function(T value)> listOfListeners = [];
+
+  addListener(Function(T value) listener) {
+    listOfListeners.add(listener);
   }
 
   /// Updates the value of the reactive variable to [value].
