@@ -7,7 +7,7 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 ## Features
 
 - State management through a reactive approach using reactive variables.
-- Dependency injection system for managing singleton instances.
+- Dependency injection system for managing singleton instances zero memory leak.
 - Lightweight and optimized API, with around 100 exposed methods.
 - Compile-time checks for proper usage and prevention of runtime exceptions.
 - Compatible with the all platforms.
@@ -20,7 +20,7 @@ start using Reactiv in your Flutter project, follow these steps:
 1. Add the Reactiv package to your `pubspec.yaml` file:
    ```yaml
    dependencies:
-     reactiv: ^0.2.1
+     reactiv: ^0.2.2
    ```
 2. Import the package in your Dart file:
     ```dart
@@ -73,21 +73,62 @@ start using Reactiv in your Flutter project, follow these steps:
    ```
 
 
-## Description
+## Reactive variable & Observer widget
 
-This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`.
+This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`. for example,
 
-Within the user interface, developers can leverage the `Observer` widget provided by the package. By using the `listen` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `update` functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience.
+```
+final data = Reactive<int>(0);
+```
 
-Alongside state management, this package includes a powerful dependency injection system facilitated by the `Dependency` class. Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. This method allows developers to register and associate a singleton instance of class `T` with the dependency injection system.
+Within the user interface, developers can leverage the `Observer` widget provided by the package. By using the `listen` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `update` functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience. for example,
 
-To retrieve the registered singleton instance, users can simply use the `Dependency.find<T>()` method. This enables convenient access to the desired dependencies within the application, allowing for efficient and modular code design.
+```
+Observer(
+    listenable: controller.data,
+    listener: (data) {
+        return Text(
+             'Data: $data',
+              style: const TextStyle(fontSize: 24),
+        );
+    },
+),
+```
 
-Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry.
+You can update the value of a reactive variable using value setter. for example,
+```
+data.value = 25;
+```
+
+Alongside state management, this package also offers powerful yet simple dependency injection system.
+
 
 By combining state management through reactive variables with seamless dependency injection management, this package empowers developers to build highly reactive, modular, and maintainable applications.
 
-## Usage
+## Dependency Injection
+
+This package includes a powerful dependency injection system facilitated by the `Dependency` class. 
+Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. for example,
+
+```
+Dependency.put<CounterController>(CounterController);
+```
+This method allows developers to register and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
+
+then to find the same instance from the Memory what we put into the memory,
+To retrieve the registered singleton instance, users can simply use the `Dependency.find<T>()` method. for example, 
+```
+Dependency.find<CounterController>();
+```
+
+Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry. for example,
+
+```
+Dependency.delete<CounterController>();
+```
+
+
+## Usage difference with getx
 
 ### With reactiv
 
