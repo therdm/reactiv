@@ -81,7 +81,7 @@ Users can define reactive variables by utilizing the `Reactive<T>` class. For ex
 final data = Reactive<int>(0);
 ```
 
-Within the user interface, developers can leverage the `Observer` widget provided by the package. By using the `listen` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `update` functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience. for example,
+Within the user interface, developers can leverage the `Observer` widget provided by the package. for example,
 
 ```
 Observer(
@@ -94,6 +94,8 @@ Observer(
     },
 ),
 ```
+By using the `listenable` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `listener` refresh functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience. 
+
 
 You can update the value of a reactive variable using value setter. for example,
 ```
