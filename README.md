@@ -138,6 +138,11 @@ Furthermore, this package offers the flexibility to remove singleton instances f
 Dependency.delete<CounterController>();
 ```
 
+## ReactiveStateWidget & ReactiveState
+
+These are the offerings offered by this package to smartly manage your app
+
+
 
 ## Usage difference with getx
 
