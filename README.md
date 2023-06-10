@@ -99,7 +99,7 @@ By using the `listenable` parameter of the `Observer` widget and specifying `con
 
 You can update the value of a reactive variable using value setter. for example,
 ```
-data.value = 25;
+data.value += 25;
 ```
 
 Alongside state management, this package also offers powerful yet simple dependency injection system.
