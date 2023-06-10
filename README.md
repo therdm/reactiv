@@ -115,12 +115,12 @@ Users can easily inject singleton instances of classes into their application us
 ```
 Dependency.put<CounterController>(CounterController);
 ```
-This method allows developers to register and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
+This method allows developers to store and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
 
 then to find the same instance from the Memory what we put into the memory,
-To retrieve the registered singleton instance, users can simply use the `Dependency.find<T>()` method. for example, 
+To retrieve the stored singleton instance, users can simply use the `Dependency.find<T>()` method. for example, 
 ```
-Dependency.find<CounterController>();
+final controller = Dependency.find<CounterController>();
 ```
 
 Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry. for example,
