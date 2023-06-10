@@ -73,13 +73,17 @@ start using Reactiv in your Flutter project, follow these steps:
    ```
 
 
-## Reactive variable & Observer widget
+## State Management
+
+### Reactive variable
 
 Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`,
 
 ```
 final data = Reactive<int>(0);
 ```
+
+### Observer widget
 
 Within the user interface, developers can leverage the `Observer` widget provided by the package. for example,
 
@@ -111,7 +115,7 @@ By combining state management through reactive variables with seamless dependenc
 
 This package includes a powerful dependency injection system facilitated by the `Dependency` class. 
 
-### put
+### put()
 
 Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. for example,
 
@@ -120,14 +124,14 @@ Dependency.put<CounterController>(CounterController);
 ```
 This method allows developers to store and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
 
-### find
+### find()
 then to find the same instance from the Memory what we put into the memory,
 To retrieve the stored singleton instance, users can simply use the `Dependency.find<T>()` method. for example, 
 ```
 final controller = Dependency.find<CounterController>();
 ```
 
-### delete
+### delete()
 Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry. for example,
 
 ```
