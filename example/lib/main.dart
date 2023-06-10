@@ -70,16 +70,14 @@ class LaunchPage extends StatelessWidget {
 
 
 class TestPageController extends ReactiveController {
-  final outerCount = 0.reactiv;
+  final ReactiveInt outerCount = 0.reactiv;
   final innerCount = 0.reactiv;
   // List<int> testList = List<int>.empty();
 
   @override
   void onInit() {
     super.onInit();
-    // testList.add(5);
-    // testList.where((element) => false);
-    innerCount.bindStream(outerCount.notifier.stream);
+    // innerCount.bindStream(outerCount.notifier.stream);
     innerCount.addListener((value) {
       Logger.info(value, tag: 'Listener 1');
     });

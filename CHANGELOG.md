@@ -1,6 +1,10 @@
+## 0.2.3
+1. addListener method for Reactive variables
+2. Update ReadMe
+
 ## 0.2.2
 1. new method in Reactive types, bindStream to deal with streams
-2. ReactiveState for StatefulWidgets and ReactiveStateWidget
+2. ReactiveStateWidget and ReactiveState
 
 ## 0.2.1
 1. update readme
