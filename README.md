@@ -75,7 +75,7 @@ start using Reactiv in your Flutter project, follow these steps:
 
 ## Reactive variable & Observer widget
 
-This package offers a comprehensive set of functionalities for state management through a reactive approach. Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`. for example,
+Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`,
 
 ```
 final data = Reactive<int>(0);
