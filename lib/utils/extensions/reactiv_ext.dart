@@ -2,12 +2,7 @@ import 'package:reactiv/state_management/reactive_types.dart';
 
 extension ReactiveT<T> on T {
   /// Returns a `Reactive` instance with [this] `T` as initial value.
-  Reactive<T> get obs => Reactive<T>(this);
-}
-
-extension ReactiveNT<T> on T {
-  /// Returns a `ReactiveN` instance with [this] `T` as initial value.
-  ReactiveN<T> get obs => ReactiveN<T>(this);
+  Reactive<T> get reactiv => Reactive<T>(this);
 }
 
 /// Extension methods for the [List] class to enable reactive capabilities.
