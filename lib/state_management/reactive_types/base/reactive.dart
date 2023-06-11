@@ -65,14 +65,3 @@ class ReactiveN<T> extends Reactive<T?> {
   /// Constructs a [ReactiveN] object with an optional initial [value].
   ReactiveN([T? value]) : super(value);
 }
-
-
-extension ReactiveT<T> on T {
-  /// Returns a `Rx` instance with [this] `T` as initial value.
-  Reactive<T> get obs => Reactive<T>(this);
-}
-
-extension ReactiveNT<T> on T {
-  /// Returns a `Rx` instance with [this] `T` as initial value.
-  ReactiveN<T> get obs => ReactiveN<T>(this);
-}

@@ -136,9 +136,4 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
 
 }
 
-/// Extension methods for the [List] class to enable reactive capabilities.
-extension ListExtension<E> on List<E> {
-  /// Converts a standard [List] into a [ReactiveList] with reactive capabilities.
-  ReactiveList<E> get reactiv => ReactiveList<E>(this);
-}
 

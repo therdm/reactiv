@@ -22,11 +22,4 @@ class ReactiveStringN extends ReactiveN<String> {
   ReactiveStringN([super.value]);
 }
 
-/// Extension methods for the [String] class to enable reactive capabilities.
-extension StringExtension on String {
-
-  /// Converts a standard [String] into a [ReactiveString] with reactive capabilities.
-  ReactiveString get reactiv => ReactiveString(this);
-}
-
 
