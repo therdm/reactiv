@@ -18,6 +18,7 @@ extension IntExtension on int {
 
   /// Converts a standard [int] into a [ReactiveInt] with reactive capabilities.
   ReactiveInt get reactiv => ReactiveInt(this);
+
 }
 
 
