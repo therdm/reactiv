@@ -1,3 +1,6 @@
+## 0.2.4
+1. ReactiveNum, ReactiveMap, ReactiveSet
+
 ## 0.2.3
 1. addListener method for Reactive variables
 2. Update ReadMe
