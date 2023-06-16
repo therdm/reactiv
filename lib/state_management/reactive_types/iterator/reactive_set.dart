@@ -60,8 +60,8 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
 
 
   @override
-  bool remove(Object? element){
-    final status = super.value.remove(element);
+  bool remove(Object? value){
+    final status = super.value.remove(value);
     refresh();
     return status;
   }

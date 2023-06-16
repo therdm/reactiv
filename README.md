@@ -22,10 +22,12 @@ start using Reactiv in your Flutter project, follow these steps:
    dependencies:
      reactiv: ^0.2.4
    ```
+   
 2. Import the package in your Dart file:
     ```dart
     import 'package:reactiv/reactiv.dart';
     ```
+   
 3. Define your controllers and reactive variables using the provided classes and functions.
    ```dart
    class CounterController extends ReactiveController {
@@ -36,16 +38,38 @@ start using Reactiv in your Flutter project, follow these steps:
       }
    }
    ```
-4. Use the Observer widget to listen to reactive variables and update the UI accordingly.
+   
+4. Inject the CounterController in dependency injection system(may be inside initState). and find when required(may be inside build()).
+   ```
+   ///Inject Dependency => Controller instance
+   Dependency.put<CounterController>(CounterController());
+   
+   ///Find Dependency => Controller instance
+   final controller = Dependency.find<CounterController>();
+   ```
+   
+5. Use the Observer widget to listen to reactive variables and update the UI accordingly.
    ```dart
-   class CounterScreen extends ReactiveWidget<CounterController> {
-        const CounterScreen({Key? key}) : super(key: key);
+   class CounterScreen extends StatefulWidget {
+        const CounterScreen({super.key});
    
         @override
-        CounterController bindController() => CounterController();
+        State<CounterScreen> createState() => _CounterScreenState();
+   }
+   
+   class _CounterScreenState extends State<CounterScreen> {
+   
+        @override
+        void initState() {
+          super.initState();
+          ///Inject Dependency => Controller instance
+          Dependency.put(CounterController());
+        }
    
         @override
         Widget build(BuildContext context) {
+             ///Find Dependency => Controller instance
+             final controller = Dependency.find<CounterController>();
              return Scaffold(
                  appBar: AppBar(
                     title: const Text('Reactiv Counter'),
@@ -83,28 +107,45 @@ Users can define reactive variables by utilizing the `Reactive<T>` class. For ex
 final data = Reactive<int>(0);
 ```
 
+#### Available Reactive types:
+
+| Used for | Reactive Type    |
+|----------|------------------|
+| String   | `ReactiveString` |
+| int      | `ReactiveInt`    |
+| double   | `ReactiveDouble` |
+| num      | `ReactiveNum`    |
+| bool     | `ReactiveBool`   |
+| list     | `ReactiveList`   |
+| set      | `ReactiveSet`    |
+
+#### Generic Reactive type
+for and datatype if Reactive type is not there you can use
+`Reactive<AnyDataType>`
+This generic type also works for your custom made classes, like any Data class etc
+
 ### Observer widget
 
 Within the user interface, developers can leverage the `Observer` widget provided by the package. for example,
 
-```
-Observer(
-    listenable: controller.data,
-    listener: (data) {
-        return Text(
-             'Data: $data',
-              style: const TextStyle(fontSize: 24),
-        );
-    },
-),
-```
+   ```
+   Observer(
+       listenable: controller.data,
+       listener: (data) {
+           return Text(
+                'Data: $data',
+                 style: const TextStyle(fontSize: 24),
+           );
+       },
+   ),
+   ```
 By using the `listenable` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `listener` refresh functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience. 
 
 ### Update the state
 You can update the value of a reactive variable using value setter. for example,
-```
-data.value += 25;
-```
+   ```
+   data.value += 25;
+   ```
 
 Alongside state management, this package also offers powerful yet simple dependency injection system.
 
@@ -119,9 +160,9 @@ This package includes a powerful dependency injection system facilitated by the 
 
 Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. for example,
 
-```
-Dependency.put<CounterController>(CounterController);
-```
+   ```
+   Dependency.put<CounterController>(CounterController);
+   ```
 This method allows developers to store and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
 
 ### find()

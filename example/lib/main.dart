@@ -57,7 +57,7 @@ class LaunchPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const TestPageScreen();
+            return const CounterScreen();
           }));
         },
         child: const Text('Next Page'),
@@ -69,85 +69,54 @@ class LaunchPage extends StatelessWidget {
 
 
 
-class TestPageController extends ReactiveController {
-  final ReactiveInt outerCount = 0.reactiv;
-  final innerCount = 0.reactiv;
-  // List<int> testList = List<int>.empty();
+class CounterController extends ReactiveController {
+  final count = ReactiveInt(0);
 
-  @override
-  void onInit() {
-    super.onInit();
-    // innerCount.bindStream(outerCount.notifier.stream);
-    innerCount.addListener((value) {
-      Logger.info(value, tag: 'Listener 1');
-    });
-    innerCount.addListener((value) {
-      Logger.info(value, tag: 'Listener 2');
-    });
-  }
-
-  incrementOuterCount() {
-    outerCount.value++;
-  }
-
-  incrementInnerCount() {
-    innerCount.value++;
+  void increment() {
+    count.value++;
   }
 }
 
-class TestPageScreen extends ReactiveStateWidget<TestPageController> {
-  const TestPageScreen({Key? key}) : super(key: key, autoDispose: false);
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
 
   @override
-  TestPageController bindController() => TestPageController();
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends State<CounterScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    ///Inject Dependency => Controller instance
+    Dependency.put(CounterController());
+  }
 
   @override
   Widget build(BuildContext context) {
+    ///Find Dependency => Controller instance
+    final controller = Dependency.find<CounterController>();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Reactiv Counter'),
+      ),
       body: Center(
         child: Observer(
-            listenable: controller.outerCount,
-            listener: (outerCount) {
-              return Column(
-                children: [
-                  Center(child: Text('outer count : $outerCount')),
-                  Observer(
-                    listenable: controller.innerCount,
-                    listener: (count) {
-                      return Center(child: Text('Inner Count : $count'));
-                    },
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.incrementOuterCount();
-                    },
-                    child: const Text('+ outer count'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('hello world'),
-                            );
-                          });
-                    },
-                    child: const Text('Dialogue'),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              );
-            }),
+          listenable: controller.count, // Listen to the reactive variable
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.incrementInnerCount();
+          controller.increment();
         },
-        tooltip: 'Increment',
-        label: const Text('Inner Count'),
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
