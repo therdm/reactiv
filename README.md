@@ -17,18 +17,7 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 
 start using Reactiv in your Flutter project, follow these steps:
 
-1. Add the Reactiv package to your `pubspec.yaml` file:
-   ```yaml
-   dependencies:
-     reactiv: ^0.2.4
-   ```
-   
-2. Import the package in your Dart file:
-    ```dart
-    import 'package:reactiv/reactiv.dart';
-    ```
-   
-3. Define your controllers and reactive variables using the provided classes and functions.
+1. Define your controllers and reactive variables using the provided classes and functions.
    ```dart
    class CounterController extends ReactiveController {
       final count = ReactiveInt(0);
@@ -39,7 +28,7 @@ start using Reactiv in your Flutter project, follow these steps:
    }
    ```
    
-4. Inject the CounterController in dependency injection system(may be inside initState). and find when required(may be inside build()).
+2. Inject the CounterController in dependency injection system(may be inside initState). and find when required(may be inside build()).
    ```
    ///Inject Dependency => Controller instance
    Dependency.put<CounterController>(CounterController());
@@ -48,7 +37,7 @@ start using Reactiv in your Flutter project, follow these steps:
    final controller = Dependency.find<CounterController>();
    ```
    
-5. Use the Observer widget to listen to reactive variables and update the UI accordingly.
+3. Use the Observer widget to listen to reactive variables and update the UI accordingly.
    ```dart
    class CounterScreen extends StatefulWidget {
         const CounterScreen({super.key});
@@ -97,9 +86,10 @@ start using Reactiv in your Flutter project, follow these steps:
    ```
 
 
+
 ## State Management
 
-### Reactive variable
+### 1. Reactive variable
 
 Users can define reactive variables by utilizing the `Reactive<T>` class. For example, a user can define a reactive variable like `Reactive<int> data;`, where `data` represents a reactive variable of type `int`,
 
@@ -124,7 +114,7 @@ for and datatype if Reactive type is not there you can use
 `Reactive<AnyDataType>`
 This generic type also works for your custom made classes, like any Data class etc
 
-### Observer widget
+### 2. Observer widget
 
 Within the user interface, developers can leverage the `Observer` widget provided by the package. for example,
 
@@ -141,7 +131,7 @@ Within the user interface, developers can leverage the `Observer` widget provide
    ```
 By using the `listenable` parameter of the `Observer` widget and specifying `controller.data`, developers can establish a connection between the widget and the reactive variable. Whenever changes occur in the `data` variable, the corresponding `listener` refresh functionality will be triggered, causing the widget to be rebuilt and reflecting the updated state. This ensures that the user interface remains synchronized with the changes in the reactive variable, providing a seamless and reactive user experience. 
 
-### Update the state
+### 3. Update the state
 You can update the value of a reactive variable using value setter. for example,
    ```
    data.value += 25;
@@ -151,6 +141,9 @@ Alongside state management, this package also offers powerful yet simple depende
 
 
 By combining state management through reactive variables with seamless dependency injection management, this package empowers developers to build highly reactive, modular, and maintainable applications.
+
+
+
 
 ## Dependency Injection
 

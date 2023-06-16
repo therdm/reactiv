@@ -1,6 +1,8 @@
+## 0.2.5
+Update readme.md
+
 ## 0.2.4
 1. ReactiveBool, ReactiveNum, ReactiveMap, ReactiveSet
-2. newly added ReactiveBool
 
 ## 0.2.3
 1. addListener method for Reactive variables
