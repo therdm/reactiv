@@ -1,3 +1,7 @@
+## 0.2.6
+1. Added support for [dot]reactiv for bool and num types 
+2. Update readme.md
+
 ## 0.2.5
 Update readme.md
 
