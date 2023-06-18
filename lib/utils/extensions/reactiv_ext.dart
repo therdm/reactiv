@@ -28,6 +28,22 @@ extension IntExtension on int {
 
 }
 
+/// Extension methods for the [bool] class to enable reactive capabilities.
+extension BoolExtension on bool {
+
+  /// Converts a standard [bool] into a [ReactiveBool] with reactive capabilities.
+  ReactiveBool get reactiv => ReactiveBool(this);
+}
+
+
+/// Extension methods for the [num] class to enable reactive capabilities.
+extension NumExtension on num {
+
+  /// Converts a standard [num] into a [ReactiveNum] with reactive capabilities.
+  ReactiveNum get reactiv => ReactiveNum(this);
+}
+
+
 /// Extension methods for the [String] class to enable reactive capabilities.
 extension StringExtension on String {
 

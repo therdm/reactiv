@@ -99,15 +99,15 @@ final data = Reactive<int>(0);
 
 #### Available Reactive types:
 
-| Used for | Reactive Type    |
-|----------|------------------|
-| String   | `ReactiveString` |
-| int      | `ReactiveInt`    |
-| double   | `ReactiveDouble` |
-| num      | `ReactiveNum`    |
-| bool     | `ReactiveBool`   |
-| list     | `ReactiveList`   |
-| set      | `ReactiveSet`    |
+| Used for      | Reactive Type    |
+|---------------|------------------|
+| String        | `ReactiveString` |
+| int           | `ReactiveInt`    |
+| double        | `ReactiveDouble` |
+| num           | `ReactiveNum`    |
+| bool          | `ReactiveBool`   |
+| list          | `ReactiveList`   |
+| set           | `ReactiveSet`    |
 
 #### Generic Reactive type
 for and datatype if Reactive type is not there you can use
@@ -149,7 +149,7 @@ By combining state management through reactive variables with seamless dependenc
 
 This package includes a powerful dependency injection system facilitated by the `Dependency` class. 
 
-### put()
+### 1. put()
 
 Users can easily inject singleton instances of classes into their application using the `Dependency.put<T>(T dependency)` method. for example,
 
@@ -158,14 +158,14 @@ Users can easily inject singleton instances of classes into their application us
    ```
 This method allows developers to store and associate a singleton instance of class `T` with the dependency injection system. so later whenever we need to get the controller it will not create another instance in the memory but will use the same instance from the Memory which helps you to achive zero memory leak.
 
-### find()
+### 2. find()
 then to find the same instance from the Memory what we put into the memory,
 To retrieve the stored singleton instance, users can simply use the `Dependency.find<T>()` method. for example, 
 ```
 final controller = Dependency.find<CounterController>();
 ```
 
-### delete()
+### 3. delete()
 Furthermore, this package offers the flexibility to remove singleton instances from the dependency registry when they are no longer needed. Developers can achieve this by utilizing the `Dependency.delete<T>()` method, which effectively deletes the singleton instance associated with class `T` from the dependency registry. for example,
 
 ```
