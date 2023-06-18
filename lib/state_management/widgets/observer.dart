@@ -53,7 +53,7 @@ class Observer<T> extends StatefulWidget {
   final Reactive<T> listenable;
 
   /// A callback function that defines the widget to rebuild whenever the [listenable] variable changes.
-  final Widget Function(T data) listener;
+  final Widget Function(T value) listener;
 
   @override
   State<Observer<T>> createState() => _ObserverState<T>();
