@@ -1,6 +1,9 @@
+## 0.2.7
+1. Introduced BindController Class to bind the controllers with the screen smart and seamlessly
+
 ## 0.2.6
-1. Added support for [dot]reactiv for bool and num types 
-2. Update readme.md
+5. Added support for [dot]reactiv for bool and num types 
+6. Update readme.md
 
 ## 0.2.5
 Update readme.md

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../dependency_management/dependency.dart';
 import 'bind_controller.dart';
 
+export 'bind_controller.dart';
+
 /// An abstract class for creating reactive views.
 ///
 /// Extend the `ReactiveWidget` class to create a reactive view that depends on a specific controller type.
@@ -26,7 +28,9 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
       throw 'Exception : Can\'t find $T\n'
           'Please add the following code inside $runtimeType:\n\n'
           '@override\n'
-          '$T bindController() => $T();\n'
+          'BindController<$T>? bindController() {\n'
+          '   return BindController(controller: $T());\n'
+          '}\n\n'
           '\nException: class $T is not present in the Dependency store\n';
     }
   }
