@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../dependency_management/dependency.dart';
-
+import 'bind_controller.dart';
 
 /// An abstract class for creating reactive views.
 ///
@@ -10,10 +10,7 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
   /// Creates a reactive view.
   ///
   /// The [key] parameter is an optional identifier for this widget.
-  const ReactiveStateWidget({Key? key, this.autoDispose = false, this.tag}) : super(key: key);
-
-  /// Specifies whether the widget should automatically dispose of its resources when unmounted.
-  final bool autoDispose;
+  const ReactiveStateWidget({Key? key, this.tag}) : super(key: key);
 
   /// A tag that can be used to differentiate between multiple instances of the same controller type.
   final String? tag;
@@ -38,7 +35,7 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
   ///
   /// Override this method in the subclass to provide an instance of the controller associated with this widget.
   /// Return the instance of the controller that corresponds to the specified type [T].
-  T? bindController() => null;
+  BindController<T>? bindController() => null;
 
   /// Called when the widget is first created.
   ///
@@ -65,15 +62,16 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
   State<ReactiveStateWidget<T>> createState() => _ReactiveStateWidgetState<T>();
 }
 
-
 class _ReactiveStateWidgetState<T> extends State<ReactiveStateWidget<T>> {
+  bool _autoDispose = false;
 
   @override
   void initState() {
     super.initState();
     final dep = widget.bindController();
     if (dep != null) {
-      Dependency.put<T>(dep, tag: widget.tag);
+      Dependency.put<T>(dep.controller, tag: widget.tag);
+      _autoDispose = dep.autoDispose;
     }
     widget.initState();
   }
@@ -81,9 +79,7 @@ class _ReactiveStateWidgetState<T> extends State<ReactiveStateWidget<T>> {
   @override
   void dispose() {
     widget.dispose();
-    if (widget.autoDispose) {
-      Dependency.delete<T>(tag: widget.tag);
-    }
+    if (_autoDispose) Dependency.delete<T>(tag: widget.tag);
     super.dispose();
   }
 

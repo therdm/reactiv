@@ -7,3 +7,4 @@ export 'state_management/widgets/observer.dart';
 export 'utils/logger.dart';
 export 'utils/extensions.dart';
 export 'views/reactive_state_widget.dart';
+export 'views/reactive_state.dart';

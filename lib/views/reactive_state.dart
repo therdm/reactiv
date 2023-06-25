@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:reactiv/controllers/reactive_controller.dart';
 import 'package:reactiv/dependency_management/dependency.dart';
 
+import 'bind_controller.dart';
+
 abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveController> extends State<T> {
   final String? tag;
-  final bool autoDispose;
 
-  ReactiveState({this.autoDispose = false, this.tag});
-
+  ReactiveState({this.tag});
 
   S get controller {
     try {
@@ -21,7 +21,9 @@ abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveControl
     }
   }
 
-  S? bindController() => null;
+  BindController<S>? bindController() => null;
+
+  bool _autoDispose = false;
 
   @override
   @mustCallSuper
@@ -29,7 +31,8 @@ abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveControl
     super.initState();
     final dep = bindController();
     if (dep != null) {
-      Dependency.put<S>(dep, tag: tag);
+      Dependency.put<S>(dep.controller, tag: tag);
+      _autoDispose = dep.autoDispose;
     }
   }
 
@@ -39,10 +42,7 @@ abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveControl
   @override
   @mustCallSuper
   void dispose() {
-    if(autoDispose){
-      Dependency.delete<S>();
-    }
+    if (_autoDispose) Dependency.delete<S>();
     super.dispose();
   }
 }
-

@@ -11,6 +11,12 @@ extension ListExtension<E> on List<E> {
   ReactiveList<E> get reactiv => ReactiveList<E>(this);
 }
 
+/// Extension methods for the [num] class to enable reactive capabilities.
+extension NumExtension on num {
+
+  /// Converts a standard [num] into a [ReactiveNum] with reactive capabilities.
+  ReactiveNum get reactiv => ReactiveNum(this);
+}
 
 /// Extension methods for the [double] class to enable reactive capabilities.
 extension DoubleExtension on double {
@@ -18,7 +24,6 @@ extension DoubleExtension on double {
   /// Converts a standard [double] into a [ReactiveDouble] with reactive capabilities.
   ReactiveDouble get reactiv => ReactiveDouble(this);
 }
-
 
 /// Extension methods for the [int] class to enable reactive capabilities.
 extension IntExtension on int {
@@ -34,15 +39,6 @@ extension BoolExtension on bool {
   /// Converts a standard [bool] into a [ReactiveBool] with reactive capabilities.
   ReactiveBool get reactiv => ReactiveBool(this);
 }
-
-
-/// Extension methods for the [num] class to enable reactive capabilities.
-extension NumExtension on num {
-
-  /// Converts a standard [num] into a [ReactiveNum] with reactive capabilities.
-  ReactiveNum get reactiv => ReactiveNum(this);
-}
-
 
 /// Extension methods for the [String] class to enable reactive capabilities.
 extension StringExtension on String {
