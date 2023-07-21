@@ -3,6 +3,8 @@ description: Reactive state management approach and dependency injection  inspir
 version: 0.3.1
 homepage: https://github.com/therdm/reactiv
 
+
+
 environment:
   sdk: '>=2.19.6 <4.0.0'
   flutter: ">=1.17.0"
