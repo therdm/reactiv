@@ -13,5 +13,3 @@ class Logger {
     log('$data', name: tag);
   }
 }
-
-

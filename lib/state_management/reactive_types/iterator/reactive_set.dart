@@ -21,18 +21,14 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
   @override
   int get length => value.length;
 
-
   @override
   @protected
   Set<T> get value {
     return _value;
   }
 
-
   @override
   Iterator<T> get iterator => value.iterator;
-
-
 
   @override
   bool add(T value) {
@@ -42,36 +38,33 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
   }
 
   @override
-  void addAll(Iterable<T> elements){
+  void addAll(Iterable<T> elements) {
     super.value.addAll(elements);
     refresh();
   }
 
   @override
-  Iterable<T> where(bool Function(T) f){
+  Iterable<T> where(bool Function(T) f) {
     return super.value.where(f);
   }
 
-
   @override
-  Set<T> toSet(){
+  Set<T> toSet() {
     return super.value.toSet();
   }
 
-
   @override
-  bool remove(Object? value){
+  bool remove(Object? value) {
     final status = super.value.remove(value);
     refresh();
     return status;
   }
 
   @override
-  void removeWhere(bool Function(T) test){
+  void removeWhere(bool Function(T) test) {
     super.value.removeWhere(test);
     refresh();
   }
-
 
   @override
   bool contains(Object? element) {
@@ -79,14 +72,9 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
     throw UnimplementedError();
   }
 
-
-
   @override
   T? lookup(Object? element) {
     // TODO: implement lookup
     throw UnimplementedError();
   }
-
 }
-
-

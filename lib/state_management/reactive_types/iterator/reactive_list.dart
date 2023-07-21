@@ -21,14 +21,11 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   @override
   int get length => value.length;
 
-
   @override
   @protected
   List<T> get value {
     return _value;
   }
-
-
 
   @override
   set length(int newLength) {
@@ -60,13 +57,13 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   }
 
   @override
-  void add(T element){
+  void add(T element) {
     super.value.add(element);
     refresh();
   }
 
   @override
-  void addAll(Iterable<T> iterable){
+  void addAll(Iterable<T> iterable) {
     super.value.addAll(iterable);
     refresh();
   }
@@ -78,64 +75,61 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   }
 
   @override
-  Iterable<T> where(bool Function(T) test){
+  Iterable<T> where(bool Function(T) test) {
     return super.value.where(test);
   }
 
   @override
-  int indexWhere(bool Function(T) test, [int start = 0]){
+  int indexWhere(bool Function(T) test, [int start = 0]) {
     return super.value.indexWhere(test, start);
   }
 
   @override
-  Set<T> toSet(){
+  Set<T> toSet() {
     return super.value.toSet();
   }
 
   @override
-  void sort([int Function(T, T)? compare]){
+  void sort([int Function(T, T)? compare]) {
     super.value.sort(compare);
     refresh();
   }
 
   @override
-  List<T> sublist(int start, [int? end]){
+  List<T> sublist(int start, [int? end]) {
     return super.value.sublist(start, end);
   }
 
   @override
-  bool remove(Object? element){
+  bool remove(Object? element) {
     final status = super.value.remove(element);
     refresh();
     return status;
   }
 
   @override
-  T removeLast(){
+  T removeLast() {
     final result = super.value.removeLast();
     refresh();
     return result;
   }
 
   @override
-  void removeWhere(bool Function(T) test){
+  void removeWhere(bool Function(T) test) {
     super.value.removeWhere(test);
     refresh();
   }
 
   @override
-  T removeAt(int index){
+  T removeAt(int index) {
     T result = super.value.removeAt(index);
     refresh();
     return result;
   }
 
   @override
-  void removeRange(int start, int end){
+  void removeRange(int start, int end) {
     super.value.removeRange(start, end);
     refresh();
   }
-
 }
-
-
