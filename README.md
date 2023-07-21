@@ -276,3 +276,5 @@ In GetX(Rx/Obx), developers often place the Obx variable at the top of the widge
 If you are seeking a state management tool with dependency injection capabilities, reactiv focuses solely on those features. It provides a concise API, with around 100 exposed methods, which is standard compared to other state management tools like provider, riverpod, bloc, mobx, etc.
 On the other hand, GetX exposes over 2400 APIs which includes various other features like context free route management(I like GoRouter for route management), several widgets, internationalization, GetConnect for network api calls etc, even if you only require state management with dependency injection. Importing such a heavy package might lead to considerations regarding the necessity and impact on your project.
 
+
+line 1
