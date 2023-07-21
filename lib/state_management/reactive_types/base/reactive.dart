@@ -23,7 +23,13 @@ class Reactive<T> {
     }
   }
 
-  final List<Function> _listOfListeners = <Function>[];
+  List<Function> _listOfListeners = <Function>[];
+
+  List<Function> get listeners => _listOfListeners;
+
+  removeAllListeners() {
+    _listOfListeners = <Function>[];
+  }
 
   ///Adds a listener to the list of listeners to a Reactive variable
   ///The listener function will be called with the current value gets changed.

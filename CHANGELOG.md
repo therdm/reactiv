@@ -1,4 +1,8 @@
-## 0.2.7
+## 0.3.1
+1. added listeners getter
+2. added option for remove all listeners
+
+## 0.3.0
 1. Introduced BindController Class to bind the controllers with the screen smart and seamlessly
 
 ## 0.2.6

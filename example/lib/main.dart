@@ -30,8 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   @override
   void initState() {
     super.initState();
@@ -66,9 +64,6 @@ class LaunchPage extends StatelessWidget {
   }
 }
 
-
-
-
 class CounterController extends ReactiveController {
   final count = ReactiveInt(0);
 
@@ -85,39 +80,66 @@ class CounterScreen extends StatefulWidget {
 }
 
 class _CounterScreenState extends State<CounterScreen> {
-
   @override
   void initState() {
     super.initState();
+
     ///Inject Dependency => Controller instance
     Dependency.put(CounterController());
   }
+
+  final redScaffold = ReactiveBool(false);
 
   @override
   Widget build(BuildContext context) {
     ///Find Dependency => Controller instance
     final controller = Dependency.find<CounterController>();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Reactiv Counter'),
-      ),
-      body: Center(
-        child: Observer(
-          listenable: controller.count, // Listen to the reactive variable
-          listener: (count) {
-            return Text(
-              'Count: $count',
-              style: const TextStyle(fontSize: 24),
-            );
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          controller.increment();
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+    return Observer(
+        listenable: redScaffold,
+        listener: (isRedScaffold) {
+          return Scaffold(
+            backgroundColor: isRedScaffold ? Colors.red : null,
+            appBar: AppBar(
+              title: const Text('Reactiv Counter'),
+            ),
+            body: Center(
+              child: Observer(
+                listenable: controller.count, // Listen to the reactive variable
+                listener: (count) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          isDense: true,
+                          suffix: isRedScaffold ? Icon(Icons.delete) : null,
+                          // suffixIcon: IconButton(
+                          //     icon: isRedScaffold ? Icon(Icons.delete) : Icon(Icons.arrow_right_outlined),
+                          //     onPressed: () {})
+                        ),
+                      ),
+                      Text(
+                        'Count: $count',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            bottomNavigationBar: ElevatedButton(
+                onPressed: () {
+                  redScaffold.value = !redScaffold.value;
+                },
+                child: Text('Change Scaffold')),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                controller.increment();
+              },
+              child: const Icon(Icons.add),
+            ),
+          );
+        });
   }
 }

@@ -1,10 +1,10 @@
 name: reactiv
 description: Reactive state management approach and dependency injection  inspired by GetX
-version: 0.2.7
+version: 0.3.1
 homepage: https://github.com/therdm/reactiv
 
 environment:
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=2.19.6 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
