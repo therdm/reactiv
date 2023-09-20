@@ -1,6 +1,6 @@
 
 class BindController<S> {
-  final S controller;
+  final S Function() controller;
   final bool autoDispose;
 
   BindController({

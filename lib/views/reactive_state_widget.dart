@@ -46,6 +46,11 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
   /// Override this method to perform any initialization logic for the widget.
   void initState() {}
 
+  /// Called one frame after [initState].
+  ///
+  /// Override this method to perform any initialization logic for the widget.
+  void initStateWithContext(BuildContext context) {}
+
   /// Called when the widget is about to be disposed.
   ///
   /// Override this method to perform any cleanup logic for the widget.
@@ -74,10 +79,11 @@ class _ReactiveStateWidgetState<T> extends State<ReactiveStateWidget<T>> {
     super.initState();
     final dep = widget.bindController();
     if (dep != null) {
-      Dependency.put<T>(dep.controller, tag: widget.tag);
+      Dependency.put<T>(dep.controller.call(), tag: widget.tag);
       _autoDispose = dep.autoDispose;
     }
     widget.initState();
+    widget.initStateWithContext(context);
   }
 
   @override

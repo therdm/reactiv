@@ -16,7 +16,7 @@ class CounterScreen extends ReactiveStateWidget<MyCounterController> {
   @override
   BindController<MyCounterController>? bindController() {
     return BindController(
-      controller: MyCounterController(),
+      controller: () => MyCounterController(),
       autoDispose: true,
     );
   }

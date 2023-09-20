@@ -18,7 +18,7 @@ abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveControl
       throw 'Exception : Can\'t find $S\n'
           'Please add the following code inside $runtimeType:\n\n'
           '@override\n'
-          '$S bindController() => $S();\n'
+          '$S bindController() => () => $S();\n'
           '\nException: class $S is not present in the Dependency store\n';
     }
   }
@@ -33,7 +33,7 @@ abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveControl
     super.initState();
     final dep = bindController();
     if (dep != null) {
-      Dependency.put<S>(dep.controller, tag: tag);
+      Dependency.put<S>(dep.controller.call(), tag: tag);
       _autoDispose = dep.autoDispose;
     }
   }

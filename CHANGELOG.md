@@ -1,3 +1,12 @@
+## 0.3.4
+1. new method added initStateWithContext(BuildContext context)
+
+## 0.3.3
+1. Now bind controller needs to be through Function(). e.g, BindController(controller: () => MyCounterController())
+
+## 0.3.2
+1. Now bind controller needs to be through Function(). e.g, BindController(controller: () => MyCounterController())
+
 ## 0.3.1
 1. added listeners getter
 2. added option for remove all listeners

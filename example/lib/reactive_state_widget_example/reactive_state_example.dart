@@ -20,7 +20,7 @@ class _CounterScreenState extends ReactiveState<CounterScreen, MyCounterControll
 
   @override
   BindController<MyCounterController>? bindController() {
-    return BindController(controller: MyCounterController());
+    return BindController(controller: () => MyCounterController());
   }
 
   @override

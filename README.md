@@ -1,6 +1,6 @@
 ## About Reactiv [A Reactive approach (reactive/rx)]
 
-Reactive (reactive/rx) state management approach and dependency injection  inspired by GetX
+Light-weight Reactive state management approach tool and dependency injection tool for flutter available for all platforms
 
 [![picture1.png](https://i.postimg.cc/zf6xrgHv/picture1.png)](https://postimg.cc/XZKfKX86)
 
@@ -8,7 +8,7 @@ Reactive (reactive/rx) state management approach and dependency injection  inspi
 
 - State management through a reactive approach using reactive variables.
 - Dependency injection system for managing singleton instances zero memory leak.
-- Lightweight and optimized API, with around 100 exposed methods.
+- Lightweight and optimized API, with around 150 exposed methods.
 - Compile-time checks for proper usage and prevention of runtime exceptions.
 - Compatible with the all platforms.
 

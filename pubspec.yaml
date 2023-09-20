@@ -1,6 +1,6 @@
 name: reactiv
-description: Reactive state management approach and dependency injection  inspired by GetX
-version: 0.3.1
+description: Light-weight Reactive state management approach tool and dependency injection tool for flutter available for all platforms
+version: 0.3.4
 homepage: https://github.com/therdm/reactiv
 
 environment:
