@@ -55,7 +55,7 @@ class LaunchPage extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const CounterScreen();
+            return CounterScreen();
           }));
         },
         child: const Text('Next Page'),
@@ -65,35 +65,31 @@ class LaunchPage extends StatelessWidget {
 }
 
 class CounterController extends ReactiveController {
-  final count = ReactiveInt(0);
+  final count = ReactiveList<int>([0]);
+  final testCount = ReactiveInt(0);
+
+
 
   void increment() {
-    count.value++;
+    count.add(count.length);
+  }
+
+  void incrementTestCount() {
+    testCount.value++;
   }
 }
 
-class CounterScreen extends StatefulWidget {
-  const CounterScreen({super.key});
+class CounterScreen extends StatelessWidget {
+  CounterScreen({super.key});
 
-  @override
-  State<CounterScreen> createState() => _CounterScreenState();
-}
-
-class _CounterScreenState extends State<CounterScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    ///Inject Dependency => Controller instance
-    Dependency.put(CounterController());
-  }
-
+  final controller = Dependency.put(CounterController());
+  final testCount = '0'.reactiv;
   final redScaffold = ReactiveBool(false);
 
   @override
   Widget build(BuildContext context) {
     ///Find Dependency => Controller instance
-    final controller = Dependency.find<CounterController>();
+    // final controller = Dependency.find<CounterController>();
     return Observer(
         listenable: redScaffold,
         listener: (isRedScaffold) {
@@ -103,9 +99,9 @@ class _CounterScreenState extends State<CounterScreen> {
               title: const Text('Reactiv Counter'),
             ),
             body: Center(
-              child: Observer(
-                listenable: controller.count, // Listen to the reactive variable
-                listener: (count) {
+              child: ObserverN(
+                listenable: <Reactive>[controller.count, controller.testCount, testCount],
+                listener: () {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -113,14 +109,19 @@ class _CounterScreenState extends State<CounterScreen> {
                       TextFormField(
                         decoration: InputDecoration(
                           isDense: true,
-                          suffix: isRedScaffold ? Icon(Icons.delete) : null,
-                          // suffixIcon: IconButton(
-                          //     icon: isRedScaffold ? Icon(Icons.delete) : Icon(Icons.arrow_right_outlined),
-                          //     onPressed: () {})
+                          suffix: isRedScaffold ? const Icon(Icons.delete) : null,
                         ),
                       ),
                       Text(
-                        'Count: $count',
+                        'Count controller.count: ${controller.count}',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        'Count testCount: ${testCount.value}',
+                        style: const TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        'Count controller.testCount: ${controller.testCount.value}',
                         style: const TextStyle(fontSize: 24),
                       ),
                     ],
@@ -133,11 +134,28 @@ class _CounterScreenState extends State<CounterScreen> {
                   redScaffold.value = !redScaffold.value;
                 },
                 child: Text('Change Scaffold')),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                controller.increment();
-              },
-              child: const Icon(Icons.add),
+            floatingActionButton: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FloatingActionButton(
+                  onPressed: () {
+                    controller.increment();
+                  },
+                  child: const Icon(Icons.add),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    testCount.value = (int.parse(testCount.value) + 1).toString();
+                  },
+                  child: const Icon(Icons.add),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    controller.incrementTestCount();
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ],
             ),
           );
         });

@@ -25,7 +25,7 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
   @override
   @protected
   Set<T> get value {
-    return _value;
+    return _valueNotifier.value;
   }
 
 
@@ -36,7 +36,7 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
 
   @override
   bool add(T value) {
-    final val = _value.add(value);
+    final val = _valueNotifier.value.add(value);
     refresh();
     return val;
   }
@@ -75,14 +75,12 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
 
   @override
   bool contains(Object? element) {
-    // TODO: implement contains
-    throw UnimplementedError();
+    return this.value.contains(element);
   }
 
   @override
   T? lookup(Object? element) {
-    // TODO: implement lookup
-    throw UnimplementedError();
+    return this.value.lookup(element);
   }
 
 }

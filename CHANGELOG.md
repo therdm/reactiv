@@ -1,3 +1,9 @@
+## 0.3.6
+New widget ObserverN that accepts List os Reactive variables 
+
+## 0.3.5
+implement un-implemented methods in ReactiveSet
+
 ## 0.3.4
 1. new method added initStateWithContext(BuildContext context)
 

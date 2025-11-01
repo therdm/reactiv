@@ -1,6 +1,6 @@
 name: reactiv
 description: Light-weight Reactive state management approach tool and dependency injection tool for flutter available for all platforms
-version: 0.3.4
+version: 0.3.6
 homepage: https://github.com/therdm/reactiv
 
 environment:

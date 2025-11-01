@@ -25,12 +25,12 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   @override
   @protected
   List<T> get value {
-    return _value;
+    return _valueNotifier.value;
   }
 
   @override
   set length(int newLength) {
-    _value.length = newLength;
+    _valueNotifier.value.length = newLength;
     refresh();
   }
 
@@ -39,7 +39,7 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
 
   @override
   void operator []=(int index, T val) {
-    _value[index] = val;
+    _valueNotifier.value[index] = val;
     refresh();
   }
 
@@ -71,7 +71,7 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
 
   @override
   void insertAll(int index, Iterable<T> iterable) {
-    _value.insertAll(index, iterable);
+    _valueNotifier.value.insertAll(index, iterable);
     refresh();
   }
 

@@ -60,30 +60,45 @@ class Observer<T> extends StatefulWidget {
 }
 
 class _ObserverState<T> extends State<Observer<T>> {
-  late StreamSubscription subs;
+  // late StreamSubscription subs;
 
   @override
   void initState() {
     super.initState();
-    subs = widget.listenable.notifier.stream.listen((event) {
-      _refresh();
-    });
+    // subs = widget.listenable.value.stream.listen((event) {
+    //   _refresh();
+    // });
   }
 
-  _refresh() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
+  // _refresh() {
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
+  // }
 
   @override
   void dispose() {
     super.dispose();
-    subs.cancel();
+    // subs.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.listener(widget.listenable.value);
+
+    return ValueListenableBuilder<T>(
+      valueListenable: widget.listenable.valueNotifier,
+      builder: (BuildContext context, T value, Widget? child) {
+        return widget.listener(widget.listenable.value);
+      },
+
+      // The child parameter is most helpful if the child is
+      // expensive to build and does not depend on the value from
+      // the notifier.
+      // child: const Padding(
+      //   padding: EdgeInsets.all(10.0),
+      //   child: SizedBox(width: 40, height: 40, child: FlutterLogo(size: 40)),
+      // ),
+    );
+    // return widget.listener(widget.listenable.value);
   }
 }

@@ -1,41 +1,65 @@
 part of '../../reactive_types.dart';
 
+class ListenerFunction {
+  final Function function;
+  final String? functionName;
+
+  ListenerFunction({required this.function, this.functionName});
+}
+
 /// A generic class representing a reactive variable.
 /// It allows tracking and updating the value of the variable.
 class Reactive<T> {
-  late T _value;
-  late final StreamController<T> _streamController;
-
+  // late T _value;
+  // late final StreamController<T> _streamController;
+  
+  late final ValueNotifier<T> _valueNotifier;
+  
+  
   /// Constructs a [Reactive] object with the initial [value].
   Reactive(T value) {
-    this._value = value;
-    _streamController = StreamController<T>.broadcast();
-    refresh();
+    // this._value = value;
+    _valueNotifier = ValueNotifier<T>(value);
+    // _streamController = StreamController<T>.broadcast();
+    // refresh();
+  }
+
+  /// Updates the value of the reactive variable to [value].
+  set value(T value) {
+    this._valueNotifier.value = value;
+    // refresh();
   }
 
   /// Triggers an update by emitting the current value and help update Observer widget.
   void refresh() {
-    _streamController.sink.add(value);
-    if (_listOfListeners.isNotEmpty) {
-      for (var element in _listOfListeners) {
-        element.call(value);
-      }
-    }
+    _valueNotifier.notifyListeners();
+    // _valueNotifier.add(value);
+    // if (_listOfListeners.isNotEmpty) {
+    //   for (var element in _listOfListeners) {
+    //     element.function.call(value);
+    //   }
+    // }
   }
 
-  List<Function> _listOfListeners = <Function>[];
+  List<ListenerFunction> _listOfListeners = <ListenerFunction>[];
 
-  List<Function> get listeners => _listOfListeners;
+  List<Function> get listeners => _listOfListeners.map((e) => e.function).toList();
 
+  ///Removes all the listeners from a Reactive variable
   removeAllListeners() {
-    _listOfListeners = <Function>[];
+    _listOfListeners = <ListenerFunction>[];
+  }
+
+  ///remove a particular listener with name specified previously
+  removeListener({required String listenerName}) async {
+    _listOfListeners.removeWhere((element) => element.functionName == listenerName);
   }
 
   ///Adds a listener to the list of listeners to a Reactive variable
   ///The listener function will be called with the current value gets changed.
   ///@param [listener] The listener function to add.
-  addListener(Function(T value) listener) async {
-    _listOfListeners.add(listener);
+  addListener(Function(T value) listener, {String? listenerName}) async {
+    _listOfListeners.add(ListenerFunction(function: listener, functionName: listenerName));
   }
 
   /// `destinationReactive.bindStream(sourceStream)`
@@ -46,23 +70,21 @@ class Reactive<T> {
   }
 
   /// Retrieves the current value of the reactive variable.
-  T get value => this._value;
+  T get value => this._valueNotifier.value;
 
-  /// Updates the value of the reactive variable to [value].
-  set value(T value) {
-    this._value = value;
-    refresh();
-  }
+  ValueNotifier<T> get valueNotifier => _valueNotifier;
+
+
 
   /// Returns a [ReactiveNotifier] object associated with this [Reactive] instance.
   /// The [ReactiveNotifier] allows listening to changes in the reactive variable.
-  ReactiveNotifier<T> get notifier {
-    return ReactiveNotifier(_streamController.stream);
-  }
+  // ReactiveNotifier<T> get notifier {
+  //   return ReactiveNotifier(_valueNotifier.stream);
+  // }
 
   /// Closes the underlying stream controller.
   void close() {
-    _streamController.close();
+    _valueNotifier.dispose();
   }
 }
 
