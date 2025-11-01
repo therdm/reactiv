@@ -5,6 +5,108 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-11-01
+
+### ✨ Added - Logger Framework Enhancement
+
+**Complete rewrite of the Logger class** - Transformed from basic logging utility into a robust, production-ready logging framework.
+
+#### New Log Levels
+- **Verbose** (`Logger.v()` / `Logger.verbose()`) - Detailed trace-level information
+- **Debug** (`Logger.d()` / `Logger.debug()`) - Diagnostic information
+- **Info** (`Logger.i()` / `Logger.info()`) - General information (enhanced)
+- **Warning** (`Logger.w()` / `Logger.warning()`) - Potential issues
+- **Error** (`Logger.e()` / `Logger.error()`) - Error conditions (enhanced)
+- **WTF** (`Logger.wtf()`) - What a Terrible Failure (critical errors)
+
+#### Advanced Features
+- **Pretty JSON Logging**: `Logger.json(object)` with automatic indentation and formatting
+- **Stack Trace Support**: Full stack traces for errors using `error` and `stackTrace` parameters
+- **Performance Timing**: 
+  - `Logger.timed()` - Time async functions and log execution duration
+  - `Logger.timedSync()` - Time synchronous functions
+- **Table Formatting**: `Logger.table(data)` - Display structured data as formatted tables
+- **Headers & Dividers**: Visual organization with `Logger.header()` and `Logger.divider()`
+- **ANSI Color Support**: Color-coded terminal output for better readability
+  - Gray for verbose, Cyan for debug, Green for info
+  - Yellow for warnings, Red for errors, Magenta for WTF
+
+#### Configuration System
+- **LoggerConfig** class for flexible, granular control
+- **Predefined configurations**:
+  - `LoggerConfig.development` - Full verbose logging with all features
+  - `LoggerConfig.production` - Minimal logging (disabled by default)
+  - `LoggerConfig.testing` - Warnings and errors only
+- **Configurable options**:
+  - `enabled` - Global on/off toggle
+  - `minLevel` - Minimum log level to display (filter logs by severity)
+  - `showTimestamp` - Include timestamps in log output
+  - `showLevel` - Display log level indicators ([V], [D], [I], [W], [E])
+  - `showLocation` - Show file and line numbers
+  - `showStackTrace` - Automatically include stack traces for errors
+  - `prettyJson` - Pretty-print JSON objects with indentation
+  - `maxLength` - Truncate long messages to specified length
+  - `customHandler` - Custom log output handler for analytics/crash reporting
+
+#### Custom Handlers
+- Support for custom log handlers to integrate with third-party services
+- Easy integration with Firebase Crashlytics, Sentry, custom analytics, etc.
+- Maintain console logging while sending to multiple destinations
+
+#### Additional Utilities
+- **Custom Tags**: Categorize logs with custom tags for filtering
+- **Batch Operations**: Efficiently log multiple related messages
+
+### 📚 Documentation
+- **docs/LOGGER.md** - Comprehensive logger framework documentation
+- **LOGGER_IMPROVEMENTS.md** - Feature overview, comparison tables, and migration guide
+- **LOGGER_QUICK_REF.md** - Quick reference card for common patterns
+- **example/lib/logger_example.dart** - Interactive demo application showcasing all features
+
+### 🔄 Changed
+- Logger class completely rewritten (~570 lines)
+- Enhanced existing `Logger.info()` with additional parameters (`error`, `stackTrace`, `tag`)
+- Backward compatible `enabled` property (now uses LoggerConfig internally)
+
+### ⚠️ Deprecated
+None - All changes are 100% backward compatible!
+
+### 🚫 Breaking Changes
+**None!** Version 1.0.1 maintains full backward compatibility with 1.0.0.
+
+**Old code still works:**
+```dart
+Logger.enabled = false;
+Logger.info('message');
+```
+
+**New features available:**
+```dart
+// Configuration
+Logger.config = LoggerConfig.production;
+
+// Multiple log levels
+Logger.d('Debug message');
+Logger.w('Warning message');
+Logger.e('Error occurred', error: e, stackTrace: stack);
+
+// Advanced features
+Logger.json({'user': 'John', 'preferences': {'theme': 'dark'}});
+await Logger.timed(() => fetchData(), label: 'API Call');
+Logger.table([{'name': 'John', 'age': 30}]);
+Logger.header('SECTION TITLE');
+```
+
+### 📊 Statistics
+- **Files Changed**: 7
+- **Lines Added**: +1,162
+- **New Methods**: 15+
+- **New Features**: 10
+- **Breaking Changes**: 0
+- **Documentation Pages**: 3 comprehensive guides
+
+---
+
 ## [1.0.0] - 2025-11-01
 
 🎉 **Major Release** - Production-ready with comprehensive improvements and new features!
