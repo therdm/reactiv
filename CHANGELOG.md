@@ -5,6 +5,55 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-11-01
+
+### ✨ Added
+
+#### BindController Enhancement - Lazy Binding Option
+
+- **lazyBind parameter**: New optional parameter in `BindController` for controlling controller instantiation timing
+  - `lazyBind: true` (default) - Controller is created lazily when first accessed
+  - `lazyBind: false` - Controller is created immediately when BindController widget is initialized
+
+**Use Cases:**
+- Set `lazyBind: false` for controllers that need immediate initialization (e.g., listening to streams, starting background tasks)
+- Keep `lazyBind: true` (default) for memory efficiency and performance optimization
+
+**Example:**
+```dart
+// Lazy binding (default) - created when first accessed
+BindController(
+  controller: () => MyController(),
+  lazyBind: true,  // Optional, defaults to true
+  child: MyWidget(),
+)
+
+// Immediate binding - created at widget initialization
+BindController(
+  controller: () => StreamController(),
+  lazyBind: false,  // Created immediately
+  autoDispose: true,
+  child: MyWidget(),
+)
+```
+
+**Benefits:**
+- Better control over controller lifecycle
+- Improved performance for controllers that must initialize early
+- Flexibility to choose between lazy and eager initialization
+- Memory optimization with default lazy behavior
+
+### 🔄 Changed
+- `BindController` now supports `lazyBind` parameter (defaults to `true` for backward compatibility)
+
+### ⚠️ Deprecated
+None
+
+### 🚫 Breaking Changes
+**None!** The `lazyBind` parameter defaults to `true`, maintaining 100% backward compatibility with v1.0.1.
+
+---
+
 ## [1.0.1] - 2025-11-01
 
 ### ✨ Added - Logger Framework Enhancement

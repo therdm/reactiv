@@ -27,6 +27,7 @@ Reactiv is a **production-ready reactive state management** solution for Flutter
 - ✅ **Undo/Redo** - Built-in history tracking
 - ✅ **Computed values** - Auto-updating derived state
 - ✅ **Debounce/Throttle** - Performance optimization built-in
+- ✅ **Robust Logger** - Production-ready logging framework
 - ✅ **100% tested** - Battle-tested in production apps
 
 ### Why Choose Reactiv?
@@ -39,6 +40,7 @@ Reactiv is a **production-ready reactive state management** solution for Flutter
 | **Dependency Injection** | ✅ | ✅ | ❌ | ⚠️ | ❌ |
 | **Undo/Redo** | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Computed Values** | ✅ | ❌ | ❌ | ✅ | ❌ |
+| **Logger Framework** | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **Package Size** | ~150 APIs | 2400+ APIs | Medium | Large | Large |
 
 ---
@@ -49,7 +51,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactiv: ^1.0.0
+  reactiv: ^1.0.1
 ```
 
 Then run:
@@ -62,25 +64,48 @@ flutter pub get
 
 ## ⚡ Quick Start
 
-### 1. Create a Controller
+### Step 1: Create a Reactive Controller
+
+Create a controller that extends `ReactiveController` and define reactive variables:
 
 ```dart
 import 'package:reactiv/reactiv.dart';
 
 class CounterController extends ReactiveController {
-  // Define reactive variables
+  // Define a reactive integer variable
   final count = ReactiveInt(0);
-  
-  // Add business logic
-  void increment() => count.value++;
-  void decrement() => count.value--;
+
+  // Method to increment the counter
+  void increment() {
+    count.value++;
+  }
 }
 ```
 
-### 2. Inject & Use
+### Step 2: Inject the Controller
+
+In your widget's `initState` method, inject the controller using the dependency injection system:
 
 ```dart
+@override
+void initState() {
+  super.initState();
+  // Inject the controller instance
+  Dependency.put<CounterController>(CounterController());
+}
+```
+
+### Step 3: Use Observer Widget
+
+Use the `Observer` widget to listen to reactive variables and rebuild the UI when they change:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:reactiv/reactiv.dart';
+
 class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
   @override
   State<CounterScreen> createState() => _CounterScreenState();
 }
@@ -89,15 +114,7 @@ class _CounterScreenState extends State<CounterScreen> {
   @override
   void initState() {
     super.initState();
-    // Inject the controller
-    Dependency.put(CounterController());
-  }
-
-  @override
-  void dispose() {
-    // Clean up
-    Dependency.delete<CounterController>();
-    super.dispose();
+    Dependency.put<CounterController>(CounterController());
   }
 
   @override
@@ -105,15 +122,18 @@ class _CounterScreenState extends State<CounterScreen> {
     final controller = Dependency.find<CounterController>();
     
     return Scaffold(
-      appBar: AppBar(title: const Text('Reactiv Counter')),
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
       body: Center(
-        // Observer automatically rebuilds when count changes
         child: Observer(
           listenable: controller.count,
-          listener: (count) => Text(
-            'Count: $count',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -125,9 +145,118 @@ class _CounterScreenState extends State<CounterScreen> {
 }
 ```
 
-**That's it!** 🎉 You have a fully functional reactive counter with automatic memory management.
+### What Just Happened?
 
----
+1. **ReactiveController**: You created a controller that manages your application state. The `ReactiveInt` variable automatically notifies listeners when its value changes.
+
+2. **Dependency Injection**: You used `Dependency.put()` to register the controller instance and `Dependency.find()` to retrieve it. This ensures you're using the same instance throughout your app.
+
+3. **Observer Widget**: The `Observer` widget listens to the `count` reactive variable. Whenever `count.value` changes, only the Observer widget rebuilds—not the entire screen.
+
+4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the Observer to rebuild with the new value.
+
+## Alternative: Using ReactiveStateWidget
+
+Reactiv provides `ReactiveStateWidget` as a convenient alternative to `StatefulWidget` that handles controller lifecycle management automatically.
+
+### With ReactiveStateWidget (Recommended)
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:reactiv/reactiv.dart';
+
+class CounterScreen extends ReactiveStateWidget<CounterController> {
+  const CounterScreen({super.key});
+
+  @override
+  BindController<CounterController>? bindController() {
+    // Automatically injects and disposes the controller
+    return BindController(controller: () => CounterController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: Center(
+        child: Observer(
+          listenable: controller.count,
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+**Benefits**:
+- Controller is automatically injected via `bindController()`
+- Controller is automatically disposed when the widget is removed
+- Access controller via `controller` getter (no need for `Dependency.find()`)
+- Cleaner, less boilerplate code
+
+### Using ReactiveState with StatefulWidget
+
+If you prefer `StatefulWidget`, you can use `ReactiveState`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:reactiv/reactiv.dart';
+
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends ReactiveState<CounterScreen, CounterController> {
+  @override
+  BindController<CounterController>? bindController() {
+    return BindController(controller: () => CounterController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: Center(
+        child: Observer(
+          listenable: controller.count,
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+**When to use ReactiveState**:
+- When you need StatefulWidget lifecycle methods
+- When you need to manage additional local state
+- When integrating with existing StatefulWidget code
 
 ## 🌟 Key Features
 
@@ -256,6 +385,69 @@ Dependency.put(MyController(), fenix: true);
 Dependency.reset();
 ```
 
+### 9️⃣ Robust Logger Framework (NEW in v1.0.1)
+
+Production-ready logging with multiple levels, JSON formatting, and performance tracking:
+
+```dart
+// Configure for your environment
+Logger.config = kReleaseMode 
+    ? LoggerConfig.production   // Minimal logging
+    : LoggerConfig.development; // Verbose logging
+
+// Multiple log levels
+Logger.v('Verbose trace information');
+Logger.d('Debug diagnostic info');
+Logger.i('General information');
+Logger.w('Warning - potential issue');
+Logger.e('Error occurred', error: e, stackTrace: stack);
+Logger.wtf('Critical failure!');
+
+// Pretty JSON logging
+Logger.json({
+  'user': 'John',
+  'preferences': {'theme': 'dark'},
+});
+
+// Performance timing
+final data = await Logger.timed(
+  () => api.fetchUsers(),
+  label: 'API Call',
+);
+
+// Table formatting
+Logger.table([
+  {'name': 'John', 'age': 30},
+  {'name': 'Jane', 'age': 25},
+]);
+
+// Headers and dividers
+Logger.header('USER REGISTRATION');
+Logger.divider();
+```
+
+**Logger Features:**
+- 🎨 **6 Log Levels**: Verbose, Debug, Info, Warning, Error, WTF
+- 📊 **Pretty JSON**: Automatic indentation and formatting
+- ⏱️ **Performance Timing**: Measure async/sync function execution
+- 📋 **Table Formatting**: Display structured data beautifully
+- 🎯 **Stack Traces**: Full error debugging support
+- 🌈 **ANSI Colors**: Color-coded terminal output
+- ⚙️ **Configurable**: Dev/Production/Testing presets
+- 🔌 **Custom Handlers**: Integrate with analytics services
+
+**Quick Configuration:**
+```dart
+Logger.config = LoggerConfig(
+  enabled: true,
+  minLevel: LogLevel.debug,
+  showTimestamp: true,
+  prettyJson: true,
+);
+```
+
+📚 [Full Logger Documentation](doc/LOGGER.md)
+
 ---
 
 ## 📚 Documentation
@@ -267,6 +459,7 @@ Dependency.reset();
 - 🚀 [Advanced Patterns](doc/ADVANCED.md) - Best practices & patterns
 - ⚡ [Quick Reference](QUICK_REFERENCE.md) - Cheat sheet
 - 🆕 [What's New in v1.0.0](NEW_FEATURES.md) - New features guide
+- 📝 [Logger Framework](doc/LOGGER.md) - Complete logging documentation
 
 ### Migration & Upgrading
 
@@ -344,6 +537,42 @@ class CartController extends ReactiveController {
 }
 ```
 
+### Logger with Performance Tracking
+```dart
+class ApiController extends ReactiveController {
+  final users = ReactiveList<User>([]);
+  
+  Future<void> fetchUsers() async {
+    // Automatically logs execution time
+    await Logger.timed(
+      () async {
+        Logger.i('Fetching users from API', tag: 'Network');
+        
+        try {
+          final response = await api.getUsers();
+          
+          // Log response as pretty JSON
+          Logger.json(response, tag: 'Network');
+          
+          users.value = response.users;
+          Logger.i('Successfully loaded ${users.length} users');
+        } catch (e, stack) {
+          // Log error with full stack trace
+          Logger.e(
+            'Failed to fetch users',
+            tag: 'Network',
+            error: e,
+            stackTrace: stack,
+          );
+        }
+      },
+      label: 'Fetch Users API',
+      tag: 'Network',
+    );
+  }
+}
+```
+
 **📁 [See Full Examples](example/)**
 
 ---
@@ -401,6 +630,15 @@ searchQuery.setDebounce(Duration(milliseconds: 500));
 
 // ✅ Use lazy loading for heavy controllers
 Dependency.lazyPut(() => HeavyController());
+
+// ✅ Configure Logger for production
+Logger.config = kReleaseMode 
+    ? LoggerConfig.production 
+    : LoggerConfig.development;
+
+// ✅ Use appropriate log levels
+Logger.d('User navigated to screen');
+Logger.e('Error occurred', error: e, stackTrace: stack);
 ```
 
 ### ❌ Don'ts
@@ -417,26 +655,55 @@ final x = ReactiveInt(0, enableHistory: true); // Unless you need it
 
 // ❌ Don't forget to dispose
 // Always call Dependency.delete() or use autoDispose
+
+// ❌ Don't log sensitive data
+Logger.info('User password: $password'); // NEVER!
+
+// ❌ Don't use verbose logging in production
+Logger.config = LoggerConfig.development; // In release builds
 ```
 
 ---
 
 ## 🔧 Configuration
 
-### Disable Logging in Production
+### Logger Configuration for Different Environments
 
 ```dart
 import 'package:flutter/foundation.dart';
 import 'package:reactiv/reactiv.dart';
 
 void main() {
-  // Disable logging in release mode
+  // Configure logger based on environment
   if (kReleaseMode) {
-    Logger.enabled = false;
+    Logger.config = LoggerConfig.production;  // Minimal logging
+  } else if (kProfileMode) {
+    Logger.config = LoggerConfig.testing;     // Warnings & errors
+  } else {
+    Logger.config = LoggerConfig.development; // Full logging
   }
   
   runApp(MyApp());
 }
+```
+
+### Custom Logger Configuration
+
+```dart
+Logger.config = LoggerConfig(
+  enabled: true,
+  minLevel: LogLevel.debug,
+  showTimestamp: true,
+  showLevel: true,
+  prettyJson: true,
+  customHandler: (level, message, {tag}) {
+    // Send to your analytics service
+    if (level.index >= LogLevel.error.index) {
+      crashlytics.log(message);
+    }
+  },
+);
+```
 ```
 
 ---

@@ -34,7 +34,12 @@ abstract class ReactiveState<T extends StatefulWidget,
     super.initState();
     final dep = bindController();
     if (dep != null) {
-      Dependency.put<S>(dep.controller.call(), tag: tag);
+      if (dep.lazyBind) {
+        Dependency.lazyPut<S>(() => dep.controller.call(), tag: tag);
+      } else {
+        Dependency.put<S>(dep.controller.call(), tag: tag);
+      }
+
       _autoDispose = dep.autoDispose;
     }
   }
