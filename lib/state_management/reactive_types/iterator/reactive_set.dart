@@ -74,12 +74,12 @@ class ReactiveSet<T> extends Reactive<Set<T>> with SetMixin<T> {
 
   @override
   bool contains(Object? element) {
-    return this.value.contains(element);
+    return value.contains(element);
   }
 
   @override
   T? lookup(Object? element) {
-    return this.value.lookup(element);
+    return value.lookup(element);
   }
 
   /// Schedules a refresh to avoid multiple refreshes in a single frame
