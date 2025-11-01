@@ -8,9 +8,14 @@ class ReactiveDouble extends Reactive<double> {
   /// Creates a new instance of [ReactiveDouble] with the initial value.
   ///
   /// The initial [value] is set for the reactive double variable.
-  ReactiveDouble(double value) : super(value);
+  /// Set [enableHistory] to true to enable undo/redo functionality.
+  /// [maxHistorySize] controls how many history states to keep (default: 50).
+  ReactiveDouble(
+    super.value, {
+    super.enableHistory,
+    super.maxHistorySize,
+  });
 }
-
 
 /// A specialized implementation of [ReactiveN] for nullable [double] values.
 ///
@@ -20,5 +25,11 @@ class ReactiveDoubleN extends ReactiveN<double> {
   /// Creates a new instance of [ReactiveDoubleN] with the initial value.
   ///
   /// The initial [value] is set for the reactive double variable.
-  ReactiveDoubleN([double? value]) : super(value);
+  /// Set [enableHistory] to true to enable undo/redo functionality.
+  /// [maxHistorySize] controls how many history states to keep (default: 50).
+  ReactiveDoubleN([
+    super.value,
+    super.enableHistory,
+    super.maxHistorySize,
+  ]);
 }

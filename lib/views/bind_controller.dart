@@ -1,4 +1,3 @@
-
 class BindController<S> {
   final S Function() controller;
   final bool autoDispose;

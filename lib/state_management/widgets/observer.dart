@@ -32,7 +32,7 @@ class _ObserverState<T> extends State<Observer<T>> {
     return ValueListenableBuilder<T>(
       valueListenable: widget.listenable.valueNotifier,
       builder: (BuildContext context, T value, Widget? child) {
-        return widget.listener(widget.listenable.value);
+        return widget.listener(value);
       },
     );
   }

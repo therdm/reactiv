@@ -6,7 +6,8 @@ import 'bind_controller.dart';
 
 export 'bind_controller.dart';
 
-abstract class ReactiveState<T extends StatefulWidget, S extends ReactiveController> extends State<T> {
+abstract class ReactiveState<T extends StatefulWidget,
+    S extends ReactiveController> extends State<T> {
   final String? tag;
 
   ReactiveState({this.tag});

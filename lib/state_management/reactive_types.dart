@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 
 part 'reactive_types/base/reactive.dart';
+part 'reactive_types/computed/computed_reactive.dart';
 part 'reactive_types/iterator/reactive_list.dart';
 part 'reactive_types/iterator/reactive_set.dart';
 part 'reactive_types/num/reactive_double.dart';

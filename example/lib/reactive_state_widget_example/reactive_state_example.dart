@@ -16,8 +16,8 @@ class CounterScreen extends StatefulWidget {
   State<CounterScreen> createState() => _CounterScreenState();
 }
 
-class _CounterScreenState extends ReactiveState<CounterScreen, MyCounterController> {
-
+class _CounterScreenState
+    extends ReactiveState<CounterScreen, MyCounterController> {
   @override
   BindController<MyCounterController>? bindController() {
     return BindController(controller: () => MyCounterController());

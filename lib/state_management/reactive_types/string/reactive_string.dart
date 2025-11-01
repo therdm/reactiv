@@ -8,7 +8,13 @@ class ReactiveString extends Reactive<String> {
   /// Creates a new instance of [ReactiveString] with the initial value.
   ///
   /// The initial [value] is set for the reactive [String] variable.
-  ReactiveString(super.value);
+  /// Set [enableHistory] to true to enable undo/redo functionality.
+  /// [maxHistorySize] controls how many history states to keep (default: 50).
+  ReactiveString(
+    super.value, {
+    super.enableHistory,
+    super.maxHistorySize,
+  });
 }
 
 /// A specialized implementation of [ReactiveN] for nullable [String] values.
@@ -19,7 +25,11 @@ class ReactiveStringN extends ReactiveN<String> {
   /// Creates a new instance of [ReactiveStringN] with the initial value.
   ///
   /// The initial [value] is set for the reactive [String] variable.
-  ReactiveStringN([super.value]);
+  /// Set [enableHistory] to true to enable undo/redo functionality.
+  /// [maxHistorySize] controls how many history states to keep (default: 50).
+  ReactiveStringN([
+    super.value,
+    super.enableHistory,
+    super.maxHistorySize,
+  ]);
 }
-
-
