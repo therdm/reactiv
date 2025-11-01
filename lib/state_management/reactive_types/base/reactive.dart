@@ -32,8 +32,8 @@ class Reactive<T> {
 
   /// Triggers an update by emitting the current value and help update Observer widget.
   void refresh() {
-    _valueNotifier.notifyListeners();
-    // _valueNotifier.add(value);
+    // Trigger notification by reassigning the current value
+    _valueNotifier.value = _valueNotifier.value;
     // if (_listOfListeners.isNotEmpty) {
     //   for (var element in _listOfListeners) {
     //     element.function.call(value);

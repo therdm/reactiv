@@ -1,0 +1,8 @@
+# Exclude unnecessary files from pub.dev package
+demo_images.pptx
+experience_letter_Shabnam_Sultana_Rainy.pdf
+picture1.png
+android/local.properties
+example/pubspec.lock
+ios/Flutter/
+macos/Flutter/ephemeral/
