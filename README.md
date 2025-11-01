@@ -577,11 +577,7 @@ class ApiController extends ReactiveController {
 
 ---
 
-## 🆚 Comparison with GetX
-
-Reactiv is inspired by GetX but with key improvements:
-
-### ✅ Advantages over GetX
+## ✅ GetX alternative that does it right
 
 1. **Explicit Listening** - Observer knows exactly what it's listening to (no magic)
 2. **Compile-Time Safety** - Red lines if you forget to specify what to listen to

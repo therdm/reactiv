@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
+import 'advanced_features_example.dart' as afe;
 
 void main() {
-  runApp(const MyApp());
+  runApp(const afe.MyApp());
 }
 
 class MyApp extends StatelessWidget {

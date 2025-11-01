@@ -2,27 +2,72 @@ import '../controllers/reactive_controller.dart';
 import '../utils/logger.dart';
 import '../utils/exceptions.dart';
 
-/// A class that manages dependency injection by storing and retrieving singleton instances of classes.
+/// A lightweight dependency injection system for managing singleton instances.
+///
+/// [Dependency] provides a centralized store for managing object lifecycles
+/// in your application. It supports both eager and lazy initialization,
+/// optional tagging for multiple instances, and automatic cleanup.
+///
+/// Key features:
+/// - Singleton pattern enforcement
+/// - Lazy initialization support
+/// - Tagged instances for multiple controllers
+/// - Automatic [ReactiveController] lifecycle management
+/// - Phoenix mode for auto-recreation after deletion
+///
+/// Example:
+/// ```dart
+/// // Register a controller
+/// final controller = Dependency.put(MyController());
+///
+/// // Retrieve it anywhere
+/// final ctrl = Dependency.find<MyController>();
+///
+/// // Lazy registration
+/// Dependency.lazyPut<DataService>(() => DataService());
+///
+/// // With tags for multiple instances
+/// Dependency.put(UserController(), tag: 'admin');
+/// Dependency.put(UserController(), tag: 'guest');
+/// final admin = Dependency.find<UserController>(tag: 'admin');
+/// ```
 class Dependency {
-  /// A private map that stores the singleton instances of classes.
+  /// Internal storage for instantiated dependencies.
   static final Map<String, dynamic> _dependencyStore = {};
 
-  /// A private map that stores lazy builders for dependencies.
+  /// Internal storage for lazy dependency builders.
   static final Map<String, dynamic Function()> _lazyBuilders = {};
 
+  /// Generates a unique key for dependency storage.
+  ///
+  /// Combines type name with optional tag to allow multiple instances
+  /// of the same type.
   static String _getKey(Type dependencyClass, {String? tag}) {
     return dependencyClass.toString() + (tag ?? '');
   }
 
-  /// Inserts a singleton instance of a class into the dependency store.
+  /// Registers a singleton instance in the dependency store.
   ///
-  /// If a dependency with the same type and tag already exists, it will be overwritten
-  /// and a warning will be logged.
+  /// If a dependency with the same type and tag already exists, it will be
+  /// overwritten with a warning logged.
   ///
-  /// The [dependency] parameter is the singleton instance to be inserted.
-  /// [fenix] - If true, the dependency will be recreated after being deleted.
+  /// Parameters:
+  /// - [dependency]: The instance to register
+  /// - [tag]: Optional identifier for multiple instances of the same type
+  /// - [fenix]: If `true`, the dependency will auto-recreate after deletion
   ///
-  /// Returns the inserted singleton instance.
+  /// Returns the registered instance.
+  ///
+  /// Example:
+  /// ```dart
+  /// final controller = Dependency.put(MyController());
+  ///
+  /// // With tag
+  /// Dependency.put(AuthService(), tag: 'primary');
+  ///
+  /// // Phoenix mode - auto-recreates
+  /// Dependency.put(CacheService(), fenix: true);
+  /// ```
   static T put<T>(
     T dependency, {
     String? tag,
@@ -46,14 +91,35 @@ class Dependency {
     return _dependencyStore[key];
   }
 
-  /// Lazily registers a dependency builder that will be called when the dependency is first accessed.
+  /// Registers a lazy dependency builder.
   ///
-  /// The dependency instance is created only when [find] is called for the first time.
-  /// Subsequent calls to [find] will return the same instance.
+  /// The dependency instance is created only when [find] is called for the
+  /// first time. Subsequent calls return the same instance.
   ///
-  /// [builder] - Function that creates the dependency instance
-  /// [tag] - Optional tag to differentiate multiple instances of the same type
-  /// [fenix] - If true, the dependency will be recreated after being deleted
+  /// This is useful for expensive objects that may not be needed immediately.
+  ///
+  /// Parameters:
+  /// - [builder]: Function that creates the dependency instance
+  /// - [tag]: Optional identifier for multiple instances
+  /// - [fenix]: If `true`, rebuilds the dependency after deletion
+  ///
+  /// Example:
+  /// ```dart
+  /// // Basic lazy registration
+  /// Dependency.lazyPut<DatabaseService>(() => DatabaseService());
+  ///
+  /// // With tag
+  /// Dependency.lazyPut<ApiClient>(
+  ///   () => ApiClient(baseUrl: 'https://api.example.com'),
+  ///   tag: 'production',
+  /// );
+  ///
+  /// // Phoenix mode
+  /// Dependency.lazyPut<CacheManager>(
+  ///   () => CacheManager(),
+  ///   fenix: true,
+  /// );
+  /// ```
   static void lazyPut<T>(
     T Function() builder, {
     String? tag,
@@ -75,9 +141,31 @@ class Dependency {
     }
   }
 
-  /// Inserts a singleton instance only if it doesn't already exist.
+  /// Registers a dependency only if it doesn't already exist.
   ///
-  /// Returns the instance (either existing or newly created).
+  /// If a dependency with the same type and tag exists, returns the existing
+  /// instance. Otherwise, creates and registers a new instance using [builder].
+  ///
+  /// Parameters:
+  /// - [builder]: Function that creates the dependency if needed
+  /// - [tag]: Optional identifier for multiple instances
+  ///
+  /// Returns either the existing or newly created instance.
+  ///
+  /// Example:
+  /// ```dart
+  /// // First call creates the instance
+  /// final service1 = Dependency.putIfAbsent<DataService>(
+  ///   () => DataService(),
+  /// );
+  ///
+  /// // Second call returns the same instance
+  /// final service2 = Dependency.putIfAbsent<DataService>(
+  ///   () => DataService(),
+  /// );
+  ///
+  /// print(identical(service1, service2)); // true
+  /// ```
   static T putIfAbsent<T>(
     T Function() builder, {
     String? tag,
@@ -93,13 +181,38 @@ class Dependency {
     return dependency;
   }
 
-  /// Retrieves a singleton instance of a class from the dependency store.
+  /// Retrieves a registered dependency instance.
   ///
-  /// If the dependency was registered with [lazyPut], it will be created on first access.
+  /// If the dependency was registered with [lazyPut], it will be instantiated
+  /// on first access. Subsequent calls return the cached instance.
   ///
-  /// Returns the singleton instance of the class.
+  /// Parameters:
+  /// - [tag]: Optional identifier if multiple instances exist
   ///
-  /// Throws [DependencyNotFoundException] if the class is not registered.
+  /// Returns the dependency instance.
+  ///
+  /// Throws [DependencyNotFoundException] if not registered.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Basic retrieval
+  /// final controller = Dependency.find<MyController>();
+  ///
+  /// // With tag
+  /// final admin = Dependency.find<UserService>(tag: 'admin');
+  ///
+  /// // Use in widgets
+  /// class MyWidget extends StatelessWidget {
+  ///   @override
+  ///   Widget build(BuildContext context) {
+  ///     final controller = Dependency.find<CounterController>();
+  ///     return Observer(
+  ///       listenable: controller.count,
+  ///       listener: (value) => Text('$value'),
+  ///     );
+  ///   }
+  /// }
+  /// ```
   static T find<T>({String? tag}) {
     final key = _getKey(T, tag: tag);
 
@@ -118,18 +231,51 @@ class Dependency {
     throw DependencyNotFoundException(T, tag: tag);
   }
 
-  /// Checks if a dependency is registered (either instantiated or lazy).
+  /// Checks if a dependency is registered.
+  ///
+  /// Returns `true` if the dependency exists (either instantiated or lazy).
+  ///
+  /// Example:
+  /// ```dart
+  /// if (Dependency.isRegistered<AuthService>()) {
+  ///   final auth = Dependency.find<AuthService>();
+  ///   auth.checkSession();
+  /// } else {
+  ///   // Handle missing dependency
+  /// }
+  /// ```
   static bool isRegistered<T>({String? tag}) {
     final key = _getKey(T, tag: tag);
     return _dependencyStore[key] != null || _lazyBuilders[key] != null;
   }
 
-  /// Deletes a singleton instance of a class from the dependency store.
+  /// Removes a dependency from the store.
   ///
-  /// Returns `true` if the deletion is successful, `false` otherwise.
+  /// If the dependency is a [ReactiveController], its [onClose] method is
+  /// called before removal to perform cleanup.
   ///
-  /// If the class is not found in the dependency store, a log message will be printed.
-  /// If the deleted class is a [ReactiveController], its `onClose()` method will be called before deletion.
+  /// Parameters:
+  /// - [tag]: Optional identifier if multiple instances exist
+  ///
+  /// Returns `true` if deletion was successful, `false` if not found.
+  ///
+  /// Note: Phoenix dependencies will be recreated on next [find] call.
+  ///
+  /// Example:
+  /// ```dart
+  /// // Delete a controller
+  /// Dependency.delete<UserController>();
+  ///
+  /// // Delete tagged instance
+  /// Dependency.delete<ApiClient>(tag: 'staging');
+  ///
+  /// // In a widget's dispose:
+  /// @override
+  /// void dispose() {
+  ///   Dependency.delete<MyController>();
+  ///   super.dispose();
+  /// }
+  /// ```
   static bool delete<T>({String? tag}) {
     final key = _getKey(T, tag: tag);
 
@@ -161,7 +307,24 @@ class Dependency {
     return true;
   }
 
-  /// Removes all dependencies from the store.
+  /// Removes all dependencies and resets the store.
+  ///
+  /// Calls [onClose] on all [ReactiveController] instances before clearing.
+  /// This is useful for app-wide cleanup, testing, or logout scenarios.
+  ///
+  /// Example:
+  /// ```dart
+  /// // On app logout
+  /// void logout() {
+  ///   Dependency.reset(); // Clean up all controllers
+  ///   Navigator.pushReplacementNamed(context, '/login');
+  /// }
+  ///
+  /// // In tests
+  /// tearDown(() {
+  ///   Dependency.reset();
+  /// });
+  /// ```
   static void reset() {
     // Call onClose on all ReactiveControllers
     _dependencyStore.forEach((key, value) {
