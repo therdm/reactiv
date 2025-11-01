@@ -93,9 +93,9 @@ class Observer3<A, B, C> extends StatelessWidget {
   }
 }
 
-/// A widget that observes changes in two reactive variables and triggers a rebuild when either variable changes.
+/// A widget that observes changes in four reactive variables and triggers a rebuild when any of the variables changes.
 class Observer4<A, B, C, D> extends StatelessWidget {
-  /// Constructs an [Observer2] widget.
+  /// Constructs an [Observer4] widget.
   ///
   /// The [listenable] parameter is the first reactive variable to listen to.
   ///
@@ -123,7 +123,7 @@ class Observer4<A, B, C, D> extends StatelessWidget {
   /// The fourth reactive variable to listen to for changes.
   final Reactive<D> listenable4;
 
-  /// A callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  /// A callback function that defines the widget to rebuild whenever any of the reactive variables changes.
   final Widget Function(A data1, B data2, C data3, D data4) listener;
 
   @override
@@ -144,24 +144,23 @@ class Observer4<A, B, C, D> extends StatelessWidget {
   }
 }
 
-/// A widget that observes changes in two reactive variables and triggers a rebuild when either variable changes.
+/// A widget that observes changes in multiple reactive variables and triggers a rebuild when any variable changes.
 class ObserverN extends StatelessWidget {
-  /// Constructs an [Observer2] widget.
+  /// Constructs an [ObserverN] widget.
   ///
-  /// The [listenable] parameter is the first reactive variable to listen to.
+  /// The [listenable] parameter is a list of reactive variables to listen to.
   ///
-  ///
-  /// The [listener] parameter is a callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  /// The [listener] parameter is a callback function that defines the widget to rebuild whenever any of the reactive variables changes.
   const ObserverN({
     Key? key,
     required this.listenable,
     required this.listener,
   }) : super(key: key);
 
-  /// The first reactive variable to listen to for changes.
+  /// The list of reactive variables to listen to for changes.
   final List<Reactive> listenable;
 
-  /// A callback function that defines the widget to rebuild whenever either of the reactive variables changes.
+  /// A callback function that defines the widget to rebuild whenever any of the reactive variables changes.
   final Widget Function() listener;
 
   Widget observer(int toBeAccessedIndex) {

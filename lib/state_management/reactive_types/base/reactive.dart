@@ -10,35 +10,21 @@ class ListenerFunction {
 /// A generic class representing a reactive variable.
 /// It allows tracking and updating the value of the variable.
 class Reactive<T> {
-  // late T _value;
-  // late final StreamController<T> _streamController;
-  
   late final ValueNotifier<T> _valueNotifier;
-  
-  
+
   /// Constructs a [Reactive] object with the initial [value].
   Reactive(T value) {
-    // this._value = value;
     _valueNotifier = ValueNotifier<T>(value);
-    // _streamController = StreamController<T>.broadcast();
-    // refresh();
   }
 
   /// Updates the value of the reactive variable to [value].
   set value(T value) {
     this._valueNotifier.value = value;
-    // refresh();
   }
 
   /// Triggers an update by emitting the current value and help update Observer widget.
   void refresh() {
-    // Trigger notification by reassigning the current value
     _valueNotifier.value = _valueNotifier.value;
-    // if (_listOfListeners.isNotEmpty) {
-    //   for (var element in _listOfListeners) {
-    //     element.function.call(value);
-    //   }
-    // }
   }
 
   List<ListenerFunction> _listOfListeners = <ListenerFunction>[];
@@ -73,14 +59,6 @@ class Reactive<T> {
   T get value => this._valueNotifier.value;
 
   ValueNotifier<T> get valueNotifier => _valueNotifier;
-
-
-
-  /// Returns a [ReactiveNotifier] object associated with this [Reactive] instance.
-  /// The [ReactiveNotifier] allows listening to changes in the reactive variable.
-  // ReactiveNotifier<T> get notifier {
-  //   return ReactiveNotifier(_valueNotifier.stream);
-  // }
 
   /// Closes the underlying stream controller.
   void close() {

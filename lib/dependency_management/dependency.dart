@@ -6,7 +6,6 @@ class Dependency {
   /// A private map that stores the singleton instances of classes.
   static final Map<String, dynamic> _dependencyStore = {};
 
-
   static String _getKey(Type dependencyClass, {String? tag}){
     return dependencyClass.toString() + (tag ?? '');
   }
