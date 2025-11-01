@@ -1,8 +1,16 @@
+# Reactiv
+
+[![pub package](https://img.shields.io/pub/v/reactiv.svg)](https://pub.dev/packages/reactiv)
+[![CI](https://github.com/therdm/reactiv/workflows/CI/badge.svg)](https://github.com/therdm/reactiv/actions)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
+Light-weight reactive state management and dependency injection for Flutter, available on all platforms.
+
+## Quick Links
+
+📖 [Getting Started](docs/GETTING_STARTED.md) | 📚 [API Reference](docs/API_REFERENCE.md) | 🚀 [Example App](example) | 💡 [Advanced Patterns](docs/ADVANCED.md)
+
 ## About Reactiv [A Reactive approach (reactive/rx)]
-
-Light-weight Reactive state management approach tool and dependency injection tool for flutter available for all platforms
-
-[![picture1.png](https://i.postimg.cc/zf6xrgHv/picture1.png)](https://postimg.cc/XZKfKX86)
 
 ## Features
 

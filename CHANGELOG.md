@@ -1,3 +1,21 @@
+## Unreleased
+
+### Added
+- Comprehensive documentation in `docs/` folder:
+  - Getting Started guide with step-by-step quickstart
+  - API Reference with detailed API overview
+  - Advanced patterns, testing, and best practices
+- Simplified example app demonstrating core features
+- CI workflow for automated testing and analysis
+- Contributing guidelines (CONTRIBUTING.md)
+- Code of Conduct (CODE_OF_CONDUCT.md)
+- GitHub issue and pull request templates
+- Badges in README for pub.dev and CI status
+
+### Changed
+- Updated README with quick navigation links to docs and example
+- Improved example/lib/main.dart with a cleaner counter demonstration
+
 ## 0.3.6
 New widget ObserverN that accepts List os Reactive variables 
 

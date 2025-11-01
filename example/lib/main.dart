@@ -11,153 +11,85 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Reactiv Counter Example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const CounterScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+/// A simple counter controller demonstrating Reactiv state management
+class CounterController extends ReactiveController {
+  // Define a reactive integer variable
+  final count = ReactiveInt(0);
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  // Method to increment the counter
+  void increment() {
+    count.value++;
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends State<CounterScreen> {
   @override
   void initState() {
     super.initState();
+    // Inject the controller instance
+    Dependency.put<CounterController>(CounterController());
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed
+    Dependency.delete<CounterController>();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Find the controller instance
+    final controller = Dependency.find<CounterController>();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text('Reactiv Counter'),
       ),
-      body: const LaunchPage(),
-    );
-  }
-}
-
-class LaunchPage extends StatelessWidget {
-  const LaunchPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return CounterScreen();
-          }));
-        },
-        child: const Text('Next Page'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'You have pushed the button this many times:',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 16),
+            // Observer widget listens to the reactive variable
+            Observer(
+              listenable: controller.count,
+              listener: (count) {
+                return Text(
+                  '$count',
+                  style: Theme.of(context).textTheme.headlineLarge,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
-  }
-}
-
-class CounterController extends ReactiveController {
-  final count = ReactiveList<int>([0]);
-  final testCount = ReactiveInt(0);
-
-
-
-  void increment() {
-    count.add(count.length);
-  }
-
-  void incrementTestCount() {
-    testCount.value++;
-  }
-}
-
-class CounterScreen extends StatelessWidget {
-  CounterScreen({super.key});
-
-  final controller = Dependency.put(CounterController());
-  final testCount = '0'.reactiv;
-  final redScaffold = ReactiveBool(false);
-
-  @override
-  Widget build(BuildContext context) {
-    ///Find Dependency => Controller instance
-    // final controller = Dependency.find<CounterController>();
-    return Observer(
-        listenable: redScaffold,
-        listener: (isRedScaffold) {
-          return Scaffold(
-            backgroundColor: isRedScaffold ? Colors.red : null,
-            appBar: AppBar(
-              title: const Text('Reactiv Counter'),
-            ),
-            body: Center(
-              child: ObserverN(
-                listenable: <Reactive>[controller.count, controller.testCount, testCount],
-                listener: () {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration(
-                          isDense: true,
-                          suffix: isRedScaffold ? const Icon(Icons.delete) : null,
-                        ),
-                      ),
-                      Text(
-                        'Count controller.count: ${controller.count}',
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        'Count testCount: ${testCount.value}',
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        'Count controller.testCount: ${controller.testCount.value}',
-                        style: const TextStyle(fontSize: 24),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            bottomNavigationBar: ElevatedButton(
-                onPressed: () {
-                  redScaffold.value = !redScaffold.value;
-                },
-                child: Text('Change Scaffold')),
-            floatingActionButton: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  onPressed: () {
-                    controller.increment();
-                  },
-                  child: const Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    testCount.value = (int.parse(testCount.value) + 1).toString();
-                  },
-                  child: const Icon(Icons.add),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    controller.incrementTestCount();
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ],
-            ),
-          );
-        });
   }
 }
