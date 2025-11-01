@@ -1,4 +1,5 @@
 /// Custom exceptions for the Reactiv package
+library;
 
 /// Exception thrown when a dependency is not found in the dependency store
 class DependencyNotFoundException implements Exception {
