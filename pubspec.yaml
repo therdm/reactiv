@@ -6,11 +6,10 @@ repository: https://github.com/therdm/reactiv
 issue_tracker: https://github.com/therdm/reactiv/issues
 
 topics:
-  - state-management
   - reactive
+  - state-management
   - flutter-package
   - dependency-injection
-  - observer-pattern
   - mvvm
 
 environment:
