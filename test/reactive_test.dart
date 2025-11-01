@@ -103,13 +103,13 @@ void main() {
 
       reactive.bindStream(stream);
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(reactive.value, equals(3));
     });
 
     test('should support debounce', () async {
       final reactive = Reactive<int>(0);
-      reactive.setDebounce(Duration(milliseconds: 100));
+      reactive.setDebounce(const Duration(milliseconds: 100));
 
       reactive.updateDebounced(1);
       reactive.updateDebounced(2);
@@ -117,13 +117,13 @@ void main() {
 
       expect(reactive.value, equals(0)); // Not updated yet
 
-      await Future.delayed(Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150));
       expect(reactive.value, equals(3)); // Only last value
     });
 
     test('should support throttle', () async {
       final reactive = Reactive<int>(0);
-      reactive.setThrottle(Duration(milliseconds: 100));
+      reactive.setThrottle(const Duration(milliseconds: 100));
 
       reactive.updateThrottled(1);
       expect(reactive.value, equals(1)); // First update goes through
@@ -132,7 +132,7 @@ void main() {
       reactive.updateThrottled(3);
       expect(reactive.value, equals(1)); // Throttled
 
-      await Future.delayed(Duration(milliseconds: 150));
+      await Future.delayed(const Duration(milliseconds: 150));
       reactive.updateThrottled(4);
       expect(reactive.value, equals(4)); // After throttle period
     });

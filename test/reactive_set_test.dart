@@ -97,7 +97,7 @@ void main() {
 
       set.add(3);
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(notificationCount, greaterThan(0));
     });
 
@@ -109,7 +109,7 @@ void main() {
 
       set.add(1); // Duplicate
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(notificationCount, equals(0));
     });
 
@@ -123,7 +123,7 @@ void main() {
       set.add(2);
       set.add(3);
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(notificationCount, lessThan(3));
     });
   });

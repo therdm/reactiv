@@ -178,7 +178,7 @@ void main() {
       WidgetsBinding.instance.handleBeginFrame(Duration.zero);
       WidgetsBinding.instance.handleDrawFrame();
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(controller.readyCalled, isTrue);
     });
 

@@ -136,7 +136,7 @@ void main() {
     test('should convert list to reactive', () {
       final reactive = [1, 2, 3].reactiv;
       expect(reactive, isA<ReactiveList<int>>());
-      expect(reactive.value.length, equals(3));
+      expect(reactive.length, equals(3));
     });
 
     test('should convert set to reactive', () {

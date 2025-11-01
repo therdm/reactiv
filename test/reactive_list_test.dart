@@ -145,7 +145,7 @@ void main() {
 
       list.add(3);
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(notificationCount, greaterThan(0));
     });
 
@@ -160,7 +160,7 @@ void main() {
       list.add(2);
       list.add(3);
 
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       // Should batch into fewer notifications than operations
       expect(notificationCount, lessThan(3));
     });
