@@ -2,6 +2,16 @@ name: reactiv
 description: Production-ready reactive state management with robust logging, undo/redo, computed values, debounce/throttle, and more. Lightweight, powerful, and easy to use.
 version: 1.0.3
 homepage: https://github.com/therdm/reactiv
+repository: https://github.com/therdm/reactiv
+issue_tracker: https://github.com/therdm/reactiv/issues
+
+topics:
+  - state-management
+  - reactive
+  - flutter-package
+  - dependency-injection
+  - observer-pattern
+  - mvvm
 
 environment:
   sdk: '>=2.19.6 <4.0.0'
