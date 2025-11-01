@@ -44,7 +44,7 @@ void main() {
     test('should put and find dependency', () {
       final controller = TestController();
       Dependency.put(controller);
-      
+
       final found = Dependency.find<TestController>();
       expect(identical(controller, found), isTrue);
     });
@@ -52,22 +52,22 @@ void main() {
     test('should support tagged dependencies', () {
       final controller1 = TestController();
       final controller2 = TestController();
-      
+
       Dependency.put(controller1, tag: 'first');
       Dependency.put(controller2, tag: 'second');
-      
+
       final found1 = Dependency.find<TestController>(tag: 'first');
       final found2 = Dependency.find<TestController>(tag: 'second');
-      
+
       expect(identical(controller1, found1), isTrue);
       expect(identical(controller2, found2), isTrue);
     });
 
     test('should lazy put dependency', () {
       Dependency.lazyPut<TestController>(() => TestController());
-      
+
       expect(Dependency.isRegistered<TestController>(), isTrue);
-      
+
       final controller = Dependency.find<TestController>();
       expect(controller, isNotNull);
       expect(controller.initCalled, isTrue);
@@ -77,7 +77,7 @@ void main() {
       final controller = Dependency.putIfAbsent<TestController>(
         () => TestController(),
       );
-      
+
       expect(controller, isNotNull);
     });
 
@@ -85,17 +85,17 @@ void main() {
       final controller1 = Dependency.putIfAbsent<TestController>(
         () => TestController(),
       );
-      
+
       final controller2 = Dependency.putIfAbsent<TestController>(
         () => TestController(),
       );
-      
+
       expect(identical(controller1, controller2), isTrue);
     });
 
     test('should check if registered', () {
       expect(Dependency.isRegistered<TestController>(), isFalse);
-      
+
       Dependency.put(TestController());
       expect(Dependency.isRegistered<TestController>(), isTrue);
     });
@@ -103,7 +103,7 @@ void main() {
     test('should delete dependency', () {
       final controller = TestController();
       Dependency.put(controller);
-      
+
       final deleted = Dependency.delete<TestController>();
       expect(deleted, isTrue);
       expect(Dependency.isRegistered<TestController>(), isFalse);
@@ -112,7 +112,7 @@ void main() {
     test('should call onClose when deleting controller', () {
       final controller = TestController();
       Dependency.put(controller);
-      
+
       Dependency.delete<TestController>();
       expect(controller.closeCalled, isTrue);
     });
@@ -125,9 +125,9 @@ void main() {
     test('should reset all dependencies', () {
       Dependency.put(TestController(), tag: 'first');
       Dependency.put(TestController(), tag: 'second');
-      
+
       Dependency.reset();
-      
+
       expect(Dependency.isRegistered<TestController>(tag: 'first'), isFalse);
       expect(Dependency.isRegistered<TestController>(tag: 'second'), isFalse);
     });
@@ -135,12 +135,12 @@ void main() {
     test('should call onClose on all controllers when resetting', () {
       final controller1 = TestController();
       final controller2 = TestController();
-      
+
       Dependency.put(controller1, tag: 'first');
       Dependency.put(controller2, tag: 'second');
-      
+
       Dependency.reset();
-      
+
       expect(controller1.closeCalled, isTrue);
       expect(controller2.closeCalled, isTrue);
     });
@@ -154,9 +154,9 @@ void main() {
 
     test('should support phoenix mode', () {
       Dependency.put(TestController(), fenix: true);
-      
+
       Dependency.delete<TestController>();
-      
+
       // Phoenix dependencies can be recreated
       // Note: Current implementation stores builder, not recreates automatically
       expect(Dependency.isRegistered<TestController>(), isFalse);
@@ -171,32 +171,32 @@ void main() {
 
     test('should call onReady after frame', () async {
       final controller = TestController();
-      
+
       expect(controller.readyCalled, isFalse);
-      
+
       // Manually trigger frame callback
       WidgetsBinding.instance.handleBeginFrame(Duration.zero);
       WidgetsBinding.instance.handleDrawFrame();
-      
-      await Future.delayed(Duration(milliseconds: 10));
+
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(controller.readyCalled, isTrue);
     });
 
     test('should call onClose on disposal', () {
       final controller = TestController();
       controller.onClose();
-      
+
       expect(controller.closeCalled, isTrue);
     });
 
     test('should manage reactive state', () {
       final controller = TestController();
-      
+
       expect(controller.count.value, equals(0));
-      
+
       controller.increment();
       expect(controller.count.value, equals(1));
-      
+
       controller.increment();
       expect(controller.count.value, equals(2));
     });
