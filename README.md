@@ -262,9 +262,9 @@ Dependency.reset();
 
 ### Core Concepts
 
-- 📖 [Getting Started Guide](docs/GETTING_STARTED.md) - Step-by-step tutorial
-- 📚 [API Reference](docs/API_REFERENCE.md) - Complete API documentation
-- 🚀 [Advanced Patterns](docs/ADVANCED.md) - Best practices & patterns
+- 📖 [Getting Started Guide](doc/GETTING_STARTED.md) - Step-by-step tutorial
+- 📚 [API Reference](doc/API_REFERENCE.md) - Complete API documentation
+- 🚀 [Advanced Patterns](doc/ADVANCED.md) - Best practices & patterns
 - ⚡ [Quick Reference](QUICK_REFERENCE.md) - Cheat sheet
 - 🆕 [What's New in v1.0.0](NEW_FEATURES.md) - New features guide
 
