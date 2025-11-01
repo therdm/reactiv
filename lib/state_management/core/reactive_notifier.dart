@@ -1,5 +1,3 @@
-
-
 // class ReactiveNotifier<T> {
 //   final Stream<T> stream;
 //

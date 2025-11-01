@@ -13,6 +13,8 @@ part of '../../reactive_types.dart';
 /// print(list.value); // Output: [1, 2, 3, 4]
 /// ```
 class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
+  bool _isRefreshing = false;
+
   /// Creates a new instance of [ReactiveList] with the initial value.
   ///
   /// The initial [value] is set for the reactive list variable.
@@ -20,7 +22,6 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
 
   @override
   int get length => value.length;
-
 
   @override
   @protected
@@ -31,7 +32,7 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   @override
   set length(int newLength) {
     _valueNotifier.value.length = newLength;
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
@@ -40,15 +41,13 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   @override
   void operator []=(int index, T val) {
     _valueNotifier.value[index] = val;
-    refresh();
+    _scheduleRefresh();
   }
 
-  /// Special override to push() element(s) in a reactive way
-  /// inside the List,
+  /// Special override to push() element(s) in a reactive way inside the List
   @override
   ReactiveList<T> operator +(Iterable<T> val) {
     addAll(val);
-    refresh();
     return this;
   }
 
@@ -58,82 +57,92 @@ class ReactiveList<T> extends Reactive<List<T>> with ListMixin<T> {
   }
 
   @override
-  void add(T element){
+  void add(T element) {
     super.value.add(element);
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
-  void addAll(Iterable<T> iterable){
+  void addAll(Iterable<T> iterable) {
     super.value.addAll(iterable);
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
   void insertAll(int index, Iterable<T> iterable) {
     _valueNotifier.value.insertAll(index, iterable);
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
-  Iterable<T> where(bool Function(T) test){
+  Iterable<T> where(bool Function(T) test) {
     return super.value.where(test);
   }
 
   @override
-  int indexWhere(bool Function(T) test, [int start = 0]){
+  int indexWhere(bool Function(T) test, [int start = 0]) {
     return super.value.indexWhere(test, start);
   }
 
   @override
-  Set<T> toSet(){
+  Set<T> toSet() {
     return super.value.toSet();
   }
 
   @override
-  void sort([int Function(T, T)? compare]){
+  void sort([int Function(T, T)? compare]) {
     super.value.sort(compare);
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
-  List<T> sublist(int start, [int? end]){
+  List<T> sublist(int start, [int? end]) {
     return super.value.sublist(start, end);
   }
 
   @override
-  bool remove(Object? element){
+  bool remove(Object? element) {
     final status = super.value.remove(element);
-    refresh();
+    if (status) {
+      _scheduleRefresh();
+    }
     return status;
   }
 
   @override
-  T removeLast(){
+  T removeLast() {
     final result = super.value.removeLast();
-    refresh();
+    _scheduleRefresh();
     return result;
   }
 
   @override
-  void removeWhere(bool Function(T) test){
+  void removeWhere(bool Function(T) test) {
     super.value.removeWhere(test);
-    refresh();
+    _scheduleRefresh();
   }
 
   @override
-  T removeAt(int index){
+  T removeAt(int index) {
     T result = super.value.removeAt(index);
-    refresh();
+    _scheduleRefresh();
     return result;
   }
 
   @override
-  void removeRange(int start, int end){
+  void removeRange(int start, int end) {
     super.value.removeRange(start, end);
-    refresh();
+    _scheduleRefresh();
   }
 
+  /// Schedules a refresh to avoid multiple refreshes in a single frame
+  void _scheduleRefresh() {
+    if (_isRefreshing) return;
+
+    _isRefreshing = true;
+    Future.microtask(() {
+      refresh();
+      _isRefreshing = false;
+    });
+  }
 }
-
-

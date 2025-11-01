@@ -17,7 +17,7 @@ abstract class ReactiveStateWidget<T> extends StatefulWidget {
   /// A tag that can be used to differentiate between multiple instances of the same controller type.
   final String? tag;
 
-  /// Retrieves the controller instance associa ted with this widget.
+  /// Retrieves the controller instance associated with this widget.
   ///
   /// Returns the instance of the controller that corresponds to the specified type [T].
   /// If the controller is not found, an exception is thrown.
