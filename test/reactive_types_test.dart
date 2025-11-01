@@ -12,7 +12,7 @@ void main() {
       final reactive = ReactiveBool(false);
       reactive.value = true;
       expect(reactive.value, isTrue);
-      
+
       reactive.value = false;
       expect(reactive.value, isFalse);
     });
@@ -20,9 +20,9 @@ void main() {
     test('should notify listeners on change', () {
       final reactive = ReactiveBool(false);
       bool notifiedValue = false;
-      
+
       reactive.addListener((value) => notifiedValue = value);
-      
+
       reactive.value = true;
       expect(notifiedValue, isTrue);
     });
@@ -38,7 +38,7 @@ void main() {
       final reactive = ReactiveInt(0);
       reactive.value++;
       expect(reactive.value, equals(1));
-      
+
       reactive.value++;
       expect(reactive.value, equals(2));
     });
@@ -47,7 +47,7 @@ void main() {
       final reactive = ReactiveInt(5);
       reactive.value--;
       expect(reactive.value, equals(4));
-      
+
       reactive.value--;
       expect(reactive.value, equals(3));
     });
@@ -94,7 +94,7 @@ void main() {
     test('should check if empty', () {
       final reactive1 = ReactiveString('');
       final reactive2 = ReactiveString('hello');
-      
+
       expect(reactive1.value.isEmpty, isTrue);
       expect(reactive2.value.isEmpty, isFalse);
     });
@@ -102,7 +102,7 @@ void main() {
     test('should check if not empty', () {
       final reactive1 = ReactiveString('hello');
       final reactive2 = ReactiveString('');
-      
+
       expect(reactive1.value.isNotEmpty, isTrue);
       expect(reactive2.value.isNotEmpty, isFalse);
     });
