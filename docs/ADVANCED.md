@@ -73,9 +73,130 @@ class ProfileScreen extends StatelessWidget {
 }
 ```
 
-### Binding Controllers to Specific Widgets
+### Using ReactiveStateWidget for Automatic Controller Management
 
-For better control over controller lifecycle, create and dispose controllers within specific widgets:
+The recommended approach for binding controllers to widgets is using `ReactiveStateWidget`:
+
+```dart
+class SettingsScreen extends ReactiveStateWidget<SettingsController> {
+  const SettingsScreen({super.key});
+  
+  @override
+  BindController<SettingsController>? bindController() {
+    // Controller is automatically injected and disposed
+    return BindController(
+      controller: () => SettingsController(),
+      autoDispose: true, // Automatically cleaned up when widget is disposed
+    );
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    // Access controller here if needed for initialization
+    controller.loadSettings();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: Observer(
+        listenable: controller.theme,
+        listener: (theme) => Text('Current theme: $theme'),
+      ),
+    );
+  }
+}
+```
+
+**Benefits:**
+- No manual `Dependency.put()` or `Dependency.delete()` calls
+- Automatic cleanup prevents memory leaks
+- Cleaner, more maintainable code
+- Direct access to controller via `controller` getter
+
+### Using ReactiveState with StatefulWidget
+
+When you need full `StatefulWidget` lifecycle control:
+
+```dart
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ReactiveState<SettingsScreen, SettingsController> {
+  @override
+  BindController<SettingsController>? bindController() {
+    return BindController(controller: () => SettingsController());
+  }
+  
+  @override
+  void initState() {
+    super.initState();
+    // Full StatefulWidget lifecycle available
+    controller.loadSettings();
+  }
+  
+  @override
+  void didUpdateWidget(SettingsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Access to all StatefulWidget lifecycle methods
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: Observer(
+        listenable: controller.theme,
+        listener: (theme) => Text('Current theme: $theme'),
+      ),
+    );
+  }
+}
+```
+
+### Multiple Controllers with Tags
+
+When you need multiple instances of the same controller type:
+
+```dart
+class ChatView extends ReactiveStateWidget<ChatController> {
+  final String chatId;
+  
+  const ChatView({super.key, required this.chatId}) : super(tag: chatId);
+  
+  @override
+  BindController<ChatController>? bindController() {
+    return BindController(
+      controller: () => ChatController(chatId: chatId),
+    );
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Observer(
+      listenable: controller.messages,
+      listener: (messages) => ListView.builder(
+        itemCount: messages.length,
+        itemBuilder: (context, index) => Text(messages[index]),
+      ),
+    );
+  }
+}
+
+// Usage: Each instance gets its own controller
+ChatView(chatId: 'chat1')
+ChatView(chatId: 'chat2')
+```
+
+### Manual Controller Management (Advanced)
+
+Only when you need fine-grained control over controller lifecycle:
 
 ```dart
 class SettingsScreen extends StatefulWidget {
@@ -106,6 +227,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 ```
+
+**Note:** This approach is more verbose and error-prone. Use `ReactiveStateWidget` or `ReactiveState` instead when possible.
 
 ### Working with Streams
 
@@ -170,13 +293,58 @@ void main() {
 }
 ```
 
-### Widget Testing with Observer
+### Widget Testing with ReactiveStateWidget
 
-Test widgets that use Observer:
+Test widgets that use `ReactiveStateWidget`:
 
 ```dart
 testWidgets('Counter increments when button is pressed', (tester) async {
-  // Inject the controller
+  // ReactiveStateWidget handles controller injection automatically
+  await tester.pumpWidget(
+    MaterialApp(home: CounterScreen()),
+  );
+  
+  // Verify initial state
+  expect(find.text('0'), findsOneWidget);
+  
+  // Tap the increment button
+  await tester.tap(find.byIcon(Icons.add));
+  await tester.pump();
+  
+  // Verify the count increased
+  expect(find.text('1'), findsOneWidget);
+  
+  // No manual cleanup needed - ReactiveStateWidget handles it
+});
+```
+
+### Testing ReactiveState
+
+```dart
+testWidgets('Settings screen updates theme', (tester) async {
+  await tester.pumpWidget(
+    MaterialApp(home: SettingsScreen()),
+  );
+  
+  // Controller is automatically bound via ReactiveState
+  final controller = Dependency.find<SettingsController>();
+  
+  expect(find.text('Light'), findsOneWidget);
+  
+  controller.toggleTheme();
+  await tester.pump();
+  
+  expect(find.text('Dark'), findsOneWidget);
+});
+```
+
+### Testing Manual Dependency Injection
+
+When using manual `Dependency.put()`:
+
+```dart
+testWidgets('Counter increments when button is pressed', (tester) async {
+  // Inject the controller manually
   Dependency.put<CounterController>(CounterController());
   
   await tester.pumpWidget(
@@ -193,10 +361,12 @@ testWidgets('Counter increments when button is pressed', (tester) async {
   // Verify the count increased
   expect(find.text('Count: 1'), findsOneWidget);
   
-  // Clean up
+  // Clean up manually
   Dependency.delete<CounterController>();
 });
 ```
+
+**Best Practice:** Prefer `ReactiveStateWidget` or `ReactiveState` in tests to avoid manual cleanup and reduce boilerplate.
 
 ## Debugging
 
@@ -216,9 +386,15 @@ Reactiv includes built-in logging for debugging. Check the console output to see
 - Verify the Observer's `listenable` parameter references the correct reactive variable
 
 **Issue: Memory leaks**
-- Always call `Dependency.delete<T>()` when controllers are no longer needed
+- Use `ReactiveStateWidget` or `ReactiveState` for automatic controller cleanup
+- When using manual injection, always call `Dependency.delete<T>()` when controllers are no longer needed
 - Remove listeners in the `onClose()` method
-- Consider controller lifecycle and when they should be disposed
+- Set `autoDispose: true` in `BindController` (default behavior)
+
+**Issue: Controller not found**
+- When using `ReactiveStateWidget` or `ReactiveState`, ensure `bindController()` returns a valid `BindController`
+- When using manual injection, ensure `Dependency.put()` is called before accessing the controller
+- Check that controller type matches exactly (generics matter)
 
 **Issue: Multiple rebuilds**
 - Use multiple small Observer widgets instead of one large one

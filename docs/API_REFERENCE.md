@@ -84,6 +84,126 @@ final controller = Dependency.find<MyController>();
 Dependency.delete<MyController>();
 ```
 
+### ReactiveStateWidget
+
+A convenience base class that replaces `StatefulWidget` and automatically handles controller lifecycle management.
+
+**Usage:**
+
+```dart
+class MyScreen extends ReactiveStateWidget<MyController> {
+  const MyScreen({super.key});
+
+  @override
+  BindController<MyController>? bindController() {
+    // Controller is auto-injected and auto-disposed
+    return BindController(controller: () => MyController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Access controller directly via 'controller' getter
+    return Observer(
+      listenable: controller.someValue,
+      listener: (value) => Text('$value'),
+    );
+  }
+}
+```
+
+**Features:**
+- Automatically calls `Dependency.put()` in `initState()`
+- Automatically calls `Dependency.delete()` in `dispose()` (when `autoDispose: true`)
+- Access controller via `controller` getter without calling `Dependency.find()`
+- Supports `tag` parameter for multiple instances of same controller type
+
+**BindController Options:**
+
+```dart
+BindController(
+  controller: () => MyController(),
+  autoDispose: true,  // Default: automatically dispose controller
+)
+```
+
+**Lifecycle Methods:**
+
+```dart
+class MyScreen extends ReactiveStateWidget<MyController> {
+  @override
+  void initState() {
+    super.initState();
+    // Called when widget is initialized
+  }
+
+  @override
+  void initStateWithContext(BuildContext context) {
+    super.initStateWithContext(context);
+    // Called one frame after initState with context
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Called when widget is disposed
+  }
+}
+```
+
+### ReactiveState
+
+A convenience base class that extends `State` for use with `StatefulWidget`, providing automatic controller lifecycle management.
+
+**Usage:**
+
+```dart
+class MyScreen extends StatefulWidget {
+  const MyScreen({super.key});
+
+  @override
+  State<MyScreen> createState() => _MyScreenState();
+}
+
+class _MyScreenState extends ReactiveState<MyScreen, MyController> {
+  @override
+  BindController<MyController>? bindController() {
+    return BindController(controller: () => MyController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer(
+      listenable: controller.someValue,
+      listener: (value) => Text('$value'),
+    );
+  }
+}
+```
+
+**When to Use:**
+- Use `ReactiveStateWidget` for most cases (simpler, less boilerplate)
+- Use `ReactiveState` when you need access to all `StatefulWidget` lifecycle methods
+- Use `ReactiveState` when integrating with existing `StatefulWidget` code
+
+**Tagged Controllers:**
+
+Both `ReactiveStateWidget` and `ReactiveState` support tags for multiple instances:
+
+```dart
+class MyScreen extends ReactiveStateWidget<MyController> {
+  const MyScreen({super.key, String? tag}) : super(tag: tag);
+  
+  @override
+  BindController<MyController>? bindController() {
+    return BindController(controller: () => MyController());
+  }
+}
+
+// Usage
+MyScreen(tag: 'instance1')
+MyScreen(tag: 'instance2')
+```
+
 ## Advanced Features
 
 ### Selectors

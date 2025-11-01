@@ -110,6 +110,109 @@ class _CounterScreenState extends State<CounterScreen> {
 
 4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the Observer to rebuild with the new value.
 
+## Alternative: Using ReactiveStateWidget
+
+Reactiv provides `ReactiveStateWidget` as a convenient alternative to `StatefulWidget` that handles controller lifecycle management automatically.
+
+### With ReactiveStateWidget (Recommended)
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:reactiv/reactiv.dart';
+
+class CounterScreen extends ReactiveStateWidget<CounterController> {
+  const CounterScreen({super.key});
+
+  @override
+  BindController<CounterController>? bindController() {
+    // Automatically injects and disposes the controller
+    return BindController(controller: () => CounterController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: Center(
+        child: Observer(
+          listenable: controller.count,
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+**Benefits**:
+- Controller is automatically injected via `bindController()`
+- Controller is automatically disposed when the widget is removed
+- Access controller via `controller` getter (no need for `Dependency.find()`)
+- Cleaner, less boilerplate code
+
+### Using ReactiveState with StatefulWidget
+
+If you prefer `StatefulWidget`, you can use `ReactiveState`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:reactiv/reactiv.dart';
+
+class CounterScreen extends StatefulWidget {
+  const CounterScreen({super.key});
+
+  @override
+  State<CounterScreen> createState() => _CounterScreenState();
+}
+
+class _CounterScreenState extends ReactiveState<CounterScreen, CounterController> {
+  @override
+  BindController<CounterController>? bindController() {
+    return BindController(controller: () => CounterController());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Counter App'),
+      ),
+      body: Center(
+        child: Observer(
+          listenable: controller.count,
+          listener: (count) {
+            return Text(
+              'Count: $count',
+              style: const TextStyle(fontSize: 24),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.increment,
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+**When to use ReactiveState**:
+- When you need StatefulWidget lifecycle methods
+- When you need to manage additional local state
+- When integrating with existing StatefulWidget code
+
 ## Next Steps
 
 - Check out the [API Reference](API_REFERENCE.md) to learn about all available reactive types and features
