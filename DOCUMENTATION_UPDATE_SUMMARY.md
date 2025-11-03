@@ -2,7 +2,7 @@
 
 ## ✅ Complete Documentation Update
 
-All documentation has been updated to use the new **ReactiveBuilder** and **ReactiveBuilderN** widgets instead of the deprecated Observer widgets.
+All documentation has been updated to use the new **ReactiveBuilder** and **MultiReactiveBuilder** widgets instead of the deprecated Observer widgets.
 
 ## 📝 Files Updated
 
@@ -15,7 +15,7 @@ All documentation has been updated to use the new **ReactiveBuilder** and **Reac
 
 - ✅ **example/README.md** - Example app documentation
   - Complete rewrite with ReactiveBuilder examples
-  - Added ReactiveBuilderN examples
+  - Added MultiReactiveBuilder examples
   - Added learning resources
 
 ### Getting Started & Guides
@@ -26,7 +26,7 @@ All documentation has been updated to use the new **ReactiveBuilder** and **Reac
 
 - ✅ **doc/ADVANCED.md**
   - Replaced Observer with ReactiveBuilder
-  - Replaced Observer2/3/4 with ReactiveBuilderN
+  - Replaced Observer2/3/4 with MultiReactiveBuilder
   - Updated all advanced patterns
 
 - ✅ **doc/API_REFERENCE.md**
@@ -41,7 +41,7 @@ All documentation has been updated to use the new **ReactiveBuilder** and **Reac
 - ✅ **CHANGELOG.md**
   - Added [Unreleased] section documenting:
     - New ReactiveBuilder widget
-    - New ReactiveBuilderN widget
+    - New MultiReactiveBuilder widget
     - Observer widget family deprecation
     - Migration guide reference
     - Testing coverage
@@ -78,7 +78,7 @@ ReactiveBuilder<int>(
 )
 ```
 
-### Observer2/3/4/N → ReactiveBuilderN
+### Observer2/3/4/N → MultiReactiveBuilder
 ```dart
 // OLD
 Observer2(
@@ -88,7 +88,7 @@ Observer2(
 )
 
 // NEW
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [name, age],
   builder: (context) => Text('${name.value}, ${age.value}'),
 )
@@ -113,7 +113,7 @@ ReactiveBuilderN(
 
 ### Recommended (New)
 - ReactiveBuilder<T> - For single reactive variables
-- ReactiveBuilderN - For multiple reactive variables
+- MultiReactiveBuilder - For multiple reactive variables
 
 ### Removal Timeline
 - **Current**: Deprecated with warnings

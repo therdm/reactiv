@@ -6,7 +6,7 @@
 - [x] All tests passing (109/109)
 - [x] No breaking changes
 - [x] ReactiveBuilder widget implemented
-- [x] ReactiveBuilderN widget implemented
+- [x] MultiReactiveBuilder widget implemented
 - [x] Observer widgets deprecated
 - [x] Backward compatibility maintained
 
@@ -122,7 +122,7 @@ flutter pub publish
 - New Tests: 9 (ReactiveBuilder)
 - Test Categories:
   - ReactiveBuilder Tests: 5
-  - ReactiveBuilderN Tests: 4
+  - MultiReactiveBuilder Tests: 4
 
 ### Code Quality
 - Analysis Issues: 23 total
@@ -144,7 +144,7 @@ flutter pub publish
    - Better type safety
    - Optional side effects listener
 
-2. **New ReactiveBuilderN Widget**
+2. **New MultiReactiveBuilder Widget**
    - Replaces Observer2/3/4/N
    - Single widget for multiple reactives
    - More maintainable

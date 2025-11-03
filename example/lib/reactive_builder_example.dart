@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
 
-/// Example demonstrating the new ReactiveBuilder and ReactiveBuilderN widgets
+/// Example demonstrating the new ReactiveBuilder and MultiReactiveBuilder widgets
 /// This replaces the deprecated Observer widget
 
 class ReactiveBuilderExample extends StatefulWidget {
@@ -56,12 +56,12 @@ class _ReactiveBuilderExampleState extends State<ReactiveBuilderExample> {
             ),
             const SizedBox(height: 32),
             const Text(
-              'Multiple reactives with ReactiveBuilderN:',
+              'Multiple reactives with MultiReactiveBuilder:',
               style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
-            // ReactiveBuilderN for multiple reactive variables
-            ReactiveBuilderN(
+            // MultiReactiveBuilder for multiple reactive variables
+            MultiReactiveBuilder(
               reactives: [controller.name, controller.age, controller.city],
               builder: (context) {
                 return Text(

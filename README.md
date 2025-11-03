@@ -277,7 +277,7 @@ ReactiveBuilder<int>(
 )
 
 // Conditional rebuild for multiple reactives
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [user, settings],
   builder: (context) => UserProfile(user.value, settings.value),
   buildWhen: () => user.value.isActive,  // Only when user is active
@@ -395,8 +395,8 @@ count.once((value) => showWelcomeDialog());
 Observe multiple reactive variables:
 
 ```dart
-// Use ReactiveBuilderN for multiple reactives
-ReactiveBuilderN(
+// Use MultiReactiveBuilder for multiple reactives
+MultiReactiveBuilder(
   reactives: [firstName, lastName, age],
   builder: (context) {
     return Text('${firstName.value} ${lastName.value}, ${age.value}');
@@ -700,8 +700,8 @@ ReactiveBuilder<int>(
   builder: (context, val) => Text('$val'),
 )
 
-// ✅ Use ReactiveBuilderN for multiple reactives
-ReactiveBuilderN(
+// ✅ Use MultiReactiveBuilder for multiple reactives
+MultiReactiveBuilder(
   reactives: [firstName, lastName],
   builder: (context) => Text('${firstName.value} ${lastName.value}'),
 )

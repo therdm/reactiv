@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ✨ New Features
 
-#### ReactiveBuilder & ReactiveBuilderN Widgets
+#### ReactiveBuilder & MultiReactiveBuilder Widgets
 - **NEW**: `ReactiveBuilder<T>` widget for observing single reactive variables
   - Cleaner API with `reactiv` parameter instead of `listenable`
   - Builder receives unwrapped value directly: `(context, value)`
@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **NEW**: `buildWhen` - Conditional rebuild based on value changes
   - **NEW**: `listenWhen` - Conditional listener invocation
   
-- **NEW**: `ReactiveBuilderN` widget for observing multiple reactive variables
+- **NEW**: `MultiReactiveBuilder` widget for observing multiple reactive variables
   - Replaces Observer2, Observer3, Observer4, and ObserverN
   - `reactives` parameter takes a list of reactive variables
   - Rebuilds when ANY reactive variable changes
@@ -38,7 +38,7 @@ ReactiveBuilder<int>(
 )
 
 // Multiple reactives with conditions
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [name, age, city],
   builder: (context) => Text('${name.value}, ${age.value}, ${city.value}'),
   listener: () => debugPrint('User info changed'),
@@ -51,10 +51,10 @@ ReactiveBuilderN(
 
 #### Observer Widget Family Deprecated
 - **DEPRECATED**: `Observer<T>` - Use `ReactiveBuilder<T>` instead
-- **DEPRECATED**: `Observer2<A, B>` - Use `ReactiveBuilderN` instead
-- **DEPRECATED**: `Observer3<A, B, C>` - Use `ReactiveBuilderN` instead
-- **DEPRECATED**: `Observer4<A, B, C, D>` - Use `ReactiveBuilderN` instead
-- **DEPRECATED**: `ObserverN` - Use `ReactiveBuilderN` instead
+- **DEPRECATED**: `Observer2<A, B>` - Use `MultiReactiveBuilder` instead
+- **DEPRECATED**: `Observer3<A, B, C>` - Use `MultiReactiveBuilder` instead
+- **DEPRECATED**: `Observer4<A, B, C, D>` - Use `MultiReactiveBuilder` instead
+- **DEPRECATED**: `ObserverN` - Use `MultiReactiveBuilder` instead
 
 **Note**: Deprecated widgets will continue to work but show warnings. They will be removed in v2.0.0.
 
@@ -70,7 +70,7 @@ ReactiveBuilderN(
 
 ### ✅ Testing
 
-- **NEW**: 13 comprehensive tests for ReactiveBuilder and ReactiveBuilderN
+- **NEW**: 13 comprehensive tests for ReactiveBuilder and MultiReactiveBuilder
 - **PASSING**: All 113 tests passing
 - **NEW**: Tests for `buildWhen` and `listenWhen` functionality
 - **COVERAGE**: No breaking changes to existing functionality
@@ -79,7 +79,7 @@ ReactiveBuilderN(
 
 Users can migrate gradually:
 1. Observer widgets continue to work (with deprecation warnings)
-2. New code should use ReactiveBuilder/ReactiveBuilderN
+2. New code should use ReactiveBuilder/MultiReactiveBuilder
 3. See [Migration Guide](MIGRATION_GUIDE.md) for step-by-step instructions
 4. Observer widgets will be removed in v2.0.0
 

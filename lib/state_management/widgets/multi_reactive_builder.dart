@@ -2,7 +2,7 @@ part of 'reactive_builder.dart';
 
 /// A widget that observes changes in multiple reactive variables and triggers a rebuild when any variable changes.
 ///
-/// [ReactiveBuilderN] listens to a list of reactive variables and rebuilds
+/// [MultiReactiveBuilder] listens to a list of reactive variables and rebuilds
 /// whenever any of them changes. This is useful when your UI depends on multiple
 /// reactive state values.
 ///
@@ -12,7 +12,7 @@ part of 'reactive_builder.dart';
 /// final age = Reactive<int>(25);
 /// final city = Reactive<String>('NYC');
 ///
-/// ReactiveBuilderN(
+/// MultiReactiveBuilder(
 ///   reactives: [name, age, city],
 ///   builder: (context) {
 ///     return Text('${name.value}, ${age.value}, ${city.value}');
@@ -24,8 +24,8 @@ part of 'reactive_builder.dart';
 ///   listenWhen: () => name.value.isNotEmpty,  // Only listen when name is not empty
 /// );
 /// ```
-class ReactiveBuilderN extends StatelessWidget {
-  /// Creates a [ReactiveBuilderN] widget.
+class MultiReactiveBuilder extends StatelessWidget {
+  /// Creates a [MultiReactiveBuilder] widget.
   ///
   /// The [reactives] parameter is a list of reactive variables to observe.
   /// The [builder] callback builds the widget tree and is called whenever
@@ -33,7 +33,7 @@ class ReactiveBuilderN extends StatelessWidget {
   /// The optional [listener] callback is invoked for side effects.
   /// The optional [buildWhen] callback determines whether to rebuild the widget.
   /// The optional [listenWhen] callback determines whether to invoke the listener.
-  const ReactiveBuilderN({
+  const MultiReactiveBuilder({
     Key? key,
     required this.reactives,
     required this.builder,

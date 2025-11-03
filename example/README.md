@@ -13,7 +13,7 @@ This directory contains example applications demonstrating the Reactiv state man
 
 2. **ReactiveBuilder Example** (`reactive_builder_example.dart`) 
    - Shows the new ReactiveBuilder widget
-   - ReactiveBuilderN for multiple reactives
+   - MultiReactiveBuilder for multiple reactives
    - Side effects with listener parameter
    - Nullable reactive variables
 
@@ -61,12 +61,12 @@ ReactiveBuilder<int>(
 )
 ```
 
-### ReactiveBuilderN
+### MultiReactiveBuilder
 
 For observing multiple reactive variables:
 
 ```dart
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [name, age, city],
   builder: (context) {
     return Text('${name.value}, ${age.value}, ${city.value}');
