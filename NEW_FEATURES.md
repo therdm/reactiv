@@ -42,9 +42,9 @@ reactive.close(); // Automatically cancels the subscription
 Observer now uses the correct `value` parameter from `ValueListenableBuilder`:
 
 ```dart
-Observer(
-  listenable: myReactive,
-  listener: (value) => Text('$value'), // Now uses the optimized value
+ReactiveBuilder(
+  reactiv: myReactive,
+  builder: (context, value) => Text('$value'), // Now uses the optimized value
 )
 ```
 

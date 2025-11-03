@@ -51,7 +51,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactiv: ^1.0.1
+  reactiv: ^1.1.0
 ```
 
 Then run:
@@ -95,9 +95,9 @@ void initState() {
 }
 ```
 
-### Step 3: Use Observer Widget
+### Step 3: Use ReactiveBuilder Widget
 
-Use the `Observer` widget to listen to reactive variables and rebuild the UI when they change:
+Use the `ReactiveBuilder` widget to listen to reactive variables and rebuild the UI when they change:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -126,9 +126,9 @@ class _CounterScreenState extends State<CounterScreen> {
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder<int>(
+          reactiv: controller.count,
+          builder: (context, count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),
@@ -151,9 +151,9 @@ class _CounterScreenState extends State<CounterScreen> {
 
 2. **Dependency Injection**: You used `Dependency.put()` to register the controller instance and `Dependency.find()` to retrieve it. This ensures you're using the same instance throughout your app.
 
-3. **Observer Widget**: The `Observer` widget listens to the `count` reactive variable. Whenever `count.value` changes, only the Observer widget rebuilds—not the entire screen.
+3. **ReactiveBuilder Widget**: The `ReactiveBuilder` widget listens to the `count` reactive variable. Whenever `count.value` changes, only the ReactiveBuilder widget rebuilds—not the entire screen. The builder receives the unwrapped value directly.
 
-4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the Observer to rebuild with the new value.
+4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the ReactiveBuilder to rebuild with the new value.
 
 ## Alternative: Using ReactiveStateWidget
 
@@ -181,9 +181,9 @@ class CounterScreen extends ReactiveStateWidget<CounterController> {
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder(
+          reactiv: controller.count,
+          builder: (context, count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),
@@ -234,9 +234,9 @@ class _CounterScreenState extends ReactiveState<CounterScreen, CounterController
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder<int>(
+          reactiv: controller.count,
+          builder: (context, count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),
@@ -260,7 +260,67 @@ class _CounterScreenState extends ReactiveState<CounterScreen, CounterController
 
 ## 🌟 Key Features
 
-### 1️⃣ Undo/Redo Support (NEW in v1.0.0)
+### 1️⃣ Conditional Rebuilds (NEW in v1.1.0)
+
+Control when widgets rebuild and listeners fire with `buildWhen` and `listenWhen`:
+
+```dart
+// Only rebuild on even numbers
+ReactiveBuilder<int>(
+  reactiv: counter,
+  builder: (context, count) => Text('Count: $count'),
+  buildWhen: (prev, current) => current % 2 == 0,
+  listenWhen: (prev, current) => current > 10,
+  listener: (count) {
+    showDialog(context: context, builder: (_) => Alert('High: $count'));
+  },
+)
+
+// Conditional rebuild for multiple reactives
+ReactiveBuilderN(
+  reactives: [user, settings],
+  builder: (context) => UserProfile(user.value, settings.value),
+  buildWhen: () => user.value.isActive,  // Only when user is active
+  listenWhen: () => settings.value.hasChanges,  // Only on actual changes
+  listener: () => saveSettings(),
+)
+```
+
+**Benefits:**
+- ⚡ Performance optimization - avoid unnecessary rebuilds
+- 🎯 Fine-grained control over UI updates
+- 💡 Clean separation of concerns
+
+### 2️⃣ Nullable Reactive Types
+
+Full support for nullable values with dedicated types:
+
+```dart
+// Nullable reactive types
+final username = ReactiveN<String>(null);
+final age = ReactiveIntN(null);
+final price = ReactiveDoubleN(null);
+final isEnabled = ReactiveBoolN(null);
+
+// Update values
+username.value = 'john_doe';
+age.value = 25;
+price.value = 99.99;
+isEnabled.value = true;
+
+// Set back to null
+username.value = null;
+
+// Use with ReactiveBuilder
+ReactiveBuilder<String?>(
+  reactiv: username,
+  builder: (context, name) {
+    return Text(name ?? 'Anonymous');
+  },
+)
+```
+
+### 3️⃣ Undo/Redo Support (NEW in v1.0.0)
 
 ```dart
 final text = ReactiveString('Hello', enableHistory: true);
@@ -275,7 +335,7 @@ print(text.canUndo); // true
 print(text.canRedo); // false
 ```
 
-### 2️⃣ Computed Values (NEW in v1.0.0)
+### 4️⃣ Computed Values (NEW in v1.0.0)
 
 Auto-updating derived state:
 
@@ -292,7 +352,7 @@ firstName.value = 'Jane';
 // fullName automatically updates to 'Jane Doe'!
 ```
 
-### 3️⃣ Debounce & Throttle (NEW in v1.0.0)
+### 5️⃣ Debounce & Throttle (NEW in v1.0.0)
 
 Perfect for search inputs and scroll events:
 
@@ -308,7 +368,7 @@ scrollPosition.setThrottle(Duration(milliseconds: 100));
 scrollPosition.updateThrottled(150); // Max once per 100ms
 ```
 
-### 4️⃣ Lazy Dependency Injection (NEW in v1.0.0)
+### 6️⃣ Lazy Dependency Injection (NEW in v1.0.0)
 
 Controllers created only when needed:
 
@@ -320,7 +380,7 @@ Dependency.lazyPut(() => ExpensiveController());
 final controller = Dependency.find<ExpensiveController>();
 ```
 
-### 5️⃣ Ever & Once Listeners (NEW in v1.0.0)
+### 7️⃣ Ever & Once Listeners (NEW in v1.0.0)
 
 ```dart
 // Called on every change
@@ -330,29 +390,29 @@ count.ever((value) => print('New value: $value'));
 count.once((value) => showWelcomeDialog());
 ```
 
-### 6️⃣ Multiple Observer Support
+### 8️⃣ Multiple Reactive Variables
 
 Observe multiple reactive variables:
 
 ```dart
-Observer2(
-  listenable: firstName,
-  listenable2: lastName,
-  listener: (first, last) => Text('$first $last'),
-)
-
-// Or for any number of variables:
-ObserverN(
-  listenable: [firstName, lastName, age, city],
-  listener: () => Text('${firstName.value} ${lastName.value}'),
+// Use ReactiveBuilderN for multiple reactives
+ReactiveBuilderN(
+  reactives: [firstName, lastName, age],
+  builder: (context) {
+    return Text('${firstName.value} ${lastName.value}, ${age.value}');
+  },
+  listener: () {
+    debugPrint('User info changed');
+  },
 )
 ```
 
-### 7️⃣ Type-Safe Reactive Types
+### 9️⃣ Type-Safe Reactive Types
 
 Built-in types for common use cases:
 
 ```dart
+// Non-nullable reactive types
 final name = ReactiveString('John');
 final age = ReactiveInt(25);
 final score = ReactiveDouble(98.5);
@@ -360,11 +420,33 @@ final isActive = ReactiveBool(true);
 final items = ReactiveList<String>(['A', 'B', 'C']);
 final tags = ReactiveSet<String>({'flutter', 'dart'});
 
+// Nullable reactive types
+final username = ReactiveN<String>(null);  // Generic nullable
+final count = ReactiveIntN(null);          // Nullable int
+final price = ReactiveDoubleN(null);       // Nullable double
+final isEnabled = ReactiveBoolN(null);     // Nullable bool
+
 // Or use generic for custom types
 final user = Reactive<User>(User());
+final optionalUser = ReactiveN<User>(null);
 ```
 
-### 8️⃣ Smart Dependency Management
+**Using with ReactiveBuilder:**
+```dart
+// Non-nullable
+ReactiveBuilder<int>(
+  reactiv: age,
+  builder: (context, value) => Text('Age: $value'),
+)
+
+// Nullable
+ReactiveBuilder<int?>(
+  reactiv: count,
+  builder: (context, value) => Text('Count: ${value ?? 0}'),
+)
+```
+
+### 🔟 Smart Dependency Management
 
 ```dart
 // Register with overwrite warning
@@ -385,7 +467,7 @@ Dependency.put(MyController(), fenix: true);
 Dependency.reset();
 ```
 
-### 9️⃣ Robust Logger Framework (NEW in v1.0.1)
+### 1️⃣1️⃣ Robust Logger Framework (NEW in v1.0.1)
 
 Production-ready logging with multiple levels, JSON formatting, and performance tracking:
 
@@ -475,9 +557,9 @@ Logger.config = LoggerConfig(
 ```dart
 final count = ReactiveInt(0);
 
-Observer(
-  listenable: count,
-  listener: (value) => Text('Count: $value'),
+ReactiveBuilder<int>(
+  reactiv: count,
+  builder: (context, value) => Text('Count: $value'),
 )
 ```
 
@@ -579,7 +661,7 @@ class ApiController extends ReactiveController {
 
 ## ✅ The GetX alternative that does it right
 
-1. **Explicit Listening** - Observer knows exactly what it's listening to (no magic)
+1. **Explicit Listening** - ReactiveBuilder knows exactly what it's listening to (no magic)
 2. **Compile-Time Safety** - Red lines if you forget to specify what to listen to
 3. **Optimized by Design** - Encourages writing performant code
 4. **Focused Package** - ~150 APIs vs GetX's 2400+ APIs
@@ -590,9 +672,9 @@ class ApiController extends ReactiveController {
 
 **Reactiv:**
 ```dart
-Observer(
-  listenable: controller.count, // Explicit - you know what updates this
-  listener: (count) => Text('$count'),
+ReactiveBuilder<int>(
+  reactiv: controller.count, // Explicit - you know what updates this
+  builder: (context, count) => Text('$count'),
 )
 ```
 
@@ -612,8 +694,17 @@ Obx(() {
 ### ✅ Do's
 
 ```dart
-// ✅ Use specific observers
-Observer(listenable: count, listener: (val) => Text('$val'))
+// ✅ Use ReactiveBuilder for single reactives
+ReactiveBuilder<int>(
+  reactiv: count,
+  builder: (context, val) => Text('$val'),
+)
+
+// ✅ Use ReactiveBuilderN for multiple reactives
+ReactiveBuilderN(
+  reactives: [firstName, lastName],
+  builder: (context) => Text('${firstName.value} ${lastName.value}'),
+)
 
 // ✅ Enable history only when needed
 final text = ReactiveString('', enableHistory: true);
@@ -640,10 +731,10 @@ Logger.e('Error occurred', error: e, stackTrace: stack);
 ### ❌ Don'ts
 
 ```dart
-// ❌ Don't use Observer at root of entire page
-Observer(
-  listenable: controller.anything,
-  listener: (_) => EntirePageWidget(), // Rebuilds everything!
+// ❌ Don't use ReactiveBuilder at root of entire page
+ReactiveBuilder(
+  reactiv: controller.anything,
+  builder: (context, _) => EntirePageWidget(), // Rebuilds everything!
 )
 
 // ❌ Don't enable history on everything

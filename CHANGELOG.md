@@ -5,6 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-11-03
+
+### ✨ New Features
+
+#### ReactiveBuilder & ReactiveBuilderN Widgets
+- **NEW**: `ReactiveBuilder<T>` widget for observing single reactive variables
+  - Cleaner API with `reactiv` parameter instead of `listenable`
+  - Builder receives unwrapped value directly: `(context, value)`
+  - Optional `listener` parameter for side effects
+  - Works with both nullable and non-nullable types
+  - **NEW**: `buildWhen` - Conditional rebuild based on value changes
+  - **NEW**: `listenWhen` - Conditional listener invocation
+  
+- **NEW**: `ReactiveBuilderN` widget for observing multiple reactive variables
+  - Replaces Observer2, Observer3, Observer4, and ObserverN
+  - `reactives` parameter takes a list of reactive variables
+  - Rebuilds when ANY reactive variable changes
+  - Cleaner than nested builders
+  - **NEW**: `buildWhen` - Conditional rebuild based on state
+  - **NEW**: `listenWhen` - Conditional listener invocation
+
+**Example:**
+```dart
+// Single reactive with conditional rebuild
+ReactiveBuilder<int>(
+  reactiv: controller.count,
+  builder: (context, count) => Text('Count: $count'),
+  listener: (count) => debugPrint('Changed: $count'),
+  buildWhen: (prev, current) => current % 2 == 0,  // Only rebuild on even
+  listenWhen: (prev, current) => current > 10,      // Only listen when > 10
+)
+
+// Multiple reactives with conditions
+ReactiveBuilderN(
+  reactives: [name, age, city],
+  builder: (context) => Text('${name.value}, ${age.value}, ${city.value}'),
+  listener: () => debugPrint('User info changed'),
+  buildWhen: () => age.value >= 18,           // Only rebuild when adult
+  listenWhen: () => name.value.isNotEmpty,    // Only listen when name set
+)
+```
+
+### ⚠️ Deprecations
+
+#### Observer Widget Family Deprecated
+- **DEPRECATED**: `Observer<T>` - Use `ReactiveBuilder<T>` instead
+- **DEPRECATED**: `Observer2<A, B>` - Use `ReactiveBuilderN` instead
+- **DEPRECATED**: `Observer3<A, B, C>` - Use `ReactiveBuilderN` instead
+- **DEPRECATED**: `Observer4<A, B, C, D>` - Use `ReactiveBuilderN` instead
+- **DEPRECATED**: `ObserverN` - Use `ReactiveBuilderN` instead
+
+**Note**: Deprecated widgets will continue to work but show warnings. They will be removed in v2.0.0.
+
+### 📚 Documentation
+
+- **NEW**: [Migration Guide](MIGRATION_GUIDE.md) - Complete guide for migrating from Observer to ReactiveBuilder
+- **UPDATED**: All documentation updated to use ReactiveBuilder
+  - README.md - Updated all examples and added nullable types documentation
+  - GETTING_STARTED.md - Updated quick start
+  - ADVANCED.md - Updated advanced patterns
+  - API_REFERENCE.md - Updated API documentation
+  - Example app - New ReactiveBuilder examples
+
+### ✅ Testing
+
+- **NEW**: 13 comprehensive tests for ReactiveBuilder and ReactiveBuilderN
+- **PASSING**: All 113 tests passing
+- **NEW**: Tests for `buildWhen` and `listenWhen` functionality
+- **COVERAGE**: No breaking changes to existing functionality
+
+### 🔄 Migration Path
+
+Users can migrate gradually:
+1. Observer widgets continue to work (with deprecation warnings)
+2. New code should use ReactiveBuilder/ReactiveBuilderN
+3. See [Migration Guide](MIGRATION_GUIDE.md) for step-by-step instructions
+4. Observer widgets will be removed in v2.0.0
+
 ## [1.0.3] - 2024-11-02
 
 ### 🐛 Bug Fixes

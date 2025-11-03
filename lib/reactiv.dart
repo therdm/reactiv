@@ -4,6 +4,7 @@ export 'controllers/reactive_controller.dart';
 export 'dependency_management/dependency.dart';
 export 'state_management/reactive_types.dart';
 export 'state_management/widgets/observer.dart';
+export 'state_management/widgets/reactive_builder.dart';
 export 'utils/logger.dart';
 export 'utils/extensions.dart';
 export 'utils/exceptions.dart';

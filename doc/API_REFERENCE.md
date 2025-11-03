@@ -25,8 +25,8 @@ A widget that observes changes in a reactive variable and rebuilds when the vari
 
 ```dart
 Observer<T>(
-  listenable: reactiveVariable,
-  listener: (value) => Widget,
+  reactiv: reactiveVariable,
+  builder: (value) => Widget,
 )
 ```
 
@@ -103,9 +103,9 @@ class MyScreen extends ReactiveStateWidget<MyController> {
   @override
   Widget build(BuildContext context) {
     // Access controller directly via 'controller' getter
-    return Observer(
-      listenable: controller.someValue,
-      listener: (value) => Text('$value'),
+    return ReactiveBuilder<
+      reactiv: controller.someValue,
+      builder: (value) => Text('$value'),
     );
   }
 }
@@ -172,9 +172,9 @@ class _MyScreenState extends ReactiveState<MyScreen, MyController> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      listenable: controller.someValue,
-      listener: (value) => Text('$value'),
+    return ReactiveBuilder<
+      reactiv: controller.someValue,
+      builder: (value) => Text('$value'),
     );
   }
 }
