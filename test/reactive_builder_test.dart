@@ -4,7 +4,8 @@ import 'package:reactiv/reactiv.dart';
 
 void main() {
   group('ReactiveBuilder Tests', () {
-    testWidgets('ReactiveBuilder rebuilds when reactive value changes', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder rebuilds when reactive value changes',
+        (WidgetTester tester) async {
       final counter = Reactive<int>(0);
 
       await tester.pumpWidget(
@@ -31,7 +32,8 @@ void main() {
       counter.close();
     });
 
-    testWidgets('ReactiveBuilder calls listener when value changes', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder calls listener when value changes',
+        (WidgetTester tester) async {
       final counter = Reactive<int>(0);
       final List<int> listenerValues = [];
 
@@ -68,7 +70,8 @@ void main() {
       counter.close();
     });
 
-    testWidgets('ReactiveBuilder works with different types', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder works with different types',
+        (WidgetTester tester) async {
       final message = Reactive<String>('Hello');
 
       await tester.pumpWidget(
@@ -95,7 +98,8 @@ void main() {
       message.close();
     });
 
-    testWidgets('ReactiveBuilder works with nullable values', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder works with nullable values',
+        (WidgetTester tester) async {
       final name = ReactiveN<String>(null);
 
       await tester.pumpWidget(
@@ -128,7 +132,8 @@ void main() {
       name.close();
     });
 
-    testWidgets('Multiple ReactiveBuilders on same reactive variable', (WidgetTester tester) async {
+    testWidgets('Multiple ReactiveBuilders on same reactive variable',
+        (WidgetTester tester) async {
       final counter = Reactive<int>(0);
 
       await tester.pumpWidget(
@@ -168,7 +173,8 @@ void main() {
   });
 
   group('MultiReactiveBuilder Tests', () {
-    testWidgets('MultiReactiveBuilder rebuilds when any reactive value changes', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder rebuilds when any reactive value changes',
+        (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
 
@@ -201,7 +207,8 @@ void main() {
       age.close();
     });
 
-    testWidgets('ReactiveBuilder buildWhen controls rebuild', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder buildWhen controls rebuild',
+        (WidgetTester tester) async {
       final counter = Reactive<int>(0);
       int buildCount = 0;
 
@@ -214,7 +221,8 @@ void main() {
                 buildCount++;
                 return Text('Count: $value');
               },
-              buildWhen: (prev, current) => current % 2 == 0, // Only rebuild on even numbers
+              buildWhen: (prev, current) =>
+                  current % 2 == 0, // Only rebuild on even numbers
             ),
           ),
         ),
@@ -236,7 +244,8 @@ void main() {
       counter.close();
     });
 
-    testWidgets('ReactiveBuilder listenWhen controls listener', (WidgetTester tester) async {
+    testWidgets('ReactiveBuilder listenWhen controls listener',
+        (WidgetTester tester) async {
       final counter = Reactive<int>(0);
       final List<int> listenerValues = [];
 
@@ -251,7 +260,8 @@ void main() {
               listener: (value) {
                 listenerValues.add(value);
               },
-              listenWhen: (prev, current) => current > 5, // Only listen when > 5
+              listenWhen: (prev, current) =>
+                  current > 5, // Only listen when > 5
             ),
           ),
         ),
@@ -275,7 +285,8 @@ void main() {
       counter.close();
     });
 
-    testWidgets('MultiReactiveBuilder calls listener when any value changes', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder calls listener when any value changes',
+        (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       int listenerCallCount = 0;
@@ -309,7 +320,8 @@ void main() {
       age.close();
     });
 
-    testWidgets('MultiReactiveBuilder works with three reactive variables', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder works with three reactive variables',
+        (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       final city = Reactive<String>('NYC');
@@ -339,7 +351,8 @@ void main() {
       city.close();
     });
 
-    testWidgets('MultiReactiveBuilder works with empty list', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder works with empty list',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -356,7 +369,8 @@ void main() {
       expect(find.text('No reactives'), findsOneWidget);
     });
 
-    testWidgets('MultiReactiveBuilder buildWhen controls rebuild', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder buildWhen controls rebuild',
+        (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       int buildCount = 0;
@@ -381,7 +395,8 @@ void main() {
 
       age.value = 15; // Under 18 - should not rebuild
       await tester.pump();
-      expect(find.text('John, 25'), findsOneWidget); // Should still show old value
+      expect(
+          find.text('John, 25'), findsOneWidget); // Should still show old value
       expect(buildCount, initialBuildCount);
 
       age.value = 20; // Adult - should rebuild
@@ -393,7 +408,8 @@ void main() {
       age.close();
     });
 
-    testWidgets('MultiReactiveBuilder listenWhen controls listener', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder listenWhen controls listener',
+        (WidgetTester tester) async {
       final name = Reactive<String>('');
       final age = Reactive<int>(25);
       int listenerCallCount = 0;
@@ -409,7 +425,8 @@ void main() {
               listener: () {
                 listenerCallCount++;
               },
-              listenWhen: () => name.value.isNotEmpty, // Only listen when name is not empty
+              listenWhen: () =>
+                  name.value.isNotEmpty, // Only listen when name is not empty
             ),
           ),
         ),

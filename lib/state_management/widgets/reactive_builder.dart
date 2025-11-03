@@ -122,7 +122,7 @@ class _ReactiveBuilderState<T> extends State<ReactiveBuilder<T>> {
       valueListenable: widget.reactiv.valueNotifier,
       builder: (BuildContext context, T value, Widget? child) {
         final previous = _previousValue ?? value;
-        
+
         // Check if listener should be called (not on first build)
         if (widget.listener != null && !_isFirstBuild) {
           final shouldListen = widget.listenWhen?.call(previous, value) ?? true;
@@ -133,14 +133,15 @@ class _ReactiveBuilderState<T> extends State<ReactiveBuilder<T>> {
             });
           }
         }
-        
+
         // Check if widget should rebuild (not on first build)
-        final shouldBuild = _isFirstBuild || (widget.buildWhen?.call(previous, value) ?? true);
-        
+        final shouldBuild =
+            _isFirstBuild || (widget.buildWhen?.call(previous, value) ?? true);
+
         // Update state
         _previousValue = value;
         _isFirstBuild = false;
-        
+
         // Return builder or previous child
         if (shouldBuild) {
           return widget.builder(context, value);

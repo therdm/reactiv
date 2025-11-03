@@ -85,19 +85,21 @@ class MultiReactiveBuilder extends StatelessWidget {
     if (reactives.length <= index) {
       return builder(context);
     }
-    
+
     return ReactiveBuilder(
       reactiv: reactives[index],
       builder: (ctx, _) {
         return _buildObserver(ctx, index + 1);
       },
-      listener: listener != null ? (_) {
-        // Check listenWhen condition
-        if (listenWhen != null && !listenWhen!()) {
-          return; // Don't call listener if condition is false
-        }
-        listener!();
-      } : null,
+      listener: listener != null
+          ? (_) {
+              // Check listenWhen condition
+              if (listenWhen != null && !listenWhen!()) {
+                return; // Don't call listener if condition is false
+              }
+              listener!();
+            }
+          : null,
       buildWhen: buildWhen != null ? (_, __) => buildWhen!() : null,
     );
   }
