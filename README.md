@@ -11,6 +11,8 @@
 
 *Lightweight • Powerful • Type-Safe • Production-Ready*
 
+📚 **[Official Documentation](https://reactivlibrary.dev)**
+
 [Get Started](#-quick-start) • [Documentation](#-documentation) • [Examples](#-examples) • [Features](#-key-features)
 
 </div>

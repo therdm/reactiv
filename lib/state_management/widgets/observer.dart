@@ -26,7 +26,8 @@ part 'observer_n.dart';
 /// ```
 ///
 /// For nullable types, use [ObserverN] instead.
-@Deprecated('Use ReactiveBuilder instead. Observer will be removed in a future version.')
+@Deprecated(
+    'Use ReactiveBuilder instead. Observer will be removed in a future version.')
 class Observer<T> extends StatefulWidget {
   /// Creates an [Observer] widget.
   ///

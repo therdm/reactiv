@@ -1,7 +1,8 @@
 part of 'observer.dart';
 
 /// A widget that observes changes in two reactive variables and triggers a rebuild when either variable changes.
-@Deprecated('Use ReactiveBuilder instead. Observer2 will be removed in a future version.')
+@Deprecated(
+    'Use ReactiveBuilder instead. Observer2 will be removed in a future version.')
 class Observer2<A, B> extends StatelessWidget {
   /// Constructs an [Observer2] widget.
   ///
@@ -43,7 +44,8 @@ class Observer2<A, B> extends StatelessWidget {
 }
 
 /// A widget that observes changes in three reactive variables and triggers a rebuild when any of the variables changes.
-@Deprecated('Use ReactiveBuilder instead. Observer3 will be removed in a future version.')
+@Deprecated(
+    'Use ReactiveBuilder instead. Observer3 will be removed in a future version.')
 class Observer3<A, B, C> extends StatelessWidget {
   /// Constructs an [Observer3] widget.
   ///
@@ -96,7 +98,8 @@ class Observer3<A, B, C> extends StatelessWidget {
 }
 
 /// A widget that observes changes in four reactive variables and triggers a rebuild when any of the variables changes.
-@Deprecated('Use ReactiveBuilder instead. Observer4 will be removed in a future version.')
+@Deprecated(
+    'Use ReactiveBuilder instead. Observer4 will be removed in a future version.')
 class Observer4<A, B, C, D> extends StatelessWidget {
   /// Constructs an [Observer4] widget.
   ///
@@ -148,7 +151,8 @@ class Observer4<A, B, C, D> extends StatelessWidget {
 }
 
 /// A widget that observes changes in multiple reactive variables and triggers a rebuild when any variable changes.
-@Deprecated('Use ReactiveBuilder instead. ObserverN will be removed in a future version.')
+@Deprecated(
+    'Use ReactiveBuilder instead. ObserverN will be removed in a future version.')
 class ObserverN extends StatelessWidget {
   /// Constructs an [ObserverN] widget.
   ///

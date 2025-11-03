@@ -133,7 +133,7 @@ class ExampleController extends ReactiveController {
   void updateUserInfo() {
     final names = ['John', 'Jane', 'Alice', 'Bob', 'Charlie'];
     final cities = ['NYC', 'LA', 'Chicago', 'Boston', 'Seattle'];
-    
+
     name.value = names[count.value % names.length];
     age.value = 20 + (count.value % 50);
     city.value = cities[count.value % cities.length];
