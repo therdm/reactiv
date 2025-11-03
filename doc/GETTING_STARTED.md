@@ -8,7 +8,7 @@ Add Reactiv to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactiv: ^0.3.6
+  reactiv: ^1.1.0
 ```
 
 Then run:
@@ -50,9 +50,9 @@ void initState() {
 }
 ```
 
-### Step 3: Use Observer Widget
+### Step 3: Use ReactiveBuilder Widget
 
-Use the `Observer` widget to listen to reactive variables and rebuild the UI when they change:
+Use the `ReactiveBuilder` widget to listen to reactive variables and rebuild the UI when they change:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -81,9 +81,9 @@ class _CounterScreenState extends State<CounterScreen> {
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder<int>(
+          reactiv: controller.count,
+          builder: (context, count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),
@@ -106,9 +106,9 @@ class _CounterScreenState extends State<CounterScreen> {
 
 2. **Dependency Injection**: You used `Dependency.put()` to register the controller instance and `Dependency.find()` to retrieve it. This ensures you're using the same instance throughout your app.
 
-3. **Observer Widget**: The `Observer` widget listens to the `count` reactive variable. Whenever `count.value` changes, only the Observer widget rebuilds—not the entire screen.
+3. **ReactiveBuilder Widget**: The `ReactiveBuilder` widget listens to the `count` reactive variable. Whenever `count.value` changes, only the ReactiveBuilder widget rebuilds—not the entire screen. The builder receives the unwrapped value directly.
 
-4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the Observer to rebuild with the new value.
+4. **State Update**: When you call `controller.increment()`, it updates `count.value`, which automatically triggers the ReactiveBuilder to rebuild with the new value.
 
 ## Alternative: Using ReactiveStateWidget
 
@@ -136,9 +136,9 @@ class CounterScreen extends ReactiveStateWidget<CounterController> {
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder<
+          reactiv: controller.count,
+          builder: (count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),
@@ -189,9 +189,9 @@ class _CounterScreenState extends ReactiveState<CounterScreen, CounterController
         title: const Text('Counter App'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count,
-          listener: (count) {
+        child: ReactiveBuilder<
+          reactiv: controller.count,
+          builder: (count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),

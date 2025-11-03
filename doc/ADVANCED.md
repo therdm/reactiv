@@ -49,22 +49,22 @@ class ProfileScreen extends StatelessWidget {
     
     return Scaffold(
       appBar: AppBar(
-        title: Observer(
-          listenable: controller.username,
-          listener: (name) => Text(name),
+        title: ReactiveBuilder(
+          reactiv: controller.username,
+          builder: (context, name) => Text(name),
         ),
       ),
       body: Column(
         children: [
-          Observer(
-            listenable: controller.avatarUrl,
-            listener: (url) => CircleAvatar(
+          ReactiveBuilder(
+            reactiv: controller.avatarUrl,
+            builder: (context, url) => CircleAvatar(
               backgroundImage: NetworkImage(url),
             ),
           ),
-          Observer(
-            listenable: controller.bio,
-            listener: (bio) => Text(bio),
+          ReactiveBuilder(
+            reactiv: controller.bio,
+            builder: (context, bio) => Text(bio),
           ),
         ],
       ),
@@ -101,9 +101,9 @@ class SettingsScreen extends ReactiveStateWidget<SettingsController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      body: Observer(
-        listenable: controller.theme,
-        listener: (theme) => Text('Current theme: $theme'),
+      body: ReactiveBuilder(
+        reactiv: controller.theme,
+        builder: (context, theme) => Text('Current theme: $theme'),
       ),
     );
   }
@@ -151,9 +151,9 @@ class _SettingsScreenState extends ReactiveState<SettingsScreen, SettingsControl
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      body: Observer(
-        listenable: controller.theme,
-        listener: (theme) => Text('Current theme: $theme'),
+      body: ReactiveBuilder(
+        reactiv: controller.theme,
+        builder: (context, theme) => Text('Current theme: $theme'),
       ),
     );
   }
@@ -179,9 +179,9 @@ class ChatView extends ReactiveStateWidget<ChatController> {
   
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      listenable: controller.messages,
-      listener: (messages) => ListView.builder(
+    return ReactiveBuilder(
+      reactiv: controller.messages,
+        builder: (context, messages) => ListView.builder(
         itemCount: messages.length,
         itemBuilder: (context, index) => Text(messages[index]),
       ),
@@ -408,9 +408,9 @@ Place Observer widgets as deep in the widget tree as possible:
 
 ```dart
 // ❌ Bad: Entire screen rebuilds
-Observer(
-  listenable: controller.count,
-  listener: (count) => Scaffold(
+ReactiveBuilder(
+  reactiv: controller.count,
+  builder: (context, count) => Scaffold(
     body: ComplexWidget(),
   ),
 )
@@ -418,9 +418,9 @@ Observer(
 // ✅ Good: Only the Text widget rebuilds
 Scaffold(
   body: ComplexWidget(
-    child: Observer(
-      listenable: controller.count,
-      listener: (count) => Text('Count: $count'),
+    child: ReactiveBuilder(
+      reactiv: controller.count,
+      builder: (context, count) => Text('Count: $count'),
     ),
   ),
 )
@@ -493,7 +493,7 @@ Never create reactive variables inside the build method:
 @override
 Widget build(BuildContext context) {
   final count = ReactiveInt(0); // Wrong!
-  return Observer(...);
+  return ReactiveBuilder<...);
 }
 
 // ✅ Good: Create in controller or state
@@ -502,7 +502,7 @@ class _MyWidgetState extends State<MyWidget> {
   
   @override
   Widget build(BuildContext context) {
-    return Observer(listenable: count, ...);
+    return ReactiveBuilder(reactiv: count, ...);
   }
 }
 ```
@@ -533,9 +533,9 @@ class TodoListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Dependency.find<TodoController>();
-    return Observer(
-      listenable: controller.todos,
-      listener: (todos) => ListView.builder(...),
+    return ReactiveBuilder(
+      reactiv: controller.todos,
+      builder: (context, todos) => ListView.builder(...),
     );
   }
 }
