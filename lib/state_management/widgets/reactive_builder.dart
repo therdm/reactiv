@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
 
-part 'reactive_builder_n.dart';
+part 'multi_reactive_builder.dart';
 
 /// A widget that rebuilds when a reactive variable changes.
 ///

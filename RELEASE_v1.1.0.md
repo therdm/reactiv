@@ -34,12 +34,12 @@ ReactiveBuilder<int>(
 - ✅ Works with both nullable and non-nullable types
 - ✅ Better type inference
 
-### ReactiveBuilderN Widget
+### MultiReactiveBuilder Widget
 
 Observe multiple reactive variables simultaneously:
 
 ```dart
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [name, age, city],
   builder: (context) {
     return Text('${name.value}, ${age.value}, ${city.value}');
@@ -87,10 +87,10 @@ ReactiveBuilder<String?>(
 The following widgets are now deprecated but will continue to work:
 
 - `Observer<T>` → Use `ReactiveBuilder<T>`
-- `Observer2<A, B>` → Use `ReactiveBuilderN`
-- `Observer3<A, B, C>` → Use `ReactiveBuilderN`
-- `Observer4<A, B, C, D>` → Use `ReactiveBuilderN`
-- `ObserverN` → Use `ReactiveBuilderN`
+- `Observer2<A, B>` → Use `MultiReactiveBuilder`
+- `Observer3<A, B, C>` → Use `MultiReactiveBuilder`
+- `Observer4<A, B, C, D>` → Use `MultiReactiveBuilder`
+- `ObserverN` → Use `MultiReactiveBuilder`
 
 **Important Notes:**
 - ⚠️ Deprecated widgets show warnings but work normally
@@ -136,7 +136,7 @@ ReactiveBuilder<int>(
 )
 ```
 
-**Multiple Observers → ReactiveBuilderN**
+**Multiple Observers → MultiReactiveBuilder**
 ```dart
 // Before (v1.0.x)
 Observer2(
@@ -146,7 +146,7 @@ Observer2(
 )
 
 // After (v1.1.0)
-ReactiveBuilderN(
+MultiReactiveBuilder(
   reactives: [firstName, lastName],
   builder: (context) => Text('${firstName.value} ${lastName.value}'),
 )
@@ -159,7 +159,7 @@ ReactiveBuilderN(
 ## ✅ Testing & Quality
 
 - **109 tests passing** - All tests green
-- **9 new tests** - ReactiveBuilder and ReactiveBuilderN coverage
+- **9 new tests** - ReactiveBuilder and MultiReactiveBuilder coverage
 - **Zero breaking changes** - Full backward compatibility
 - **22 deprecation warnings** - Expected from deprecated Observer usage
 - **Production ready** - Battle-tested patterns
@@ -231,7 +231,7 @@ class CounterScreen extends ReactiveStateWidget<CounterController> {
 ## 📦 What's Included
 
 - ✅ ReactiveBuilder widget
-- ✅ ReactiveBuilderN widget
+- ✅ MultiReactiveBuilder widget
 - ✅ Full nullable types support
 - ✅ Comprehensive tests
 - ✅ Complete documentation

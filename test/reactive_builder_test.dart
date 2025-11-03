@@ -167,15 +167,15 @@ void main() {
     });
   });
 
-  group('ReactiveBuilderN Tests', () {
-    testWidgets('ReactiveBuilderN rebuilds when any reactive value changes', (WidgetTester tester) async {
+  group('MultiReactiveBuilder Tests', () {
+    testWidgets('MultiReactiveBuilder rebuilds when any reactive value changes', (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [name, age],
               builder: (context) {
                 return Text('${name.value}, ${age.value}');
@@ -275,7 +275,7 @@ void main() {
       counter.close();
     });
 
-    testWidgets('ReactiveBuilderN calls listener when any value changes', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder calls listener when any value changes', (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       int listenerCallCount = 0;
@@ -283,7 +283,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [name, age],
               builder: (context) {
                 return Text('${name.value}, ${age.value}');
@@ -309,7 +309,7 @@ void main() {
       age.close();
     });
 
-    testWidgets('ReactiveBuilderN works with three reactive variables', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder works with three reactive variables', (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       final city = Reactive<String>('NYC');
@@ -317,7 +317,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [name, age, city],
               builder: (context) {
                 return Text('${name.value}, ${age.value}, ${city.value}');
@@ -339,11 +339,11 @@ void main() {
       city.close();
     });
 
-    testWidgets('ReactiveBuilderN works with empty list', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder works with empty list', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [],
               builder: (context) {
                 return const Text('No reactives');
@@ -356,7 +356,7 @@ void main() {
       expect(find.text('No reactives'), findsOneWidget);
     });
 
-    testWidgets('ReactiveBuilderN buildWhen controls rebuild', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder buildWhen controls rebuild', (WidgetTester tester) async {
       final name = Reactive<String>('John');
       final age = Reactive<int>(25);
       int buildCount = 0;
@@ -364,7 +364,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [name, age],
               builder: (context) {
                 buildCount++;
@@ -393,7 +393,7 @@ void main() {
       age.close();
     });
 
-    testWidgets('ReactiveBuilderN listenWhen controls listener', (WidgetTester tester) async {
+    testWidgets('MultiReactiveBuilder listenWhen controls listener', (WidgetTester tester) async {
       final name = Reactive<String>('');
       final age = Reactive<int>(25);
       int listenerCallCount = 0;
@@ -401,7 +401,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ReactiveBuilderN(
+            body: MultiReactiveBuilder(
               reactives: [name, age],
               builder: (context) {
                 return Text('${name.value}, ${age.value}');
