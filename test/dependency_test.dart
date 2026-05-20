@@ -32,6 +32,10 @@ class TestController extends ReactiveController {
   }
 }
 
+abstract class BaseService {}
+
+class ConcreteService extends BaseService {}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -47,6 +51,14 @@ void main() {
 
       final found = Dependency.find<TestController>();
       expect(identical(controller, found), isTrue);
+    });
+
+    test('should putOf and find dependency by base type', () {
+      final service = ConcreteService();
+      Dependency.putOf<BaseService, ConcreteService>(service);
+
+      final found = Dependency.find<BaseService>();
+      expect(identical(service, found), isTrue);
     });
 
     test('should support tagged dependencies', () {
