@@ -91,6 +91,39 @@ class Dependency {
     return _dependencyStore[key];
   }
 
+  /// Registers a dependency under a specific BaseClass interface.
+  ///
+  /// This allows loose coupling. You can register a [ChildClass] but
+  /// retrieve it later using [find<BaseClass>()].
+  ///
+  /// Example:
+  /// ```dart
+  /// Dependency.putOf<DatabaseRepo, SqlDatabaseRepo>(SqlDatabaseRepo());
+  /// ```
+  static S putOf<B, S extends B>(
+    S dependency, {
+    String? tag,
+    bool fenix = false,
+  }) {
+    // Use the Base type 'B' for the key, NOT dependency.runtimeType
+    final key = _getKey(B, tag: tag);
+
+    if (_dependencyStore[key] != null) {
+      Logger.warn(
+        'Dependency of base type $B is being overwritten with $S at runtime',
+        tag: 'Dependency',
+      );
+    }
+
+    _dependencyStore[key] = dependency;
+
+    if (fenix) {
+      _lazyBuilders[key] = () => dependency;
+    }
+
+    return dependency;
+  }
+
   /// Registers a lazy dependency builder.
   ///
   /// The dependency instance is created only when [find] is called for the
