@@ -74,7 +74,12 @@ class _ReactiveStateWidgetState<T> extends State<ReactiveStateWidget<T>> {
     super.initState();
     final dep = widget.bindController();
     if (dep != null) {
-      Dependency.put<T>(dep.controller.call(), tag: widget.tag);
+      if (!dep.lazyBind) {
+        Dependency.putIfAbsent<T>(dep.controller, tag: widget.tag);
+      } else {
+        Dependency.lazyPutIfAbsent<T>(dep.controller, tag: widget.tag);
+      }
+      // Dependency.put<T>(dep.controller.call(), tag: widget.tag);
       _autoDispose = dep.autoDispose;
     }
     widget.initState();

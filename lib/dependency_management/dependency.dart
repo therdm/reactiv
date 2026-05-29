@@ -26,6 +26,12 @@ import '../utils/exceptions.dart';
 /// // Lazy registration
 /// Dependency.lazyPut<DataService>(() => DataService());
 ///
+/// // Conditional registration
+/// Dependency.putIfAbsent<CacheService>(() => CacheService());
+///
+/// // Lazy conditional registration
+/// Dependency.lazyPutIfAbsent<ApiClient>(() => ApiClient());
+///
 /// // With tags for multiple instances
 /// Dependency.put(UserController(), tag: 'admin');
 /// Dependency.put(UserController(), tag: 'guest');
@@ -37,6 +43,9 @@ class Dependency {
 
   /// Internal storage for lazy dependency builders.
   static final Map<String, dynamic Function()> _lazyBuilders = {};
+
+  /// Internal storage for fenix mode tracking.
+  static final Set<String> _fenixKeys = {};
 
   /// Generates a unique key for dependency storage.
   ///
@@ -54,7 +63,6 @@ class Dependency {
   /// Parameters:
   /// - [dependency]: The instance to register
   /// - [tag]: Optional identifier for multiple instances of the same type
-  /// - [fenix]: If `true`, the dependency will auto-recreate after deletion
   ///
   /// Returns the registered instance.
   ///
@@ -64,14 +72,10 @@ class Dependency {
   ///
   /// // With tag
   /// Dependency.put(AuthService(), tag: 'primary');
-  ///
-  /// // Phoenix mode - auto-recreates
-  /// Dependency.put(CacheService(), fenix: true);
   /// ```
   static T put<T>(
     T dependency, {
     String? tag,
-    bool fenix = false,
   }) {
     final key = _getKey(dependency.runtimeType, tag: tag);
 
@@ -84,9 +88,11 @@ class Dependency {
 
     _dependencyStore[key] = dependency;
 
-    if (fenix) {
-      _lazyBuilders[key] = () => dependency;
-    }
+    // // Note: fenix mode for put() is currently not fully implemented
+    // // For phoenix behavior with recreation, use lazyPut() instead
+    // if (fenix) {
+    //   // Reserved for future implementation
+    // }
 
     return _dependencyStore[key];
   }
@@ -137,7 +143,7 @@ class Dependency {
     _lazyBuilders[key] = builder;
 
     if (fenix) {
-      // Fenix lazy dependencies will recreate themselves
+      _fenixKeys.add(key);
     }
   }
 
@@ -179,6 +185,62 @@ class Dependency {
     final dependency = builder();
     _dependencyStore[key] = dependency;
     return dependency;
+  }
+
+  /// Registers a lazy dependency builder only if it doesn't already exist.
+  ///
+  /// If a dependency with the same type and tag exists (either instantiated
+  /// or as a lazy builder), this method does nothing. Otherwise, it registers
+  /// the lazy builder. The dependency instance is created only when [find] is
+  /// called for the first time.
+  ///
+  /// This combines the benefits of [lazyPut] (deferred initialization) and
+  /// [putIfAbsent] (conditional registration).
+  ///
+  /// Parameters:
+  /// - [builder]: Function that creates the dependency instance
+  /// - [tag]: Optional identifier for multiple instances
+  /// - [fenix]: If `true`, rebuilds the dependency after deletion
+  ///
+  /// Example:
+  /// ```dart
+  /// // First call registers the lazy builder
+  /// Dependency.lazyPutIfAbsent<DatabaseService>(
+  ///   () => DatabaseService(),
+  /// );
+  ///
+  /// // Second call does nothing (builder already registered)
+  /// Dependency.lazyPutIfAbsent<DatabaseService>(
+  ///   () => DatabaseService(),
+  /// );
+  ///
+  /// // With tag and phoenix mode
+  /// Dependency.lazyPutIfAbsent<CacheService>(
+  ///   () => CacheService(),
+  ///   tag: 'primary',
+  ///   fenix: true,
+  /// );
+  ///
+  /// // Instance is created only when first accessed
+  /// final db = Dependency.find<DatabaseService>();
+  /// ```
+  static void lazyPutIfAbsent<T>(
+    T Function() builder, {
+    String? tag,
+    bool fenix = false,
+  }) {
+    final key = _getKey(T, tag: tag);
+
+    // Check if dependency already exists (either instantiated or lazy)
+    if (_dependencyStore[key] != null || _lazyBuilders[key] != null) {
+      return;
+    }
+
+    _lazyBuilders[key] = builder;
+
+    if (fenix) {
+      _fenixKeys.add(key);
+    }
   }
 
   /// Retrieves a registered dependency instance.
@@ -296,9 +358,8 @@ class Dependency {
 
     _dependencyStore[key] = null;
 
-    // Don't remove lazy builder if fenix mode is enabled
-    final builder = _lazyBuilders[key];
-    if (builder != null) {
+    // Only remove lazy builder if NOT in fenix mode
+    if (_lazyBuilders[key] != null && !_fenixKeys.contains(key)) {
       _lazyBuilders.remove(key);
     }
 
@@ -335,6 +396,7 @@ class Dependency {
 
     _dependencyStore.clear();
     _lazyBuilders.clear();
+    _fenixKeys.clear();
     Logger.info('All dependencies have been reset', tag: 'Dependency');
   }
 }

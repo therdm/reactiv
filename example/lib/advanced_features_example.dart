@@ -111,6 +111,8 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
     super.initState();
     // Using lazyPut - controller will be created when first accessed
     Dependency.lazyPut<AdvancedController>(() => AdvancedController());
+    final controller = Dependency.find<AdvancedController>();
+    controller.changeName();
   }
 
   @override
@@ -133,14 +135,14 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Basic Observer
+            // Basic ReactiveBuilder
             _buildSection(
-              'Basic Observer',
-              Observer(
-                listenable: controller.count,
-                listener: (count) {
+              'Basic ReactiveBuilder',
+              ReactiveBuilder<int>(
+                reactiv: controller.count,
+                builder: (context, count) {
                   return Text(
-                    'Count: $count',
+                    'Count: ${controller.count.value}',
                     style: Theme.of(context).textTheme.headlineMedium,
                   );
                 },
@@ -150,15 +152,31 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
                 child: const Text('Increment'),
               ),
             ),
+            _buildSection(
+              'Basic ReactiveBuilder String',
+              ReactiveBuilder<String>(
+                reactiv: controller.name,
+                builder: (context, name) {
+                  return Text(
+                    'Name: ${controller.name.value}',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  );
+                },
+              ),
+              ElevatedButton(
+                onPressed: controller.changeName,
+                child: const Text('Change Name'),
+              ),
+            ),
 
             const Divider(height: 32),
 
             // Computed Reactive
             _buildSection(
               'Computed Reactive (Auto-updates)',
-              Observer(
-                listenable: controller.greeting,
-                listener: (greeting) {
+              ReactiveBuilder<String>(
+                reactiv: controller.greeting,
+                builder: (context, greeting) {
                   return Text(
                     greeting,
                     style: Theme.of(context).textTheme.titleLarge,
@@ -185,9 +203,9 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
             // History (Undo/Redo)
             _buildSection(
               'History (Undo/Redo)',
-              Observer(
-                listenable: controller.textWithHistory,
-                listener: (text) {
+              ReactiveBuilder<String>(
+                reactiv: controller.textWithHistory,
+                builder: (context, text) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -234,9 +252,9 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
             // Reactive List
             _buildSection(
               'Reactive List',
-              Observer(
-                listenable: controller.items,
-                listener: (items) {
+              ReactiveBuilder<List<String>>(
+                reactiv: controller.items,
+                builder: (context, items) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -279,13 +297,13 @@ class _AdvancedFeaturesDemoState extends State<AdvancedFeaturesDemo> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Observer(
-                    listenable: controller.searchQuery,
-                    listener: (query) {
+                  ReactiveBuilder<String>(
+                    reactiv: controller.searchQuery,
+                    builder: (context, query) {
                       return Text(
                         query.isEmpty
                             ? 'No search query'
-                            : 'Searching for: "$query"',
+                            : 'Searching for: "${controller.searchQuery.value}"',
                         style: const TextStyle(fontStyle: FontStyle.italic),
                       );
                     },

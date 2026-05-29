@@ -6,3 +6,10 @@ android/local.properties
 example/pubspec.lock
 ios/Flutter/
 macos/Flutter/ephemeral/
+
+# Exclude migration and cleanup documentation (not needed in published package)
+CLEANUP_NOTES.md
+COMPUTED_REACTIVE_MIGRATION.md
+BREAKING_CHANGES.md
+example/lib/computed_reactive_migration_example.dart
+

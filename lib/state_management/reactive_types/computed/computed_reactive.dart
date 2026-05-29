@@ -9,7 +9,7 @@ part of '../../reactive_types.dart';
 ///
 /// final fullName = ComputedReactive<String>(
 ///   () => '${firstName.value} ${lastName.value}',
-///   dependencies: [firstName, lastName],
+///   [firstName, lastName],
 /// );
 ///
 /// print(fullName.value); // 'John Doe'
