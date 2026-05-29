@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-11-20
+
+### ✨ New Features
+
+#### Dependency.putOf for Interface-based Injection
+- **NEW**: `Dependency.putOf<Base, Concrete>` method added.
+  - Allows registering a dependency under its base class/interface type while providing a concrete implementation.
+  - Enables cleaner decoupling and easier testing by allowing `Dependency.find<Base>()` to return the registered concrete instance.
+  - Supports `tag` and `fenix` parameters consistent with `Dependency.put()`.
+
+**Example:**
+```dart
+// Register concrete implementation under base class type
+Dependency.putOf<AuthService, FirebaseAuthService>(FirebaseAuthService());
+
+// Find using the base class type
+final auth = Dependency.find<AuthService>();
+```
+
+---
+
 ## [1.1.1] - 2025-11-10
 
 ### 🐛 Bug Fixes

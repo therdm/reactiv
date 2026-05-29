@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Reactiv v1.1.1 Publication Script
+# Reactiv v1.1.2 Publication Script
 # This script helps automate the publication process
 
 set -e  # Exit on error
 
 echo "=========================================="
-echo "   Reactiv v1.1.1 Publication Script"
+echo "   Reactiv v1.1.2 Publication Script"
 echo "=========================================="
 echo ""
 
@@ -24,8 +24,8 @@ fi
 
 # Verify version in pubspec.yaml
 VERSION=$(grep "^version:" pubspec.yaml | awk '{print $2}')
-if [ "$VERSION" != "1.1.1" ]; then
-    echo -e "${RED}Error: Version in pubspec.yaml is $VERSION, expected 1.1.1${NC}"
+if [ "$VERSION" != "1.1.2" ]; then
+    echo -e "${RED}Error: Version in pubspec.yaml is $VERSION, expected 1.1.2${NC}"
     exit 1
 fi
 
@@ -76,7 +76,7 @@ echo ""
 
 # Step 5: Confirm publication
 echo "=========================================="
-echo "   Ready to Publish v1.1.1"
+echo "   Ready to Publish v1.1.2"
 echo "=========================================="
 echo ""
 echo "Pre-publication checklist:"
@@ -107,8 +107,8 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "Next steps:"
     echo "1. Tag the release:"
-    echo "   git tag -a v1.1.1 -m 'Release version 1.1.1'"
-    echo "   git push origin v1.1.1"
+    echo "   git tag -a v1.1.2 -m 'Release version 1.1.2'"
+    echo "   git push origin v1.1.2"
     echo ""
     echo "2. Create GitHub release:"
     echo "   https://github.com/therdm/reactiv/releases/new"
@@ -120,4 +120,3 @@ else
     echo -e "${RED}✗ Publication failed. Check errors above.${NC}"
     exit 1
 fi
-

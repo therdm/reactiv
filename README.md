@@ -53,7 +53,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactiv: ^1.1.0
+  reactiv: ^1.1.2
 ```
 
 Then run:
@@ -852,5 +852,3 @@ If you like Reactiv, please:
 [Get Started](#-quick-start) • [View on GitHub](https://github.com/therdm/reactiv) • [pub.dev](https://pub.dev/packages/reactiv)
 
 </div>
-
-

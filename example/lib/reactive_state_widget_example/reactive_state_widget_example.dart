@@ -5,7 +5,7 @@ class MyCounterController extends ReactiveController {
   final count = ReactiveInt(0);
 
   Future<void> increment() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     count.value++;
   }
 }
@@ -32,7 +32,7 @@ class CounterScreen extends ReactiveStateWidget<MyCounterController> {
       appBar: AppBar(
         title: const Text('Reactiv Counter'),
       ),
-      body: CounterScreenBody(),
+      body: const CounterScreenBody(),
       floatingActionButton: ReactiveBuilder(
           reactiv: controller.count,
           builder: (context, count) {
@@ -41,7 +41,7 @@ class CounterScreen extends ReactiveStateWidget<MyCounterController> {
               onPressed: () async {
                 if (count % 2 == 0) {
                   // Simulate a longer operation on even counts
-                  await Future.delayed(Duration(seconds: 1), () {
+                  await Future.delayed(const Duration(seconds: 1), () {
                     controller.increment();
                   });
                 } else {}

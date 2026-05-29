@@ -30,9 +30,9 @@ class _CounterScreenState
         title: const Text('Reactiv Counter'),
       ),
       body: Center(
-        child: Observer(
-          listenable: controller.count, // Listen to the reactive variable
-          listener: (count) {
+        child: ReactiveBuilder(
+          reactiv: controller.count, // Listen to the reactive variable
+          builder: (_, count) {
             return Text(
               'Count: $count',
               style: const TextStyle(fontSize: 24),

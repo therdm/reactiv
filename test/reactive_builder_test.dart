@@ -357,7 +357,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: MultiReactiveBuilder(
-              reactives: [],
+              reactives: const [],
               builder: (context) {
                 return const Text('No reactives');
               },
