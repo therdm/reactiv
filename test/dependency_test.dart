@@ -105,6 +105,69 @@ void main() {
       expect(identical(controller1, controller2), isTrue);
     });
 
+    test('should lazy put if absent - first call registers builder', () {
+      Dependency.lazyPutIfAbsent<TestController>(
+        () => TestController(),
+      );
+
+      expect(Dependency.isRegistered<TestController>(), isTrue);
+
+      // Instance not created yet
+      final controller = Dependency.find<TestController>();
+      expect(controller, isNotNull);
+      expect(controller.initCalled, isTrue);
+    });
+
+    test('should lazy put if absent - second call does nothing', () {
+      var createCount = 0;
+
+      Dependency.lazyPutIfAbsent<TestController>(
+        () {
+          createCount++;
+          return TestController();
+        },
+      );
+
+      Dependency.lazyPutIfAbsent<TestController>(
+        () {
+          createCount++;
+          return TestController();
+        },
+      );
+
+      // Only first builder should be registered
+      final controller = Dependency.find<TestController>();
+      expect(controller, isNotNull);
+      expect(createCount, equals(1)); // Only called once
+    });
+
+    test(
+        'should lazy put if absent - respects existing instantiated dependency',
+        () {
+      final existing = Dependency.put(TestController());
+
+      Dependency.lazyPutIfAbsent<TestController>(
+        () => TestController(),
+      );
+
+      final found = Dependency.find<TestController>();
+      expect(identical(existing, found), isTrue);
+    });
+
+    test('should lazy put if absent - supports fenix mode', () {
+      Dependency.lazyPutIfAbsent<TestController>(
+        () => TestController(),
+        fenix: true,
+      );
+
+      final controller1 = Dependency.find<TestController>();
+      Dependency.delete<TestController>();
+
+      final controller2 = Dependency.find<TestController>();
+      expect(controller2, isNotNull);
+      expect(identical(controller1, controller2), isFalse);
+    });
+
     test('should check if registered', () {
       expect(Dependency.isRegistered<TestController>(), isFalse);
 
@@ -165,12 +228,10 @@ void main() {
     });
 
     test('should support phoenix mode', () {
-      Dependency.put(TestController(), fenix: true);
+      Dependency.put(TestController());
 
       Dependency.delete<TestController>();
 
-      // Phoenix dependencies can be recreated
-      // Note: Current implementation stores builder, not recreates automatically
       expect(Dependency.isRegistered<TestController>(), isFalse);
     });
   });

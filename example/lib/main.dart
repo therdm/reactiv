@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reactiv/reactiv.dart';
-import 'advanced_features_example.dart' as afe;
+import '../reactive_state_widget_example/reactive_state_widget_example.dart'
+    as rsw;
 
 void main() {
-  runApp(const afe.MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: const CounterScreen(),
+      home: const rsw.CounterScreen(),
     );
   }
 }
@@ -74,9 +75,9 @@ class _CounterScreenState extends State<CounterScreen> {
             ),
             const SizedBox(height: 16),
             // Observer widget listens to the reactive variable
-            Observer(
-              listenable: controller.count,
-              listener: (count) {
+            ReactiveBuilder(
+              reactiv: controller.count,
+              builder: (ctx, count) {
                 return Text(
                   '$count',
                   style: Theme.of(context).textTheme.headlineLarge,

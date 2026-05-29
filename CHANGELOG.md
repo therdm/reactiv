@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2025-11-10
+
+### 🐛 Bug Fixes
+
+#### Double Dependency Injection Fixed
+- **Fixed critical bug**: Double dependency injection in `ReactiveState` and `ReactiveStateWidget`
+  - Problem: Controllers were being registered twice in the dependency injection system
+  - Impact: Could cause memory leaks and unexpected behavior with controller lifecycle
+  - Solution: Ensured single registration per controller instance
+  - Files affected: `lib/views/reactive_state.dart`, `lib/views/reactive_state_widget.dart`
+
+### ✨ New Features
+
+#### lazyBind Support in ReactiveStateWidget
+- **NEW**: `lazyBind` parameter added to `ReactiveStateWidget`
+  - Controls when the controller is instantiated
+  - `lazyBind: true` (default) - Controller created lazily when first accessed
+  - `lazyBind: false` - Controller created immediately when widget is initialized
+  - Consistent with `BindController` API for unified experience
+
+**Example:**
+```dart
+// Lazy binding (default) - controller created on first access
+class MyPage extends ReactiveStateWidget<MyController> {
+  const MyPage({super.key});
+  
+  @override
+  MyController createController() => MyController();
+  
+  @override
+  Widget build(BuildContext context) {
+    return Text(controller.title); // Controller created here
+  }
+}
+
+// Immediate binding - controller created in initState
+class MyPage extends ReactiveStateWidget<MyController> {
+  const MyPage({super.key, super.lazyBind = false});
+  
+  @override
+  MyController createController() => MyController();
+  
+  @override
+  Widget build(BuildContext context) {
+    return Text(controller.title); // Controller already exists
+  }
+}
+```
+
+### 🔧 Improvements
+
+- **Enhanced reliability**: Fixed potential memory leaks from double injection
+- **Better lifecycle management**: Controllers properly registered once
+- **API consistency**: lazyBind now available across all binding mechanisms
+- **Improved flexibility**: More control over controller initialization timing
+
+### ⚠️ Breaking Changes
+None - All changes are backward compatible
+
+### 🔄 Migration Guide
+No migration needed - Existing code continues to work without changes. The `lazyBind` parameter is optional and defaults to `true` (lazy binding).
+
+---
+
 ## [1.1.0] - 2024-11-03
 
 ### ✨ New Features
